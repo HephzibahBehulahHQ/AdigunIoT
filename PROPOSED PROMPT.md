@@ -68,6 +68,12 @@ Generate /{category}/{slug}/ from one module route and use canonical URLs for ca
 
 Use visible keyboard focus, semantic headings, named controls, readable contrast and touch targets. Announce meaningful state changes in a live region without reading every animation frame. Make the full flow operable with reduced motion. Check at 360, 768 and 1440 CSS px with no horizontal overflow. Translate shell, controls, statuses, errors, search aliases, and sample content in English, German, Yoruba and Nigerian Pidgin. Persist only intended non-sensitive settings such as locale. Use versioned browser keys and handle storage denial gracefully. Record which translations were reviewed and which require linguistic review.
 
+### Directory continuity and illustrated explorer workspaces
+
+Every collection or category link opens a dedicated, same-domain directory page using the same Adigun browse shell: search, breadcrumbs, labeled icons, grouped panels, and clickable rows. Use the full hierarchy Home → Collection → Category → Experience. The visible row itself is a link. Support direct URLs and Back. On phones, stack panels in reading order. Only published entries get playable links and count as available. A planned category can open a directory page with an honest empty state.
+
+Internet and protocol experiences open in the dark Adigun workbench. Give each an original illustrated topology with recognizable device drawings, directional network links, and animated event markers that follow the active path. On desktop keep steps, stage, inspector and packet timeline in view together at a usable size. On mobile keep the stage and playback reachable and stack the supporting panels. Treat the diagram, sequence, timeline, and inspector as views of the same event state. Speed changes presentation without changing event data. Reduced motion shows a static active path and endpoint. Apply this contract to future Internet Explorer modules as they are built. The prototype illustrates one explainer with three scenarios.
+
 ### Reference-to-product interaction contract
 
 The owner supplied two screenshots. Treat each as a reference for a different moment in the visitor journey.
