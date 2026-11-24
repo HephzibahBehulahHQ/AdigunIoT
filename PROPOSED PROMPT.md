@@ -30,13 +30,22 @@ The desktop dark theme is a restrained sci-fi observatory: midnight background, 
 
 Use this screen order:
 
-1. Shared header with approved identity, Discover, Categories, search trigger, division filter, and language selector.
+1. Shared header with approved identity and responsive access to Home, Browse, Search, Surprise Me, division and language as specified below.
 2. Hero with the two actions and a link to the featured experience.
 3. Three playable cards. Each shows its title, one sentence describing the action, category, and primary collection. Use motion previews only where they communicate what the experience does. Each card has a real link.
 4. Category directory and honest playable counts. Show zero-count categories with clear empty pages and links back to playable experiences.
 5. Product footer with verified corporate links and working project documentation.
 
 Use **Play, Learn, Make, Discover** as quick filters or intent shortcuts. Show the ten catalog collections as the browse entry to 100 categories. The separate division filter applies a verified accent and filters the catalog by division. Keep the product owner label fixed. Show the three Phase 0 modules across the AI and Elektroniker division views. The remaining division views still open their own useful empty view. Preserve browser history and shareable filter state.
+
+### Icon-led navigation on phones and laptops
+
+Every visible menu item has a recognizable icon **and a short translated label**. Apply this to primary navigation, all 10 collections, all 100 category menus, division and intent filters, utility actions, and experience cards. The icon helps people scan. The label tells them where the item goes. Keep the shared header’s one-logo rule. Use the approved icon family where available, or an approved consistent line-icon set. Feature icons such as a network diagram, gamepad, folded paper, compass, music note and bar chart are functional symbols.
+
+- **Phone:** Use a bottom bar with four destinations: Home, Browse, Search and Surprise Me. Keep corporate identity, division and language controls in a compact header or labeled settings panel. Browse opens a two-column icon-card grid where width permits, with a single column when labels need more room. The visitor sees 10 collections first, then the selected collection’s 10 categories, then experience cards. Leave room for safe-area insets and keep the bottom bar from covering content or focus. Every destination works by tap with no hover dependency.
+- **Laptop:** Use one header with the same four labeled destinations. Show the ten collections in a spacious icon-card grid and surface the full directory behind Browse. Collection and category pages use breadcrumbs and clearly labeled back links. Wide layouts can show the catalog filters beside the results. Keep the same destination names and symbols across screen sizes.
+- **Implementation:** Add an icon key to the collection and category manifests and support a module-level icon override that falls back to its category icon. Use one local typed icon registry shared by menus, search and cards. Assign a recognizable symbol to each collection and each category, avoiding indistinguishable sibling icons. The build validates the 10 collection mappings, 100 category mappings and any module overrides. Use decorative icon semantics when the adjacent label names the control, visible focus and an active state that uses more than color. Aim for 44 × 44 CSS px touch areas. Allow translated labels to wrap. Use clearly named controls when compact utility buttons use icon-only presentation.
+- **Acceptance:** At 360, 768 and 1440 CSS px, verify Home → Browse → Collection → Category → Experience and back. Test opening Search and Surprise Me on both phone and laptop. Check tab order, focus visibility, keyboard operation, touch reachability, no overlapping fixed controls, and no clipped labels across all four languages. Verify all catalog menu entries render their intended icon and label. Include the phone and laptop views in the Phase 0 walkthrough.
 
 ### Screen 2 · Categories and search
 
