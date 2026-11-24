@@ -36,8 +36,9 @@ jobs:
           const fs = require('node:fs');
           const { chromium } = require(process.env.RUNNER_TEMP + '/adigun-qa/node_modules/playwright');
           const entry = fs.readFileSync('index.html', 'utf8');
-          const standalone = Object.fromEntries(['shape-sorter','pendulum-playground','signal-path-finder','pixel-sprite-studio','tile-pattern-workshop','word-ladder-lab'].map(key =>
-            ['/sites/'+key+'/',fs.readFileSync('sites/'+key+'/index.html','utf8')]));
+          const standalone = Object.fromEntries(fs.readdirSync('sites',{withFileTypes:true})
+            .filter(entry=>entry.isDirectory()&&/^[a-z0-9-]+$/.test(entry.name))
+            .map(({name:key})=>['/sites/'+key+'/',fs.readFileSync('sites/'+key+'/index.html','utf8')]));
 
           const html = fs.readFileSync('docs/preview/AdigunIoT-portfolio-preview.html', 'utf8');
           async function withinViewport(locator) {
@@ -127,8 +128,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('26 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 26);
+                await frame.getByText('27 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 27);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -397,8 +398,8 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('26 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('a[data-site]').count(),6);
+                await frame.getByText('27 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('a[data-site]').count(),7);
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
                 assert.equal(await ladderLink.getAttribute('href'),'https://adigun.test/sites/word-ladder-lab/');
                 await ladderLink.press('Enter');
@@ -408,6 +409,22 @@ jobs:
                 await frame.getByRole('heading',{name:/Play Now/}).waitFor();
                 await withinViewport(frame.locator('html'));
                 await page.screenshot({path:name+'-standalone-discovery.png'});
+                await frame.getByRole('link',{name:'Risk Dice',exact:true}).click();
+                await page.waitForURL('**/sites/risk-dice/');
+                await page.getByText('6 / 36 · 16.7%').waitFor();
+                await page.getByRole('button',{name:/Roll once/}).press('Enter');
+                await page.getByText(/1 total rolls/).waitFor();
+                await page.getByRole('button',{name:/Roll 20/}).click();
+                await page.getByText(/21 total rolls/).waitFor();
+                await page.getByLabel('Target sum').selectOption('2');
+                await page.getByText('1 / 36 · 2.8%').waitFor();
+                assert.match(await page.locator('#observed').textContent(),/\/ 21/);
+                await page.getByRole('button',{name:/Reset/}).click();
+                await page.getByText('0 / 0 · Roll to measure').waitFor();
+                const risk = await page.locator('.lab').evaluate(el=>({bottom:el.getBoundingClientRect().bottom+scrollY,height:innerHeight}));
+                assert.ok(risk.bottom<=risk.height,'Risk Dice controls fit: '+JSON.stringify(risk));
+                await withinViewport(page.locator('html'));
+                await page.screenshot({path:name+'-risk-dice.png'});
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
