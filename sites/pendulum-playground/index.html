@@ -8,6 +8,7 @@
 :root{color-scheme:dark;--base:#0b1220;--panel:#151e32;--edge:#435474;--ink:#f8f4ff;--muted:#bec8e1;--violet:#a78bfa;--teal:#79dfcb}
 *{box-sizing:border-box}body{margin:0;background:var(--base);color:var(--ink);font:16px/1.45 system-ui,sans-serif}header{background:#111a2d;border-bottom:1px solid var(--edge)}.wrap{max-width:800px;margin:auto;padding:10px 14px}header .wrap,.identity,.controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}header .wrap{justify-content:space-between}.identity img{width:42px;height:42px;object-fit:contain;background:white;border-radius:7px;padding:2px}.identity strong,.identity small{display:block}.identity small,.muted{color:var(--muted)}.identity small{font-size:11px}a{color:var(--ink)}h1{font-size:clamp(24px,4vw,38px);margin:2px 0}p{margin:4px 0}.bench{background:var(--panel);border:1px solid var(--edge);border-radius:10px;padding:10px;margin:9px 0}.stage{height:175px;display:grid;justify-items:center;padding-top:13px;overflow:hidden;background:radial-gradient(ellipse,#302650,#151d31);border:1px solid var(--edge);border-radius:8px}.pivot{position:relative;width:0;align-self:start}.pivot::before{content:"";position:absolute;z-index:1;left:-4px;top:-4px;width:8px;height:8px;border-radius:50%;background:var(--teal)}.arm{position:absolute;left:-2px;top:0;width:4px;height:var(--arm,88px);background:var(--muted);border-radius:3px;transform-origin:top;animation:swing var(--period,2s) ease-in-out infinite paused}.arm::after{content:"";position:absolute;bottom:-12px;left:-10px;width:24px;height:24px;border-radius:50%;background:var(--violet);border:2px solid #e4d7ff}.stage.running .arm{animation-play-state:running}@keyframes swing{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
 .controls{margin-top:7px}.controls label{font-size:14px}.length{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:7px;align-items:center;margin-top:5px}.length input{min-height:44px;min-width:0;width:100%;accent-color:var(--violet)}button,select{min-height:44px;font:inherit;color:var(--ink);background:#222c48;border:1px solid var(--edge);border-radius:8px;padding:5px 8px}button,summary{cursor:pointer}.primary{color:#170e30;background:var(--violet);font-weight:750}button:hover{border-color:var(--teal)}:focus-visible{outline:3px solid var(--teal);outline-offset:2px}#period{font-weight:750;color:var(--teal)}summary{min-height:44px;line-height:44px}.motion-note{display:none;font-size:13px}@media(max-height:650px){.stage{height:128px}.arm{height:calc(var(--arm,88px)*.78)}.wrap{padding-block:7px}.bench{margin:6px 0}.identity img{width:36px;height:36px}}@media(prefers-reduced-motion:reduce){.arm{animation:none;transform:rotate(-12deg)}.motion-note{display:block}}
+.challenge{display:grid;gap:4px;margin-top:7px;padding:8px;border-radius:8px;background:#202942}.challenge p{margin:0}.challenge .controls{margin:0}.challenge [role=status]{min-height:1.45em;color:var(--teal)}
 </style>
 </head>
 <body>
@@ -19,6 +20,11 @@
 <div class="length"><label for="length">Length</label><input type="range" id="length" min="0.25" max="2" value="1" step="0.25"><output id="length-label" for="length"></output></div>
 <div class="controls"><label for="gravity">Gravity</label><select id="gravity"><option value="9.81">🌍 Earth</option><option value="1.62">🌙 Moon</option></select><button class="primary" id="motion">▶ Start</button><button id="reset">↺ Reset</button></div>
 <p id="period" aria-live="polite"></p><p class="muted motion-note">Reduced motion is on. The live period still updates.</p>
+<section class="challenge" aria-label="Swing time challenge">
+<strong id="target"></strong>
+<div class="controls"><button id="check">✓ Check swing</button><button id="next">✨ Next target</button></div>
+<p id="result" role="status">Set the length and gravity.</p>
+</section>
 </section>
 <details><summary>Why does the period change?</summary><p>A longer pendulum takes more time to swing. Lower gravity also makes the swing slower. In this ideal small-angle model, the period is 2π × √(length ÷ gravity).</p></details>
 </main>
@@ -26,9 +32,27 @@
 'use strict';
 const $=id=>document.getElementById(id);
 let running=false;
+const targets=[{length:.5,gravity:9.81,place:'Earth'},{length:.75,gravity:1.62,place:'Moon'},{length:1.75,gravity:9.81,place:'Earth'}];
+let targetIndex=0;
+const periodFor=(length,gravity)=>2*Math.PI*Math.sqrt(length/gravity);
+function drawTarget(){
+ const {length,gravity,place}=targets[targetIndex];
+ $('target').textContent='🎯 '+periodFor(length,gravity).toFixed(2)+' s on '+place;
+ $('result').textContent='Set the length and gravity.';
+}
+function checkTarget(){
+ const target=targets[targetIndex];
+ const gravity=Number($('gravity').value);
+ const length=Number($('length').value);
+ if(gravity!==target.gravity){
+  $('result').textContent='Switch gravity to '+target.place+'.';
+  return;
+ }
+ $('result').textContent=length===target.length?'🎉 Target matched!':length<target.length?'Try a longer pendulum.':'Try a shorter pendulum.';
+}
 function draw(){
  const length=Number($('length').value), gravity=Number($('gravity').value);
- const period=2*Math.PI*Math.sqrt(length/gravity);
+ const period=periodFor(length,gravity);
  const stage=$('stage');
  stage.style.setProperty('--arm',(48+38*length)+'px');
  stage.style.setProperty('--period',period+'s');
@@ -37,11 +61,21 @@ function draw(){
  $('period').textContent='One full swing: '+period.toFixed(2)+' s';
  $('motion').textContent=running?'⏸ Pause':'▶ Start';
 }
-$('length').addEventListener('input',draw);
-$('gravity').addEventListener('change',draw);
+function changeSetup(){
+ $('result').textContent='Ready to check.';
+ draw();
+}
+$('length').addEventListener('input',changeSetup);
+$('gravity').addEventListener('change',changeSetup);
+$('check').addEventListener('click',checkTarget);
+$('next').addEventListener('click',()=>{
+ targetIndex=(targetIndex+1)%targets.length;
+ drawTarget();
+});
 $('motion').addEventListener('click',()=>{running=!running;draw();});
-$('reset').addEventListener('click',()=>{$('length').value='1';$('gravity').value='9.81';running=false;draw();});
+$('reset').addEventListener('click',()=>{$('length').value='1';$('gravity').value='9.81';running=false;targetIndex=0;drawTarget();draw();});
 if(location.protocol==='file:')$('portfolio').href='../../AdigunIoT-portfolio-preview.html#category/physics-playgrounds';
+drawTarget();
 draw();
 </script>
 </body>
