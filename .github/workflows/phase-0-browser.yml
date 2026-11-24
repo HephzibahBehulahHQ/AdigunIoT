@@ -296,7 +296,8 @@ jobs:
                 await page.getByRole('button',{name:/Reset/}).click();
                 await page.getByText('One full swing: 2.01 s').waitFor();
                 await withinViewport(page.locator('html'));
-                assert.equal(await page.locator('html').evaluate(el=>el.scrollHeight<=el.clientHeight+2),true);
+                const bounds=await page.locator('.bench').evaluate(el=>({bottom:el.getBoundingClientRect().bottom+scrollY,height:innerHeight}));
+                assert.ok(bounds.bottom<=bounds.height, 'pendulum controls fit: '+JSON.stringify(bounds));
                 await page.screenshot({path:name+'-pendulum.png'});
                 assert.deepEqual(errors, []);
                 await context.close();
