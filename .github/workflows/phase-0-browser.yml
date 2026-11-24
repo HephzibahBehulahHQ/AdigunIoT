@@ -121,8 +121,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('19 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 19);
+                await frame.getByText('20 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 20);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -131,7 +131,7 @@ jobs:
                 await withinViewport(frame.locator('html'));
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('button', { name: /Surprise Me/ }).click();
-                await page.waitForURL(url => /#demo\/home\/(?:protocol|signal|circuit|relay|budget|calibration|grid-balance|concept\/\d+\/\d+)$/.test(url.hash));
+                await page.waitForURL(url => /#demo\/home\/(?:protocol|signal|circuit|relay|budget|calibration|grid-balance|gear-ratio|concept\/\d+\/\d+)$/.test(url.hash));
                 assert.equal(await frame.getByText('In the build queue.').count(), 0);
                 await page.getByRole('link', { name: 'Back to portfolio' }).click();
                 await page.locator('.samples').getByRole('link', { name: /Protocol Explorer/ }).click();
@@ -217,6 +217,22 @@ jobs:
                 await page.screenshot({path: name + '-grid.png'});
                 await frame.getByRole('button', {name: /Reset/}).click();
                 await frame.getByText('Supply 0 · Demand 8 · 8 units short.').waitFor();
+                await page.getByRole('link', {name:'Back to portfolio'}).click();
+                await page.getByRole('link', {name:'Home',exact:true}).click();
+                await page.getByRole('link', {name:/Machines & Mechanisms 100 slots/}).first().click();
+                await page.getByRole('link', {name:/Open preview/}).click();
+                await frame.getByRole('heading', {name:/Gear Ratio Bench/}).waitFor();
+                await frame.getByText(/Driven 30 rpm counterclockwise/).waitFor();
+                await frame.getByLabel('Driver',{exact:true}).selectOption('48');
+                await frame.getByText(/Driven 120 rpm counterclockwise/).waitFor();
+                await frame.getByRole('button',{name:/Animate/}).press('Enter');
+                await frame.getByRole('button',{name:/Pause animation/}).waitFor();
+                assert.equal(await frame.locator('.gear-driver').evaluate(el=>getComputedStyle(el).animationName==='none'),name==='phone');
+                await frame.getByRole('button',{name:/Pause animation/}).click();
+                await frame.getByRole('button',{name:/Reset/}).click();
+                await frame.getByText(/Driven 30 rpm counterclockwise/).waitFor();
+                await withinViewport(frame.locator('html'));
+                await page.screenshot({path:name+'-gear.png'});
                 if(name==='phone') await page.setViewportSize({width:360,height:640});
                 for(const [game,title] of [['signal','Signal Catch'],['home/concept/1/1','Memory Grid'],['home/concept/1/2','Word Snake'],['home/concept/1/4','Mini Sudoku'],['home/concept/1/6','Color Match']]){
                   await page.evaluate(hash=>location.hash=hash,'#demo/'+game);
