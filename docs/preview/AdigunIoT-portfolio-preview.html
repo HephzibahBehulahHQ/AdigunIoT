@@ -47,7 +47,7 @@ function categorySites(key){
 const sampleLinks=['random-discovery','internet-protocols','arcade','paper-cardboard','automation-plcs','public-budgets','sensors-measurement','energy-power-grids','machines-mechanisms','ai-foundations','physics-playgrounds','signals-wireless','pixel-art-sprites','words-language','risk-uncertainty'];
 const $=s=>document.querySelector(s),view=$('#content'),lookup=$('#lookup');
 const id=(c,n)=>'C'+String(c.num).padStart(2,'0')+'-'+String(n).padStart(3,'0');
-const standaloneKeys=new Set(['shape-sorter','pendulum-playground','signal-path-finder','pixel-sprite-studio','tile-pattern-workshop','word-ladder-lab','risk-dice']);
+const standaloneKeys=new Set(['shape-sorter','pendulum-playground','signal-path-finder','pixel-sprite-studio','tile-pattern-workshop','word-ladder-lab','risk-dice','lantern-grid']);
 const siteHref=key=>{
  if(!standaloneKeys.has(key))return '#demo/'+key;
  const localFile=location.protocol==='file:';
