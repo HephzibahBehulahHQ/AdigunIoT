@@ -1,26 +1,25 @@
 # AdigunIoT agent instructions
 
-## Required visual treatment for every page and menu
+## Workspace and scope
 
-- **Icons and emoji.** Give every screen title, menu item, submenu, experience link, and primary action a recognizable icon or emoji paired with a short localized text label. Use playful, topic-specific emoji where they help people recognize the destination. Keep protocol controls and data legible with consistent functional icons. Mark decorative glyphs as hidden from screen readers when the text already names the control. The approved corporate identity uses one corporate logo.
-- **Centered layout.** Place the main directory, menu panels, page content, and interaction stage in a centered, responsive container. Give complex workbenches room to expand on laptops while staying centered. On phones, use a centered single-column flow when space is tight, readable list rows, and touch-friendly controls. Keep long lists and paragraphs aligned for easy reading.
-- **Review.** Check the visual treatment on phones and laptops for every page and menu in the proposed release. Verify icon and emoji rendering, clear labels, keyboard focus, centered content, and no clipped or overlapping elements. A missing requirement keeps the release gate closed.
+Work in the selected `C:\Codex\AdigunIoT` folder and the [AdigunIoT repository](https://github.com/HephzibahBehulahHQ/AdigunIoT). Verify both before writing. Preserve existing work, inspect installed tools and the dependency cache, reuse the package manager and lockfile, and keep project artifacts in the project folder. Use one current standalone Phase 0 preview. Before implementation, read [PROPOSED PROMPT.md](PROPOSED%20PROMPT.md) and verify the canonical [HB design system](https://github.com/HephzibahBehulahHQ/hb-design-system), [HB AI engineering policy](https://github.com/HephzibahBehulahHQ/hb-AI-policy), and [AI division guidance](https://github.com/HephzibahBehulahHQ/hb-artificial-intelligence).
 
-## Compact, visual, interactive design
+## Product boundaries
 
-- Put search and playable links near the top. Use centered, compact directory panels with clickable rows, icons or emoji, and short labels at every menu level. Stack panels on phones.
-- Use original illustrations, useful thumbnails, and visual previews to show what visitors can do. Keep copy to titles, action labels, essential instructions, accessibility text, and feedback. Put longer explanations in optional details.
-- Give each interactive control a working action and visible feedback. In Explorer pages, show the illustrated, animated stage and playback controls before extended explanations. Keep labels, keyboard access, and reduced-motion behavior intact.
-- Review every page and menu on phone and laptop for visual clarity, compactness, and working interactions. Unresolved failures keep the release gate closed.
+- **AdigunIoT** is the portfolio. It has 100 categories with 100 independently identifiable mini-site positions each. Ten collections are browse groupings.
+- **AdigunBored** occupies one portfolio position. It has its own 100 categories and a target of 50 distinct destinations per category. Its catalog can contain native activities and approved links to other Adigun sites. Keep portfolio and directory IDs, statuses, and counts separate.
+- **Adigun Protocol Explorer** is a separate mini-site and the interaction model for Internet Explorer experiences. Other experiences use workspaces suited to what visitors do.
+- Label planned, playable in preview, verified, and published records accurately. Keep unfinished items out of published counts and playable-only actions.
 
-## Incremental merge and deployment
+## Identity, layout, and interaction
 
-Merge and deploy small, complete increments as work progresses. A single finished page, menu, or feature can qualify. The owner authorizes routine merge and deployment of passing increments to the existing authorized targets. Follow branch protection and required reviews. Use preview or local checks for unfinished work. New hosting targets, custom domains, or access changes require separate authorization.
+- Use the exact approved `assets/corporate/hephzibah-behulah-official.jpg` artwork from the design system. Use one corporate logo per product header, a text product wordmark, and a concise division label. Preserve aspect ratio and visual contrast. Use the approved typography and color tokens. Keep emoji in navigation and activities.
+- Center each directory and category in a bounded desktop container. AdigunBored uses compact, icon-led list panels and a wider item list next to a narrower Related rail. Stack the rail below the results on phones. Keep primary actions near the top and use original illustrations, distinct readable accents, short labels, and useful feedback.
+- Every menu, submenu, and experience link needs a recognizable icon or emoji and a readable accessible label. Keep the whole row clickable. Verify search, direct routes, breadcrumbs, Back, keyboard focus, and touch controls. Put extended detail behind an optional disclosure.
+- Explorer workspaces use a dark stage with original device art, animated events, a timeline and an inspector. Derive every view from the same event state. Provide pause, step, restart and reduced motion. Use simulated data only for networking demos.
 
-Before merging or deploying, check the exact candidate on phones and laptops. Review every changed page and menu and any affected shared navigation. Confirm recognizable icons or emoji with text labels, useful images, centered compact layouts, distinguishable accessible colors, working interactions with visible feedback, and purposeful animation with reduced-motion support where applicable. Keep the approved directory and Explorer patterns. Run relevant build, accessibility, and regression checks. Record evidence and hold any increment with missing or failing checks. A passing build alone is insufficient.
+## Ship small verified increments
 
-- **Home, collections, categories, and submenus:** Use the approved Adigun directory layout throughout. Each menu row has a clear icon and label, and opens the correct same-site destination. Search, breadcrumbs, direct links, and Back must work. Show only genuinely playable pages as available. Planned pages may appear as explicitly marked directory entries.
-- **Internet and Protocol Explorer experiences:** Use the approved dark Adigun workbench with original device illustrations, visible network paths, and animated events. Playback and stepping must synchronize the diagram, sequence, event timeline, and inspector. Verify the reduced-motion view and phone layout.
-- **Every other experience:** Open into its working interactive workspace. Verify its primary action, status feedback, and return route. Check keyboard focus, touch controls, readable labels, and overflow across the shared shell.
+Merge and deploy reviewable increments as they pass. One complete page, menu, or feature can qualify. The owner authorizes routine releases to existing authorized targets. Follow branch protections and required reviews. New hosting, custom domains, and access changes require separate authorization.
 
-Record the candidate commit, affected page and menu inventory, device or viewport checks, results, and any gaps in the review PR. Verify the deployed revision and smoke-test the changed routes after release. Use the design references and acceptance criteria in [PROPOSED PROMPT.md](PROPOSED%20PROMPT.md).
+Before release, verify the exact candidate on phone and laptop. Check affected pages, menus and shared navigation for official identity, working controls, icons, centered layout, readable accents, useful visuals, keyboard support, purposeful animation and reduced motion. Run relevant build and regression checks. Record the candidate, checked routes, viewport results and gaps in the PR. Hold the affected increment if a required check is missing or fails. After deployment, verify the live revision and smoke-test the changed routes.
