@@ -36,7 +36,7 @@ jobs:
           const fs = require('node:fs');
           const { chromium } = require(process.env.RUNNER_TEMP + '/adigun-qa/node_modules/playwright');
           const entry = fs.readFileSync('index.html', 'utf8');
-          const standalone = Object.fromEntries(['shape-sorter','pendulum-playground','signal-path-finder'].map(key =>
+          const standalone = Object.fromEntries(['shape-sorter','pendulum-playground','signal-path-finder','pixel-sprite-studio'].map(key =>
             ['/sites/'+key+'/',fs.readFileSync('sites/'+key+'/index.html','utf8')]));
 
           const html = fs.readFileSync('docs/preview/AdigunIoT-portfolio-preview.html', 'utf8');
@@ -318,6 +318,35 @@ jobs:
                 const mapBounds=await page.locator('.board').evaluate(el=>({bottom:el.getBoundingClientRect().bottom+scrollY,height:innerHeight}));
                 assert.ok(mapBounds.bottom<=mapBounds.height);
                 await page.screenshot({path:name+'-signal-path.png'});
+                await page.getByRole('link',{name:/Portfolio/}).click();
+                await page.waitForURL(/#category\/signals-wireless$/);
+                await page.getByRole('link',{name:'Home',exact:true}).click();
+                await page.getByRole('link',{name:/Pixel Art & Sprites 100 slots/}).first().click();
+                await page.getByRole('link',{name:/Open preview/}).click();
+                await page.waitForURL('**/sites/pixel-sprite-studio/');
+                const pixel = page.getByRole('button',{name:/Row 1, column 1:/});
+                await pixel.press('Enter');
+                await page.getByRole('button',{name:'Row 1, column 1: Violet'}).waitFor();
+                await page.getByRole('button',{name:/Frame 2/}).click();
+                await page.getByRole('button',{name:'Row 1, column 1: Empty'}).waitFor();
+                await page.getByRole('button',{name:/Teal/}).click();
+                await pixel.press('ArrowRight');
+                await page.keyboard.press('Space');
+                await page.getByRole('button',{name:'Row 1, column 2: Teal'}).waitFor();
+                if(name==='phone'){
+                  await page.getByRole('button',{name:/Step frame/}).click();
+                  await page.getByRole('button',{name:'Row 1, column 1: Violet'}).waitFor();
+                  await page.getByRole('button',{name:/Step frame/}).click();
+                }else{
+                  await page.getByRole('button',{name:/Play/,exact:false}).click();
+                  await page.getByRole('button',{name:/Pause/}).click();
+                }
+                await page.getByRole('button',{name:/Undo/}).click();
+                await page.getByRole('button',{name:'Row 1, column 2: Empty'}).waitFor();
+                const studio = await page.locator('.studio').evaluate(el=>({bottom:el.getBoundingClientRect().bottom+scrollY,height:innerHeight}));
+                assert.ok(studio.bottom<=studio.height,'sprite controls fit: '+JSON.stringify(studio));
+                await withinViewport(page.locator('html'));
+                await page.screenshot({path:name+'-pixel.png'});
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
