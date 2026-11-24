@@ -47,6 +47,14 @@ Use the owner-provided Bored.com screenshot as a functional reference. It shows 
 - On phones, stack the panels in one readable column, with a short list of tappable rows and a View all link in each panel. Keep the search reachable from the bottom bar when the visitor scrolls. Keep category and experience navigation on the same domain.
 - Preserve HB’s original visual treatment across the panels, featured card and controls. Use factual microcopy with verified attribution if a fact appears. Keep scrolling calm and reduced-motion friendly.
 
+### Compact visual design across every screen
+
+Keep Home, collection pages, and category pages focused on discovery. Put search above centered, compact directory panels. Use one icon or emoji and a short label per row. Use original thumbnails for featured activities when they show what someone will play, make, or explore. Keep the whole row clickable. Stack the panels on mobile and keep a playable link near the top. Skip oversized heroes, repeated descriptions, and decorative badges.
+
+On experience pages, put the illustration or interactive stage and its primary controls first. Give every button a visible result. In Internet Explorer, use original device illustrations, moving packets, and synchronized highlights in the timeline and inspector. Offer longer technical explanations in expandable details. Keep essential instructions, accessible names, feedback, and reduced-motion support.
+
+Review on a phone and a laptop. Check that visitors can spot a destination, open it, and perform its primary action with little reading. Confirm the images help explain the activity and that all visible actions work. Apply the release gate in AGENTS.md.
+
 ### Icon-led navigation on phones and laptops
 
 Every visible menu item has a recognizable icon **and a short translated label**. Apply this to primary navigation, all 10 collections, all 100 category menus, division and intent filters, utility actions, and experience cards. The icon helps people scan. The label tells them where the item goes. Keep the shared header’s one-logo rule. Use the approved icon family where available, or an approved consistent line-icon set. Feature icons such as a network diagram, gamepad, folded paper, compass, music note and bar chart are functional symbols.
