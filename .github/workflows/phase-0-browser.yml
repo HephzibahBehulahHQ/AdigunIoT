@@ -36,7 +36,7 @@ jobs:
           const fs = require('node:fs');
           const { chromium } = require(process.env.RUNNER_TEMP + '/adigun-qa/node_modules/playwright');
           const entry = fs.readFileSync('index.html', 'utf8');
-          const standalone = Object.fromEntries(['shape-sorter','pendulum-playground','signal-path-finder','pixel-sprite-studio'].map(key =>
+          const standalone = Object.fromEntries(['shape-sorter','pendulum-playground','signal-path-finder','pixel-sprite-studio','tile-pattern-workshop'].map(key =>
             ['/sites/'+key+'/',fs.readFileSync('sites/'+key+'/index.html','utf8')]));
 
           const html = fs.readFileSync('docs/preview/AdigunIoT-portfolio-preview.html', 'utf8');
@@ -347,6 +347,28 @@ jobs:
                 assert.ok(studio.bottom<=studio.height,'sprite controls fit: '+JSON.stringify(studio));
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-pixel.png'});
+                await page.getByRole('link',{name:/Portfolio/}).click();
+                await page.waitForURL(/#category\/pixel-art-sprites$/);
+                await page.getByText('100 website slots · 2 playable · 98 open').waitFor();
+                assert.equal(await page.locator('.slots .slot').count(),100);
+                assert.equal(await page.locator('.slots .published').count(),2);
+                await page.getByRole('link',{name:/C41-002, Tile Pattern Workshop/}).click();
+                await page.getByRole('heading',{name:'Tile Pattern Workshop',exact:true}).waitFor();
+                await page.getByRole('link',{name:/Open site/}).click();
+                await page.waitForURL('**/sites/tile-pattern-workshop/');
+                await page.getByRole('button',{name:'Row 1, column 1: empty'}).press('Enter');
+                await page.getByRole('button',{name:'Row 1, column 1: violet'}).waitFor();
+                assert.equal(await page.locator('.pattern span').nth(3).getAttribute('data-ink'),'1');
+                await page.getByLabel('Pattern',{exact:true}).selectOption('mirror');
+                assert.equal(await page.locator('.pattern span').nth(3).getAttribute('data-ink'),'0');
+                assert.equal(await page.locator('.pattern span').nth(5).getAttribute('data-ink'),'1');
+                await page.getByRole('button',{name:/Reset/}).click();
+                await page.getByText('Tile cleared.').waitFor();
+                assert.equal(await page.locator('.pattern span[data-ink="0"]').count(),36);
+                const workshop = await page.locator('.workshop').evaluate(el=>({bottom:el.getBoundingClientRect().bottom+scrollY,height:innerHeight}));
+                assert.ok(workshop.bottom<=workshop.height,'pattern controls fit: '+JSON.stringify(workshop));
+                await withinViewport(page.locator('html'));
+                await page.screenshot({path:name+'-tile-pattern.png'});
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');

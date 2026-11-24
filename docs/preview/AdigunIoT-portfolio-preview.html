@@ -9,7 +9,7 @@
 @media(max-width:900px){.board{grid-template-columns:repeat(2,minmax(0,1fr))}.slots{grid-template-columns:repeat(8,minmax(0,1fr))}}
 @media(max-width:620px){.board{grid-template-columns:1fr}.samples{grid-template-columns:repeat(2,minmax(0,1fr))}.slots{grid-template-columns:repeat(5,minmax(0,1fr))}.wrap{padding-inline:11px}.search{margin-top:10px}}
 .demo-frame{display:block;width:100%;height:calc(100dvh - 126px);min-height:500px;border:1px solid var(--line);border-radius:10px;background:white}.demo-view .search,.demo-view footer{display:none}.demo-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0}.demo-top .flag{text-align:right}@media(max-width:620px){.demo-view .wrap{padding-inline:6px}.demo-frame{height:calc(100dvh - 118px);min-height:390px}}
-.brand{display:inline-flex;align-items:center;gap:10px}.brand-logo{width:49px;height:49px;object-fit:contain;border:1px solid var(--line);border-radius:8px;background:white;padding:2px}@media(max-width:620px){.brand-logo{width:39px;height:39px}}.board,.slots{animation:open-branch .28s ease-out both}.board .row{min-height:38px;border-left:2px solid var(--line);padding-left:5px;margin-left:5px;transition:background .18s,border-color .18s}.board .row:hover{border-left-color:var(--violet)}.board .panel{border-radius:8px;padding:8px 10px}.board .row .arrow{transition:transform .18s}.board .row:hover .arrow{transform:translateX(3px)}@keyframes open-branch{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}@media(max-width:620px){.board .row{min-height:44px}}@media(prefers-reduced-motion:reduce){.board,.slots{animation:none}.board .row,.board .row .arrow{transition:none}}.board .panel{--branch:#7251a3;--wash:#eee7fa;border-top:3px solid var(--branch)}.board .panel:nth-child(6n+2){--branch:#2d7571;--wash:#e1f2ee}.board .panel:nth-child(6n+3){--branch:#9b4d72;--wash:#f7e6ee}.board .panel:nth-child(6n+4){--branch:#82572d;--wash:#f7ecda}.board .panel:nth-child(6n+5){--branch:#375b9c;--wash:#e5edfb}.board .panel:nth-child(6n){--branch:#476b36;--wash:#e9f1e1}.board .panel h2{color:var(--branch)}.board .panel .row:hover{border-left-color:var(--branch);background:var(--wash)}@media(max-width:620px){.demo-frame{height:calc(100dvh - 120px);min-height:0}.demo-top .flag{overflow-wrap:anywhere}.search input{min-width:0}.search .action{flex:none}}.game-frame-view .demo-frame{height:calc(100dvh - 105px);min-height:0}.game-frame-view header .wrap{padding-block:4px}.game-frame-view .brand-logo{width:35px;height:35px}.game-frame-view .demo-top{margin:3px 0}.game-frame-view .demo-top .chip{min-height:40px}.game-frame-view .flag{font-size:11px}@media(max-height:450px){.game-frame-view header .flag,.game-frame-view .demo-top .flag{display:none}}</style>
+.brand{display:inline-flex;align-items:center;gap:10px}.brand-logo{width:49px;height:49px;object-fit:contain;border:1px solid var(--line);border-radius:8px;background:white;padding:2px}@media(max-width:620px){.brand-logo{width:39px;height:39px}}.board,.slots{animation:open-branch .28s ease-out both}.board .row{min-height:38px;border-left:2px solid var(--line);padding-left:5px;margin-left:5px;transition:background .18s,border-color .18s}.board .row:hover{border-left-color:var(--violet)}.board .panel{border-radius:8px;padding:8px 10px}.board .row .arrow{transition:transform .18s}.board .row:hover .arrow{transform:translateX(3px)}@keyframes open-branch{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}@media(max-width:620px){.board .row{min-height:44px}}@media(prefers-reduced-motion:reduce){.board,.slots{animation:none}.board .row,.board .row .arrow{transition:none}}.board .panel{--branch:#7251a3;--wash:#eee7fa;border-top:3px solid var(--branch)}.board .panel:nth-child(6n+2){--branch:#2d7571;--wash:#e1f2ee}.board .panel:nth-child(6n+3){--branch:#9b4d72;--wash:#f7e6ee}.board .panel:nth-child(6n+4){--branch:#82572d;--wash:#f7ecda}.board .panel:nth-child(6n+5){--branch:#375b9c;--wash:#e5edfb}.board .panel:nth-child(6n){--branch:#476b36;--wash:#e9f1e1}.board .panel h2{color:var(--branch)}.board .panel .row:hover{border-left-color:var(--branch);background:var(--wash)}@media(max-width:620px){.demo-frame{height:calc(100dvh - 120px);min-height:0}.demo-top .flag{overflow-wrap:anywhere}.search input{min-width:0}.search .action{flex:none}}.game-frame-view .demo-frame{height:calc(100dvh - 105px);min-height:0}.game-frame-view header .wrap{padding-block:4px}.game-frame-view .brand-logo{width:35px;height:35px}.game-frame-view .demo-top{margin:3px 0}.game-frame-view .demo-top .chip{min-height:40px}.game-frame-view .flag{font-size:11px}@media(max-height:450px){.game-frame-view header .flag,.game-frame-view .demo-top .flag{display:none}}.category-sites{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:8px}.category-sites .site{margin:0}.slot.published{border-color:#6a9d92;background:#e1f1ea;color:#205d57}</style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -35,10 +35,16 @@ const demos={
  'paper-cardboard':['💡','Paper Circuit','circuit'],
  'random-discovery':['✨','AdigunBored','home']
 };
+const additionalSites={
+ 'pixel-art-sprites':{2:['🧩','Tile Pattern Workshop','tile-pattern-workshop']}
+};
+function categorySites(key){
+ return {...(demos[key]?{1:demos[key]}:{}),...additionalSites[key]};
+}
 const sampleLinks=['random-discovery','internet-protocols','arcade','paper-cardboard','automation-plcs','public-budgets','sensors-measurement','energy-power-grids','machines-mechanisms','ai-foundations','physics-playgrounds','signals-wireless','pixel-art-sprites'];
 const $=s=>document.querySelector(s),view=$('#content'),lookup=$('#lookup');
 const id=(c,n)=>'C'+String(c.num).padStart(2,'0')+'-'+String(n).padStart(3,'0');
-const standaloneKeys=new Set(['shape-sorter','pendulum-playground','signal-path-finder','pixel-sprite-studio']);
+const standaloneKeys=new Set(['shape-sorter','pendulum-playground','signal-path-finder','pixel-sprite-studio','tile-pattern-workshop']);
 const siteHref=key=>{
  if(!standaloneKeys.has(key))return '#demo/'+key;
  const localFile=location.protocol==='file:';
@@ -70,15 +76,28 @@ function editorialPanels(){
 }
 function home(filter='all',query=''){
  const filtered=groups.filter(g=>filter==='all'||filter===g.key);
- const matches=categories.filter(c=>[c.title,c.lead,c.group.title,c.key].some(x=>x.toLowerCase().includes(query)));
+ const matches=categories.filter(c=>[c.title,c.lead,c.group.title,c.key,...Object.values(categorySites(c.key)).map(([,title])=>title)].some(x=>x.toLowerCase().includes(query)));
  const panels=filtered.map(g=>[g,matches.filter(c=>c.group===g)]).filter(([,cats])=>cats.length).map(([g,cats])=>'<section class="panel"><h2><span aria-hidden="true">'+g.icon+'</span> '+g.title+'</h2>'+cats.map(row).join('')+'</section>').join('');
  view.innerHTML='<div class="title"><h1>Explore the portfolio</h1><p>100 categories · 10,000 website slots · '+sampleLinks.length+' clickable previews</p></div>'+((!query&&filter==='all')?samples():'')+'<nav class="filters" aria-label="Filter collections"><button class="chip" data-filter="all" aria-pressed="'+(filter==='all')+'">All collections</button>'+groups.map(g=>'<button class="chip" data-filter="'+g.key+'" aria-pressed="'+(filter===g.key)+'"><span aria-hidden="true">'+g.icon+'</span> '+g.title+'</button>').join('')+'</nav><div class="board">'+(panels||'<p class="empty">No matching categories.</p>')+((!query&&filter==='all')?editorialPanels():'')+'</div>';
 }
+function siteCard(c,position,site){
+ const title=site?.[1]||(position===1?c.lead:'Open planning slot');
+ const note=site?'Playable site':position===1?'Proposed lead site':'Site concept to be specified.';
+ const button=site?'<a class="action" href="'+siteHref(site[2])+'">'+(position===1?'↗ Open preview':'↗ Open site')+'</a>':position===1?'<a class="action" href="#slot/'+id(c,1)+'">→ View lead slot</a>':'';
+ return '<section class="panel site"><span class="site-id">'+id(c,position)+'</span><h2>'+title+'</h2><p class="muted">'+note+'</p>'+button+'</section>';
+}
 function category(c,n){
- const demo=demos[c.key];
- const detail=n?'<section class="panel site"><span class="site-id">'+id(c,n)+'</span><h2>'+(n===1?c.lead:'Open planning slot')+'</h2><p class="muted">'+(n===1?(demo?'Clickable Phase 0 preview':'Proposed lead site'):'Site concept to be specified after Phase 0 review.')+'</p>'+(n===1&&demo?'<a class="action" href="'+siteHref(demo[2])+'">↗ Open preview</a>':'')+'</section>':'';
- const slots=Array.from({length:100},(_,i)=>i+1).map(i=>'<a class="slot '+(i===1?'proposed ':'')+(n===i?'selected':'')+'" href="#slot/'+id(c,i)+'" aria-label="'+id(c,i)+(i===1?', '+c.lead:', open planning slot')+'"'+(n===i?' aria-current="true"':'')+'><strong>'+String(i).padStart(2,'0')+'</strong><span>'+(i===1?'★ Lead':'Open')+'</span></a>').join('');
- view.innerHTML='<nav class="crumb" aria-label="Breadcrumb"><a href="#home">Home</a><span>›</span><a href="#collection/'+c.group.key+'">'+c.group.title+'</a></nav><div class="title"><h1>'+c.group.icon+' '+c.title+'</h1><p>100 website slots · 1 lead concept · 99 open</p></div>'+(detail||'<section class="panel site"><span class="site-id">'+id(c,1)+'</span><h2>'+c.lead+'</h2><p class="muted">'+(demo?'Clickable Phase 0 preview':'Proposed lead site')+'</p><a class="action" href="'+(demo?siteHref(demo[2]):'#slot/'+id(c,1))+'">'+(demo?'↗ Open preview':'→ View lead slot')+'</a></section>')+'<nav class="slots" aria-label="All 100 website slots">'+slots+'</nav>';
+ const published=categorySites(c.key);
+ const slots=Array.from({length:100},(_,index)=>{
+  const position=index+1,site=published[position],active=n===position;
+  const label=site?'▶ Live':position===1?'★ Lead':'Open';
+  const name=site?site[1]:position===1?c.lead:'open planning slot';
+  return '<a class="slot '+(site?'published ':position===1?'proposed ':'')+(active?'selected':'')+'" href="#slot/'+id(c,position)+'" aria-label="'+id(c,position)+', '+name+'"'+(active?' aria-current="true"':'')+'><strong>'+String(position).padStart(2,'0')+'</strong><span>'+label+'</span></a>';
+ }).join('');
+ const entries=Object.entries(published);
+ const siteList=n?siteCard(c,n,published[n]):entries.length?entries.map(([position,site])=>siteCard(c,Number(position),site)).join(''):siteCard(c,1);
+ const leads=published[1]?0:1;
+ view.innerHTML='<nav class="crumb" aria-label="Breadcrumb"><a href="#home">Home</a><span>›</span><a href="#collection/'+c.group.key+'">'+c.group.title+'</a></nav><div class="title"><h1>'+c.group.icon+' '+c.title+'</h1><p>100 website slots · '+entries.length+' playable'+(leads?' · 1 lead concept':'')+' · '+(100-entries.length-leads)+' open</p></div><div class="category-sites">'+siteList+'</div><nav class="slots" aria-label="All 100 website slots">'+slots+'</nav>';
 }
 function render(){
  const [kind,key,...parts]=location.hash.slice(1).split('/');
