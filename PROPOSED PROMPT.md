@@ -9,7 +9,7 @@ AdigunIoT is the product repository and portfolio. It houses **100 editorial cat
 ## Review these Phase 0 previews first
 
 1. Open [AdigunIoT Portfolio Preview](docs/preview/AdigunIoT-portfolio-preview.html). Open any category and see all 100 positions. Search category and lead-site names, use the collection filters, or enter an exact slot ID.
-2. Open [AdigunBoard and sample experiences](docs/preview/AdigunIoT-preview.html). Try AdigunBoard, then run the three sample experiences. Follow links from the portfolio into each site and back.
+2. In that same file, open AdigunBoard and the three sample experiences. Use **Back to portfolio** to return to the previous collection, category or slot. Keep this single preview as the current review artifact.
 3. Review on phone and laptop. Verify arrows, breadcrumbs, Back, keyboard focus, visual density, image usefulness, and whether each example feels like a separate mini-website. The prototype labels unfilled positions and distinguishes sample previews from published sites.
 
 **Current Phase 0 review scope:** 10 collections, 100 visible categories, 10,000 addressable positions, one proposed lead site per category, and four clickable mini-website previews. Positions without an editorial concept remain open. An open position reserves capacity. It does not represent a completed idea or working website. Do not start product implementation or populate the full taxonomy until the owner approves the portfolio structure and Phase 0 direction. Follow the release gate in [AGENTS.md](AGENTS.md). Approval of this planning preview does not authorize merge or deployment.
@@ -21,6 +21,13 @@ AdigunIoT is the product repository and portfolio. It houses **100 editorial cat
 - [AI division](https://github.com/HephzibahBehulahHQ/hb-artificial-intelligence) supplies domain guidance for responsible AI and defensive learning. Make simulation and actual AI use clear where relevant. Enable Adigun BOT only once a real integration meets [its component standard](https://github.com/HephzibahBehulahHQ/hb-design-system/tree/main/components/AdigunBot).
 - [Engineering policy](https://github.com/HephzibahBehulahHQ/hb-AI-policy) supplies governance, security, checkpoint and testing requirements. Confirm the actual policy revision and scope. Record the exact candidate and review evidence.
 - Verify the selected checkout and existing stack before modifying application code. Reuse the package manager, lockfile and compatible tools. For a verified documentation-only checkout, use Astro static output and TypeScript as the initial implementation choice. Keep the standalone HTML review files independent of the production build.
+
+## Current implementation goals
+
+1. **One review artifact.** Maintain only the self-contained portfolio preview. Start from Home and verify every category, slot, and demo link. Keep all product work in the selected AdigunIoT folder and draft branch.
+2. **Complete the first interaction slice.** Verify the flow from portfolio to category to demo and back. Review all four sample layouts on a phone and laptop. Use the approved compact, centered, icon-led design.
+3. **Build the catalog foundation.** Adopt the HB product template in the verified project, establish a typed registry and distinct site routes, and carry the validated 100-by-100 inventory into production. Incrementally specify distinct concepts after the structure review.
+4. **Release only after the gate.** Verify all pages and menus in a release candidate. Keep work local or on the non-deploying draft branch until the owner explicitly authorizes merge or deployment.
 
 ## Exact category structure
 
