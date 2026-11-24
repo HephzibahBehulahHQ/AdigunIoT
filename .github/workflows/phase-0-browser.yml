@@ -118,6 +118,7 @@ jobs:
                 await frame.getByText('All five colors matched. Misses: 1.').waitFor();
                 await withinViewport(frame.locator('html'));
                 await page.screenshot({ path: name + '-arcade.png' });
+                await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
                 await frame.getByText('19 playable', {exact:true}).waitFor();
