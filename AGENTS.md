@@ -6,6 +6,13 @@
 - **Centered layout.** Place the main directory, menu panels, page content, and interaction stage in a centered, responsive container. Give complex workbenches room to expand on laptops while staying centered. On phones, use a centered single-column flow when space is tight, readable list rows, and touch-friendly controls. Keep long lists and paragraphs aligned for easy reading.
 - **Review.** Check the visual treatment on phones and laptops for every page and menu in the proposed release. Verify icon and emoji rendering, clear labels, keyboard focus, centered content, and no clipped or overlapping elements. A missing requirement keeps the release gate closed.
 
+## Compact, visual, interactive design
+
+- Put search and playable links near the top. Use centered, compact directory panels with clickable rows, icons or emoji, and short labels at every menu level. Stack panels on phones.
+- Use original illustrations, useful thumbnails, and visual previews to show what visitors can do. Keep copy to titles, action labels, essential instructions, accessibility text, and feedback. Put longer explanations in optional details.
+- Give each interactive control a working action and visible feedback. In Explorer pages, show the illustrated, animated stage and playback controls before extended explanations. Keep labels, keyboard access, and reduced-motion behavior intact.
+- Review every page and menu on phone and laptop for visual clarity, compactness, and working interactions. Unresolved failures keep the release gate closed.
+
 ## Release gate
 
 Do not merge any pull request or branch. Do not deploy or publish AdigunIoT to any hosted environment, including preview, staging, or production. Do not bypass this gate by pushing application changes directly to a deployment branch or triggering a publishing workflow. Local previews, checks, and draft pull requests on non-deploying branches are permitted.
