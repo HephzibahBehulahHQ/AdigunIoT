@@ -18,6 +18,10 @@ Work in the selected `C:\Codex\AdigunIoT` folder and the [AdigunIoT repository](
 - Every menu, submenu, and experience link needs a recognizable icon or emoji and a readable accessible label. Keep the whole row clickable. Verify search, direct routes, breadcrumbs, Back, keyboard focus, and touch controls. Put extended detail behind an optional disclosure.
 - Explorer workspaces use a dark stage with original device art, animated events, a timeline and an inspector. Derive every view from the same event state. Provide pause, step, restart and reduced motion. Use simulated data only for networking demos.
 
+## One-screen game interface
+
+Keep the play area, score or status, and essential game controls visible together in one viewport during play. Players must be able to start, pause where applicable, replay or reset, and leave the game without scrolling. Use a compact game layout with a bounded play area and a reachable control bar. Put optional help behind a panel that players can close. Keep keyboard focus visible and touch targets usable. Check the full game screen at phone and laptop sizes, including a short phone viewport. A game that requires scrolling to reach play controls cannot ship.
+
 ## Ship small verified increments
 
 Merge and deploy reviewable increments as they pass. One complete page, menu, or feature can qualify. The owner authorizes routine releases to existing authorized targets. Follow branch protections and required reviews. New hosting, custom domains, and access changes require separate authorization.
