@@ -166,6 +166,14 @@ The owner-provided navigation contains 98 named category entries. Map every entr
 | 99 | Adigun addition | DIY Projects |
 | 100 | Adigun addition | How It Works |
 
+### Landing blocks and interactive activity menus
+
+Keep the existing ten directory groups intact. Add twenty useful editorial browse blocks to each of the portfolio and AdigunBored landing pages. On laptops, show thirty blocks in ten complete rows of three. Adjust the number of columns at narrower widths. Editorial blocks link into the canonical directory or activity library and do not create new categories or add to published site counts.
+
+Use short, icon-led box-tree menus and distinct accessible color accents. Animate entry to a branch and feedback from an action. Honor reduced motion and keep keyboard and touch navigation equivalent. Open activity menus into named routes. Aim for 50 distinct real destinations per AdigunBored category. Preserve all 15 owner-provided seed groups and use original concepts for entries inspired by existing games.
+
+The current prototype includes a searchable Activities menu with 402 named entries and 50-entry submenus for No-Goal Toys, Quick Games, DIY Projects and How It Works. Planned entries open a status view and remain outside playable counts. Button Bouquet, Confetti Compass and Wobble Window are playable examples. For new activities, put the direct interaction first and explain what happened in one short line. Grow the other submenus through verified increments.
+
 ### Secondary menus and footer
 
 - **Arcade** — All games · Compliment game · Odd One Out · Office Smash · Daily Trivia · Word Sets · Word Games · Logic Puzzles · Trivia · Action · Platform Games · Two Players · Party · Sandbox
