@@ -130,7 +130,7 @@ jobs:
                 await withinViewport(frame.locator('html'));
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('button', { name: /Surprise Me/ }).click();
-                await page.waitForURL(url => /#demo\/home\/(?:protocol|signal|circuit|relay|budget|calibration|grid-balance|concept\/\d+\/\d+)$/.test(url.hash) && !url.hash.endsWith('/1/2'));
+                await page.waitForURL(url => /#demo\/home\/(?:protocol|signal|circuit|relay|budget|calibration|grid-balance|concept\/\d+\/\d+)$/.test(url.hash));
                 assert.equal(await frame.getByText('In the build queue.').count(), 0);
                 await page.getByRole('link', { name: 'Back to portfolio' }).click();
                 await page.locator('.samples').getByRole('link', { name: /Protocol Explorer/ }).click();
@@ -217,8 +217,9 @@ jobs:
                 await frame.getByRole('button', {name: /Reset/}).click();
                 await frame.getByText('Supply 0 · Demand 8 · 8 units short.').waitFor();
                 if(name==='phone') await page.setViewportSize({width:360,height:640});
-                for(const game of ['signal','home/concept/1/1','home/concept/1/2','home/concept/1/4','home/concept/1/6']){
+                for(const [game,title] of [['signal','Signal Catch'],['home/concept/1/1','Memory Grid'],['home/concept/1/2','Word Snake'],['home/concept/1/4','Mini Sudoku'],['home/concept/1/6','Color Match']]){
                   await page.evaluate(hash=>location.hash=hash,'#demo/'+game);
+                  await frame.getByRole('heading',{name:new RegExp(title)}).first().waitFor();
                   await frame.getByRole('link',{name:'Arcade',exact:true}).waitFor();
                   const gameFits=await frame.locator('html').evaluate(e=>e.scrollHeight <= e.clientHeight + 2 && e.scrollWidth <= e.clientWidth + 2);
                   assert.equal(gameFits,true, name+' game fits: '+game);
