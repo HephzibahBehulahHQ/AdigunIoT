@@ -128,8 +128,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('29 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 29);
+                await frame.getByText('30 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 30);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -421,7 +421,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('29 playable', {exact:true}).waitFor();
+                await frame.getByText('30 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -486,6 +486,26 @@ jobs:
                 assert.ok(bridgeBounds.y+bridgeBounds.height<=page.viewportSize().height,'Number Bridge fits onscreen');
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-number-bridge.png'});
+                await page.goBack();
+                await frame.getByRole('link',{name:'Terrain Trek',exact:true}).click();
+                await page.waitForURL('**/sites/terrain-trek/');
+                const trek=page.getByRole('region',{name:'Terrain Trek map'});
+                await trek.getByText('Map 1 · Energy 0 / 5').waitFor();
+                const grass=trek.getByRole('button',{name:'Grass 1, row 2, column 1',exact:true});
+                if(name==='phone') await grass.tap(); else await grass.press('Enter');
+                await trek.getByText('Map 1 · Energy 1 / 5').waitFor();
+                await trek.getByRole('button',{name:/Undo/}).click();
+                await trek.getByText('Map 1 · Energy 0 / 5').waitFor();
+                for(const label of ['Grass 1, row 2, column 1','Grass 1, row 2, column 2','Grass 1, row 2, column 3','Grass 1, row 2, column 4','Flag 1, row 1, column 4']){
+                  await trek.getByRole('button',{name:label,exact:true}).click();
+                }
+                await trek.getByText(/Lowest-energy route/).waitFor();
+                await trek.getByRole('button',{name:/Next map/}).click();
+                await trek.getByText('Map 2 · Energy 0 / 3').waitFor();
+                const trekBounds=await trek.boundingBox();
+                assert.ok(trekBounds.y+trekBounds.height<=page.viewportSize().height,'Terrain Trek fits onscreen');
+                await withinViewport(page.locator('html'));
+                await page.screenshot({path:name+'-terrain-trek.png'});
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
