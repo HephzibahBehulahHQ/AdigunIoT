@@ -68,11 +68,48 @@ Generate /{category}/{slug}/ from one module route and use canonical URLs for ca
 
 Use visible keyboard focus, semantic headings, named controls, readable contrast and touch targets. Announce meaningful state changes in a live region without reading every animation frame. Make the full flow operable with reduced motion. Check at 360, 768 and 1440 CSS px with no horizontal overflow. Translate shell, controls, statuses, errors, search aliases, and sample content in English, German, Yoruba and Nigerian Pidgin. Persist only intended non-sensitive settings such as locale. Use versioned browser keys and handle storage denial gracefully. Record which translations were reviewed and which require linguistic review.
 
+### Reference-to-product interaction contract
+
+The owner supplied two screenshots. Treat each as a reference for a different moment in the visitor journey.
+
+| Reference | Behavior AdigunIoT must deliver | Adigun design decision |
+| --- | --- | --- |
+| Bored.com discovery board | Scan grouped experiences, search immediately, open a result in one click, and jump to something unexpected. | Use a compact HB header, an immediately usable search field, an icon-led collection strip and short lists of real experiences grouped beneath it. Use HB typography, spacing and accents. Start with search and a playable featured link in the first screen on phone and laptop. |
+| Protocol Explorer workspace | Choose a lesson, advance a simulation, see the change, select an event, and understand what happened. Compare network and sequence views of the same event. | Use an original HB workbench with a scenario bar above the workspace, a prominent transport bar beneath the stage, and an Event / Lesson details area. Design original diagrams, icons and copy. Each control belongs to a working interaction. |
+
+**The product loop is Find → Open → Act → See the result → Try again or find another.** A preview passes when a new visitor can complete this loop without a tour. The three prototype experiences share navigation and feedback conventions. Their workspaces fit their activities: a network diagram for the explainer, receiver pads for the game and a circuit board for the builder. Use the same design tokens and avoid forcing every module into the explainer layout.
+
+### Flagship interaction · Adigun Protocol Explorer
+
+Use one fictional web request as the completed flagship lesson. Give the visitor three ready-to-run scenarios: **First visit**, **DNS answer already cached**, and **Slow reply**. Keep the scenario selector visible. Give each scenario a concrete question and a visibly different result. Use reserved example addresses and synthetic timings. Preview and document these lesson cases with no real hosts, traffic capture or external requests.
+
+- **Stage:** Show browser, local gateway, resolver and origin server as labeled original illustrations. In Network view, highlight the active path and animate a message along it. In Sequence view, show the same events chronologically between participant lanes. Switching views keeps the same event and play position.
+- **Lesson rail:** Display the lesson’s milestones as selectable items: find the address, connect, request, receive and display. Explain the chosen milestone in plain language. In the cached scenario, explicitly show the skipped lookup. Label what the lesson simplifies.
+- **Transport:** Play/Pause, Previous, Next, Restart and speed are functional. Start paused. Play walks through the event sequence once, and stops at the final event. Previous and Next pause playback and move one event. Selecting a milestone or timeline event pauses and seeks to it. Changing the scenario restarts at its initial state. Restart returns to that scenario’s initial state. Show which step is active and what will happen next.
+- **Event log and inspector:** Each event has an ID, phase, simulated time, sender, receiver, kind, short explanation and optional synthetic details. A selected event highlights the same record in the lesson, animation and log. Show a short **Why this matters** explanation alongside details such as a response code. Keep simulated timestamps deterministic and consistent across playback speeds. Changing speed affects presentation time only.
+- **Phone layout:** Stack scenario, stage and transport at the top. Provide labeled **Steps**, **Events**, and **Details** views beneath the stage. Represent timeline rows as tappable summaries with expandable details. A visitor must be able to complete and inspect the whole lesson without a horizontal scroll trap.
+- **Laptop layout:** Keep the scenario and view switch above the stage. Put the compact lesson rail beside the stage when width permits, with the transport and event log below and details available alongside the selected entry. Maintain a meaningful tab order and keep controls reachable at common laptop heights.
+
+Model the lesson as scenario data and one deterministic playback state with scenario, cursor, play status and speed. Derive all visible highlights from the cursor. Maintain one playback scheduler. Cancel it on pause, seek, restart, scenario change, route exit and unmount. Test switching views and scenarios during playback, rapid clicks, completing the timeline, stepping backward and leaving and reopening the experience. In reduced motion, replace travel animation with static path highlights and keep every event accessible. Announce explicit step changes and playback completion without overwhelming a screen reader during autoplay.
+
+### Foundation review and release evidence
+
+Before application implementation, review this prompt's page map, interaction rules and acceptance cases with the owner. Use the screenshots to compare the feel of the flows. Resolve requested changes in the brief. Once authorized to build Phase 0, deliver a vertical slice with real interactions before broadening the catalog. No taxonomy expansion begins ahead of the existing Phase 0 approval gate.
+
+At the live review ask the owner to try these tasks on laptop and phone:
+
+1. From Home, find Protocol Explorer through search. Return to the same browse position. Open a different experience through Surprise Me.
+2. Run First visit, pause, step, inspect a response, switch to Sequence, then compare the cached scenario and explain what changed.
+3. Play a round of Signal Catch and replay. Build a Paper Circuit and distinguish an open loop from reversed polarity.
+4. Open a shared experience URL directly. Repeat the key flows using a keyboard and reduced-motion settings. Confirm icons, labels, controls, and state feedback remain clear.
+
+Record the actual preview URL, revision, checked devices or viewport sizes and any failed tasks. Keep the prototype’s published counts honest. Treat the 100-category directory and the 10,000-experience plan as separate from the number of working experiences available during review.
+
 ### Three working experiences
 
 | Route and collection | What happens in the workspace | Acceptance case |
 | --- | --- | --- |
-| /internet-protocols/adigun-protocol-explorer/ · HB Artificial Intelligence | Choose a fictional destination and press Send. Follow a browser, name resolver, gateway and server through a simplified DNS lookup, request and response. Use a fixed synthetic event sequence with a visible timeline, packet inspector, Play/Pause/Step/Reset and a labeled text log. An optional simulated delay visibly changes the delivery time. Identify which networking details the model simplifies. Keep all packets in local simulation. | Step reaches the same end state as Play. Pause freezes progress. Reset clears the timeline and selection. The event log exposes source, destination, purpose and outcome in keyboard and reduced-motion use. Reload restarts the demo. |
+| /internet-protocols/adigun-protocol-explorer/ · HB Artificial Intelligence | Run and compare First visit, DNS answer already cached and Slow reply using the flagship interaction contract above. Follow a fictional browser request with synchronized diagram, sequence, lesson, event log and inspector. Keep all events in local simulation. | Step reaches the same end state as Play. Pause freezes progress. Reset clears the timeline and selection. The event log exposes source, destination, purpose and outcome in keyboard and reduced-motion use. Reload restarts the demo. |
 | /arcade/signal-catch/ · HB Artificial Intelligence | A 20-second reaction game. A pulse travels along a grid and briefly appears on one of four receiver pads. Click a pad or use keys 1–4 to catch it. A correct catch earns one point once per pulse. A wrong or missed catch breaks the streak. Offer an untimed practice round and a results screen with Replay. Use original art and sound, with sound off by default. | Starting multiple times creates one timer. The same pulse cannot score twice. The timed round ends once and shows the final score. Replay clears round state, and keyboard input works only in the active game. |
 | /paper-cardboard/paper-circuit/ · HB Elektroniker | A four-step virtual build: place the source symbol, route the two foil paths, orient the LED, and close the switch. Offer both placement controls and buttons. The diagram lights only with a closed path and correct simulated polarity. Provide reset and a short explanation of the result. Physical-build instructions are out of scope for the prototype. | Open circuit and reversed polarity yield different feedback. A correct closed path lights the virtual LED. Step navigation and reset behave consistently and all interactions work with a keyboard. |
 
