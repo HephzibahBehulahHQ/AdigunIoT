@@ -59,18 +59,121 @@ For the first build slice, create registry validation and a real directory-to-ac
 
 Use AdigunBored as the product name. Treat AdigunBored.com as a candidate domain until verified. AdigunBored occupies **one portfolio position**. Its internal categories, games, tools and other destinations have their own catalog. Allocate **100 board categories with a target of 50 distinct destinations each**, for about **5,000 board destinations**. Keep these counts separate from the 10,000-site portfolio. A board destination can own an original activity or point to another verified Adigun site. A cross-link does not create a second portfolio site.
 
-| Board family | Ten AdigunBored categories |
-| --- | --- |
-| 🎮 Arcade | Quick Games · Reflex · Platforming · Sports · Racing · Party · Two Players · Score Chasers · Daily Games · Arcade Rooms |
-| 🧩 Puzzles | Logic Grids · Word Puzzles · Number Puzzles · Tile Puzzles · Memory · Mysteries · Trivia · Hidden Objects · Mazes · Pattern Tests |
-| 🫧 Just for Fun | Pointless Play · Satisfying Loops · Emoji Play · Comedy · Tiny Surprises · Nonsense Machines · Mind Tricks · Optical Illusions · Odd Questions · Random Portals |
-| 🧪 Playgrounds | Visual Toys · Physics Toys · Tiny Towns · Sandboxes · Fluid Play · Particle Play · Creature Makers · World Builders · Decision Games · Business Sims |
-| 🎨 Make | Draw · Pixel Art · Avatars · Color Mixing · Design Prompts · Paper Projects · DIY Tools · Web Pages · Collage · Craft Challenges |
-| 🎵 Listen | Beat Makers · Sound Toys · Ambient · Radio Maps · Music Discovery · Ear Training · Rhythm Games · Instrument Toys · Chiptunes · Sound Stories |
-| 🌍 Explore | Maps · Space · Nature · Weather · Ocean · Virtual Museums · Data Stories · Food Origins · Internet History · City Walks |
-| 💡 Get Curious | How It Works · Curious Facts · Science Demos · AI Experiments · Coding Play · Language Play · Brain Training · Myth Checks · Future Worlds · Quiz Lab |
-| 🛋️ Unwind | Cozy Corners · Quiet Puzzles · Garden Play · Cat Corner · Mindful Breaks · Retro Rooms · Seasonal Play · Short Reads · Mini Films · Night Mode |
-| 🌀 Rabbit Holes | Odd Search · Internet Collections · Interactive Fiction · Web Comics · Media Quizzes · Dress Up · Odd Shops · Deep Dives · Group Experiments · Unsorted Wonders |
+### AdigunBored menu inventory
+
+The owner-provided navigation contains 98 named category entries. Map every entry below to a distinct AdigunBored category route, and add two original categories for a total of 100. These are navigation equivalents. A category with no verified activity has a clear empty state.
+
+| # | Reference menu label | AdigunBored category |
+| --- | --- | --- |
+| 1 | Pointless fun | No-Goal Toys |
+| 2 | Mini games | Quick Games |
+| 3 | Rage room | Smash & Reset |
+| 4 | Mind readers | Guess My Thought |
+| 5 | Oddly satisfying | Satisfying Loops |
+| 6 | Tick all that apply | Check the Boxes |
+| 7 | Sims & sandboxes | Sim Worlds |
+| 8 | Visual toys | Visual Play |
+| 9 | AI experiments | AI Playgrounds |
+| 10 | Psych tests | Personality Quizzes |
+| 11 | Look productive | Desk Distractions |
+| 12 | Liminal space | In-Between Places |
+| 13 | Combo lab | Mix & Discover |
+| 14 | Crowd experiments | Group Experiments |
+| 15 | Tiny towns | Little Towns |
+| 16 | Prank screens | Pretend Screens |
+| 17 | Tough calls | Hard Choices |
+| 18 | Pointless portals | Odd Web Doorways |
+| 19 | Just cats | Cat Corner |
+| 20 | Business tycoons | Business Sims |
+| 21 | Blank canvas | Draw Freely |
+| 22 | Epic RPG campaigns | Quest Campaigns |
+| 23 | Trivia quiz | Trivia Room |
+| 24 | Draw it right | Drawing Challenges |
+| 25 | Geo games | Geography Games |
+| 26 | Mystery solve | Mystery Desk |
+| 27 | Love lab | Relationship Quizzes |
+| 28 | Word nerd | Word Play |
+| 29 | Avatar makers | Avatar Studio |
+| 30 | Curious facts | Curiosity Cards |
+| 31 | Almost real | Almost Believable |
+| 32 | First person shooters | Arena Shooters |
+| 33 | Brain train | Brain Puzzles |
+| 34 | Chaos IO arena | Browser Arenas |
+| 35 | Adventure quests | Adventure Trails |
+| 36 | Dress up dolls | Dress-Up Studio |
+| 37 | Browser party | Browser Party |
+| 38 | Retro web | Retro Web |
+| 39 | Which is which | Spot the Difference |
+| 40 | Therapy racing | Relaxed Racing |
+| 41 | Music makers | Music Studio |
+| 42 | Brain fuel | Think Break |
+| 43 | Lazy idle clickers | Idle Toys |
+| 44 | Brain reset | Quiet Break |
+| 45 | Santa season | Winter Play |
+| 46 | Horror vault | Spooky Stories |
+| 47 | Grudge golf | Mini Golf |
+| 48 | Weird shops | Odd Shops |
+| 49 | Escape hatch | Escape Puzzles |
+| 50 | Emoji fun | Emoji Playground |
+| 51 | Random rabbit hole | Surprise Trails |
+| 52 | Close enough | Estimate It |
+| 53 | Grid & tile puzzles | Grid Puzzles |
+| 54 | Reflex check | Reflex Games |
+| 55 | Design dojos | Design Challenges |
+| 56 | Celebrity gossip | Pop Culture News |
+| 57 | Optical illusions | Optical Tricks |
+| 58 | Anime alley | Animation Culture |
+| 59 | Niche obsessions | Niche Hobbies |
+| 60 | Audio toys | Sound Toys |
+| 61 | Tactical defense | Defense Strategy |
+| 62 | Couch sports | Couch Sports |
+| 63 | Typing speed | Typing Challenges |
+| 64 | Food frenzy | Food Fun |
+| 65 | Hacker cosplay | Terminal Roleplay |
+| 66 | Movie nerds | Film Quizzes |
+| 67 | Decision disasters | Decision Games |
+| 68 | Half a keyboard | Keyboard Curiosities |
+| 69 | Old net art | Early Web Art |
+| 70 | Feel good | Good Mood |
+| 71 | Odd search | Odd Search |
+| 72 | Digital boards | Interactive Boards |
+| 73 | Nature watch | Nature Watch |
+| 74 | Design playgrounds | Design Studio |
+| 75 | Finger mash action | Button Games |
+| 76 | Space & cosmos | Space Play |
+| 77 | Internet culture | Web Culture |
+| 78 | Scheming strategy | Strategy Games |
+| 79 | Gags & humor | Jokes & Gags |
+| 80 | Weather data | Weather Views |
+| 81 | Arcade portals | Arcade Collections |
+| 82 | Map archives | Historic Maps |
+| 83 | Text adventures | Text Adventures |
+| 84 | Coding play | Coding Toys |
+| 85 | Free flicks | Short Films |
+| 86 | Geo explorers | Map Adventures |
+| 87 | Map data | Geographic Data |
+| 88 | Virtual museum | Virtual Exhibits |
+| 89 | Data beautiful | Data Art |
+| 90 | Web comics | Web Comics |
+| 91 | No-mess cards | Card Games |
+| 92 | Offbeat news | Odd News |
+| 93 | Stickman chaos | Stick Figure Play |
+| 94 | Sound discovery | Sound Discovery |
+| 95 | Astrology vibes | Star-Sign Fun |
+| 96 | Radio streams | Radio Discovery |
+| 97 | K-pop corner | K-Pop Discovery |
+| 98 | The unclassifiables | Unsorted Wonders |
+| 99 | Adigun addition | DIY Projects |
+| 100 | Adigun addition | How It Works |
+
+### Secondary menus and footer
+
+- **Arcade** — All games · Compliment game · Odd One Out · Office Smash · Daily Trivia · Word Sets · Word Games · Logic Puzzles · Trivia · Action · Platform Games · Two Players · Party · Sandbox
+- **Moods** — All moods · Free Games · Fun · Beat Boredom · Cool Finds · Curious Finds · Make Me Laugh · Learn · Relax · Nostalgia · School Break · Work Break · Play Together · Cozy · Night Owl · Five Minutes
+- **Updates** — All posts · Spooky Play Guide · How Surprise Works · Tiny Worlds to Try · How to Find Two-Player Games · Daily Games Guide · Quick Arcade Picks · What’s in the Arcade · Why We Build Original Games
+- **Site** — Home · About · FAQ · Privacy · Terms · Recently Added · Recently Visited · Feedback
+
+The four secondary menus contain 47 child routes. The reference Blog is presented as Updates with original copy. The Arcade and Moods filters list only available matching experiences. The Site menu provides the footer and history entry points. A functional menu destination and a playable published experience are separate acceptance criteria.
 
 - **Centered from Home to detail.** At laptop widths use a centered directory with a maximum content width near 980 px, generous side margins, compact three-column panels on Home, and a two-column category page. Give the actual list about two-thirds of the category page and related-category cards the remaining space. On phones stack the list above Related, with 44 px touch targets and no horizontal scrolling. Use original HB visual styling, readable color accents, emoji, small illustrations, short labels and clickable rows.
 - **Full reference coverage.** Carry forward the reference behaviors from the supplied recordings and transcripts: category and subcategory browsing, Arcade, Moods, Updates, search, Surprise, featured tiles, recent additions, clearable recent visits, layout switching, session summary, feedback, help and footer links. Add category share/copy, a local opt-in “Worth it?” vote on eligible return visits with a suppress option, and a pause control for any moving fact strip. Publish genuine counts. Surface playable rows before optional details.
