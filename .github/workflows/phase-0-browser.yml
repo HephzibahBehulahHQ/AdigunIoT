@@ -399,7 +399,8 @@ jobs:
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
                 await frame.getByText('28 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('a[data-site]').count(),8);
+                const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
+                assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
                 assert.equal(await ladderLink.getAttribute('href'),'https://adigun.test/sites/word-ladder-lab/');
                 await ladderLink.press('Enter');
