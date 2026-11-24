@@ -127,8 +127,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('20 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 20);
+                await frame.getByText('26 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 26);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -137,7 +137,8 @@ jobs:
                 await withinViewport(frame.locator('html'));
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('button', { name: /Surprise Me/ }).click();
-                await page.waitForURL(url => /#demo\/home\/(?:protocol|signal|circuit|relay|budget|calibration|grid-balance|gear-ratio|concept\/\d+\/\d+)$/.test(url.hash));
+                await page.waitForURL(url => url.pathname.startsWith('/sites/') || /#demo\/home\/(?:protocol|signal|circuit|relay|budget|calibration|grid-balance|gear-ratio|concept\/\d+\/\d+)$/.test(url.hash));
+                if(new URL(page.url()).pathname.startsWith('/sites/')){await page.goBack();await frame.getByRole('heading',{name:'🎮 All games'}).waitFor();}
                 assert.equal(await frame.getByText('In the build queue.').count(), 0);
                 await page.getByRole('link', { name: 'Back to portfolio' }).click();
                 await page.locator('.samples').getByRole('link', { name: /Protocol Explorer/ }).click();
@@ -395,6 +396,18 @@ jobs:
                 assert.ok(ladder.bottom<=ladder.height,'ladder controls fit: '+JSON.stringify(ladder));
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
+                await page.goto('https://adigun.test/#demo/home/play-now');
+                await frame.getByText('26 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('a[data-site]').count(),6);
+                const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
+                assert.equal(await ladderLink.getAttribute('href'),'https://adigun.test/sites/word-ladder-lab/');
+                await ladderLink.press('Enter');
+                await page.waitForURL('**/sites/word-ladder-lab/');
+                await page.getByRole('heading',{name:'Word Ladder Lab',exact:true}).waitFor();
+                await page.goBack();
+                await frame.getByRole('heading',{name:/Play Now/}).waitFor();
+                await withinViewport(frame.locator('html'));
+                await page.screenshot({path:name+'-standalone-discovery.png'});
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
