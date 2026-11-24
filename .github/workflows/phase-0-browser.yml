@@ -554,6 +554,17 @@ jobs:
                   assert.equal(await choice.getAttribute('aria-pressed'),'false');
                   await withinViewport(frame.locator('html'));
                 }
+                await page.goto('https://adigun.test/#demo/home/menus/arcade');
+                const arcadeList=frame.locator('.bored-detail > section');
+                await arcadeList.getByRole('link',{name:'Emoji Decoder',exact:true}).waitFor();
+                await frame.getByRole('link',{name:'Word Games',exact:true}).click();
+                assert.deepEqual(await arcadeList.getByRole('link').allTextContents().then(items=>items.map(t=>t.replace(/^[^A-Za-z]+|[^A-Za-z]+$/g,'')).sort()),['Emoji Decoder','Word Snake']);
+                await frame.getByRole('link',{name:'Action',exact:true}).click();
+                await arcadeList.getByRole('link',{name:'Reaction Timer',exact:true}).waitFor();
+                await arcadeList.getByRole('link',{name:'Signal Catch',exact:true}).waitFor();
+                assert.equal(await arcadeList.getByRole('link').count(),2);
+                await withinViewport(frame.locator('html'));
+                await page.screenshot({path:name+'-arcade-filters.png'});
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
