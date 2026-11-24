@@ -22,6 +22,17 @@ AdigunIoT is the product repository and portfolio. It houses **100 editorial cat
 - [Engineering policy](https://github.com/HephzibahBehulahHQ/hb-AI-policy) supplies governance, security, checkpoint and testing requirements. Confirm the actual policy revision and scope. Record the exact candidate and review evidence.
 - Verify the selected checkout and existing stack before modifying application code. Reuse the package manager, lockfile and compatible tools. For a verified documentation-only checkout, use Astro static output and TypeScript as the initial implementation choice. Keep the standalone HTML review files independent of the production build.
 
+## Phase 0 visual review and first production slices
+
+The preview is a decision artifact. Review the portfolio directory, an AdigunBored category, and a playable site as separate screens.
+
+1. **Portfolio review.** Open categories at opposite ends of the directory. Check the 100-by-100 structure, slot lookup, and labels for proposed and playable entries.
+2. **AdigunBored review.** Open Arcade from Board Home, select a playable row, return, then open a related category. Confirm the centered list and Related rail, original icons and colors, a concise header, and the single-column phone flow. The current 100 category routes demonstrate structure. Publish counts from real entries.
+3. **Explorer review.** Play a protocol lesson, select a timeline event, switch to Sequence, and retry with reduced motion. Confirm the path, active event and inspector agree.
+4. **Brand review.** The standalone file embeds the exact approved corporate JPEG from the HB design-system template. The portfolio shows AdigunIoT as its text wordmark, and each site shows its product name. Verify the logo at phone and laptop widths.
+
+For the first build slice, create registry validation and a real directory-to-activity flow using one owned activity. Maintain separate registry records for portfolio sites, board categories and board destinations. A Board destination resolves to a native activity route or an approved existing portfolio site. Reject self-links, dangling references, duplicate canonical IDs and published records with unavailable destinations. An entry appears in Play, published counts and Surprise only when its destination is verified. Extend with related links, browsing by mood, recent history, layout preferences, and feedback in individually testable increments.
+
 ## Current implementation goals
 
 1. **One review artifact.** Maintain only the self-contained portfolio preview. Start from Home and verify every category, slot, and demo link. Keep all product work in the selected AdigunIoT folder and draft branch.
