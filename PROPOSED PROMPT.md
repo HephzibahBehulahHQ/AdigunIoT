@@ -55,6 +55,24 @@ On experience pages, put the illustration or interactive stage and its primary c
 
 Review on a phone and a laptop. Check that visitors can spot a destination, open it, and perform its primary action with little reading. Confirm the images help explain the activity and that all visible actions work. Apply the release gate in AGENTS.md.
 
+### Full discovery board from header to footer
+
+Use the entire owner-supplied Bored.com page transcript and video as the discovery feature inventory. Build an original Adigun interface for these behaviors. Preserve the approved centered layout, short labels, icons and original artwork. The homepage is a continuously browsable directory with the real catalog available below the fold.
+
+| Function | Adigun behavior |
+| --- | --- |
+| Header and browse menus | Provide Categories, Arcade, Moods and Updates entry points with concise, keyboard-accessible submenus and an All destination. Keep Search and Surprise Me easy to reach. Search finds experiences, categories and collections. |
+| Discovery board | Show an illustrated featured arcade or experience panel, recently added, recently visited when populated, and compact panels across the full catalog. Each uses a short title, icon rows, real published counts and View all. Track publication timestamps and show the actual last catalog update. If using a curiosity strip, use original sourced facts and a pause control with a static reduced-motion state. |
+| Customize layout | Switch between compact panels and list. Provide a default reset. Persist the preference locally and preserve active browse filters. |
+| Arcade | Provide an internal games directory with genre, daily, duration and player-count filters. Publish daily lists, multiplayer, and other advanced game modes only when the underlying experiences support them. |
+| Moods | Show shortcuts such as Play, Learn, Make, Relax, Nostalgia, Together and Five Minutes where published matches exist. Use catalog metadata to decide which results appear. Provide a clear empty state for unavailable combinations. |
+| Recent activity | Show recent additions based on actual publish dates. Keep recent visits local with a visible Clear list action and no cross-user tracking. Update the list when an experience opens. |
+| Playful session stats | Keep elapsed time, click count, scroll distance and optional pointer distance local for the current session. Label units and honor accessibility and data minimization. Any whimsical counter is visibly marked as playful. Do not present an unmeasured calorie claim as fact. |
+| Updates, feedback and footer | Provide owned articles and release notes, working category and arcade shortcuts, About, FAQ, Privacy, and Terms. Where an approved support address exists, offer Copy address and Send feedback. The review mockup may copy a review note locally. Publish final policy content only after owner review. |
+| End of page | Include Browse by mood, the session summary, feedback, help and Back to top. Keep the page navigable on a phone and a laptop from the first playable link to the footer. |
+
+For Phase 0, exercise each supported navigation surface with the three playable samples. Include working menu links, search, layout switching, recent history and clear, Arcade, Moods, an update note, review feedback and footer navigation. Record any production-only functions and why they require actual content or authorized services. Test the entire scroll journey. The release gate in AGENTS.md applies to the approved full-page feature inventory.
+
 ### Icon-led navigation on phones and laptops
 
 Every visible menu item has a recognizable icon **and a short translated label**. Apply this to primary navigation, all 10 collections, all 100 category menus, division and intent filters, utility actions, and experience cards. The icon helps people scan. The label tells them where the item goes. Keep the shared header’s one-logo rule. Use the approved icon family where available, or an approved consistent line-icon set. Feature icons such as a network diagram, gamepad, folded paper, compass, music note and bar chart are functional symbols.
