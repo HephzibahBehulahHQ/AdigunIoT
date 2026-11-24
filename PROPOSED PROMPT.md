@@ -12,7 +12,7 @@ AdigunIoT is the product repository and portfolio. It houses **100 editorial cat
 2. In that same file, open AdigunBoard and the three sample experiences. Use **Back to portfolio** to return to the previous collection, category or slot. Keep this single preview as the current review artifact.
 3. Review on phone and laptop. Verify arrows, breadcrumbs, Back, keyboard focus, visual density, image usefulness, and whether each example feels like a separate mini-website. The prototype labels unfilled positions and distinguishes sample previews from published sites.
 
-**Current Phase 0 review scope:** 10 collections, 100 visible categories, 10,000 addressable positions, one proposed lead site per category, and four clickable mini-website previews. Positions without an editorial concept remain open. An open position reserves capacity. It does not represent a completed idea or working website. Do not start product implementation or populate the full taxonomy until the owner approves the portfolio structure and Phase 0 direction. Follow the release gate in [AGENTS.md](AGENTS.md). Approval of this planning preview does not authorize merge or deployment.
+**Current Phase 0 review scope:** 10 collections, 100 visible categories, 10,000 addressable positions, one proposed lead site per category, and four clickable mini-website previews. Positions without an editorial concept remain open. An open position reserves capacity. It does not represent a completed idea or working website. Do not start product implementation or populate the full taxonomy until the owner approves the portfolio structure and Phase 0 direction. Follow the release gate in [AGENTS.md](AGENTS.md). Routine small increments may merge and deploy once the exact release candidate passes the checks in AGENTS.md.
 
 ## Use the HB templates and rules
 
@@ -27,7 +27,7 @@ AdigunIoT is the product repository and portfolio. It houses **100 editorial cat
 1. **One review artifact.** Maintain only the self-contained portfolio preview. Start from Home and verify every category, slot, and demo link. Keep all product work in the selected AdigunIoT folder and draft branch.
 2. **Complete the first interaction slice.** Verify the flow from portfolio to category to demo and back. Review all four sample layouts on a phone and laptop. Use the approved compact, centered, icon-led design.
 3. **Build the catalog foundation.** Adopt the HB product template in the verified project, establish a typed registry and distinct site routes, and carry the validated 100-by-100 inventory into production. Incrementally specify distinct concepts after the structure review.
-4. **Release only after the gate.** Verify all pages and menus in a release candidate. Keep work local or on the non-deploying draft branch until the owner explicitly authorizes merge or deployment.
+4. **Release in small verified increments.** Verify the changed pages, menus and affected shared navigation. Merge and deploy each passing slice to the existing authorized target and smoke-test the deployed revision.
 
 ## Exact category structure
 
@@ -60,7 +60,7 @@ Review all 100 categories and confirm each exposes 100 ordered positions without
 
 After Phase 0 approval, fill the 10,000 slots with distinct original site concepts using ten topic families per category and ten concepts per family. Each concept needs a distinct user action or learning outcome. Keep the original seed inventory traceable, flag overlaps, and require editorial review before turning an idea into a build specification. Export a machine-readable registry and a reviewable catalog from the same records. Validate 100 categories, 100 concepts per category, 10,000 total, unique routes, all five divisions represented, and separate planned, built, verified and published counts.
 
-Build in reviewable slices. First aim for a verified site in each category, then milestones of 1,000, 5,000 and 10,000. Verify actual behavior, content, accessibility, responsive visuals and deep links. Never claim the full build based on the count of positions or ideas. No merge or deployment until the release gate and owner authorization are satisfied.
+Build in reviewable slices. First aim for a verified site in each category, then milestones of 1,000, 5,000 and 10,000. Verify actual behavior, content, accessibility, responsive visuals and deep links. Never claim the full build based on the count of positions or ideas. Merge and deploy each passing increment as it is ready. Record the before-merge checks and verify the deployed revision.
 
 ## Reference annex
 
