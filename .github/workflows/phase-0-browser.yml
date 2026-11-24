@@ -36,7 +36,7 @@ jobs:
           const fs = require('node:fs');
           const { chromium } = require(process.env.RUNNER_TEMP + '/adigun-qa/node_modules/playwright');
           const entry = fs.readFileSync('index.html', 'utf8');
-          const standalone = Object.fromEntries(['shape-sorter','pendulum-playground'].map(key =>
+          const standalone = Object.fromEntries(['shape-sorter','pendulum-playground','signal-path-finder'].map(key =>
             ['/sites/'+key+'/',fs.readFileSync('sites/'+key+'/index.html','utf8')]));
 
           const html = fs.readFileSync('docs/preview/AdigunIoT-portfolio-preview.html', 'utf8');
@@ -299,6 +299,25 @@ jobs:
                 const bounds=await page.locator('.bench').evaluate(el=>({bottom:el.getBoundingClientRect().bottom+scrollY,height:innerHeight}));
                 assert.ok(bounds.bottom<=bounds.height, 'pendulum controls fit: '+JSON.stringify(bounds));
                 await page.screenshot({path:name+'-pendulum.png'});
+                await page.getByRole('link',{name:/Portfolio/}).click();
+                await page.waitForURL(/#category\/physics-playgrounds$/);
+                await page.getByRole('link',{name:'Home',exact:true}).click();
+                await page.getByRole('link',{name:/Signals & Wireless 100 slots/}).first().click();
+                await page.getByRole('link',{name:/Open preview/}).click();
+                await page.waitForURL('**/sites/signal-path-finder/');
+                await page.getByText('Studio: equal signal.').waitFor();
+                await page.getByRole('button',{name:/West wall/}).press('Enter');
+                await page.getByText('Studio: East hub is stronger.').waitFor();
+                await page.getByRole('button',{name:/East wall/}).click();
+                await page.getByText('Studio: equal signal.').waitFor();
+                await page.getByRole('button',{name:'East hub',exact:true}).click();
+                await page.getByText('East hub: East hub is stronger.').waitFor();
+                await page.getByRole('button',{name:/Reset/}).click();
+                await page.getByText('Studio: equal signal.').waitFor();
+                await withinViewport(page.locator('html'));
+                const mapBounds=await page.locator('.board').evaluate(el=>({bottom:el.getBoundingClientRect().bottom+scrollY,height:innerHeight}));
+                assert.ok(mapBounds.bottom<=mapBounds.height);
+                await page.screenshot({path:name+'-signal-path.png'});
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
