@@ -38,6 +38,15 @@ Use this screen order:
 
 Use **Play, Learn, Make, Discover** as quick filters or intent shortcuts. Show the ten catalog collections as the browse entry to 100 categories. The separate division filter applies a verified accent and filters the catalog by division. Keep the product owner label fixed. Show the three Phase 0 modules across the AI and Elektroniker division views. The remaining division views still open their own useful empty view. Preserve browser history and shareable filter state.
 
+### Bored.com discovery reference
+
+Use the owner-provided Bored.com screenshot as a functional reference. It shows a prominent search box, a shuffle action, grouped panels with playable counts, compact icon-led links, a featured destination, and a recent additions list. Translate those discovery patterns into the original HB visual system with approved colors, typography and assets.
+
+- Put a labeled search field near the top of Home and a nearby Surprise Me action. Keep the intro compact so people can see and open a playable experience near the first screen.
+- On laptops, use a two- or three-column board of collection panels where space allows. Each shows its icon, title, count and up to five available experience links with icons. The full collection opens with a clear View all action. In the three-module prototype, show each playable link once in the main browse panels and use a compact category grid for the remaining directory. Add Recently added only when real publication dates are available. Feature Protocol Explorer as an immediate action.
+- On phones, stack the panels in one readable column, with a short list of tappable rows and a View all link in each panel. Keep the search reachable from the bottom bar when the visitor scrolls. Keep category and experience navigation on the same domain.
+- Preserve HB’s original visual treatment across the panels, featured card and controls. Use factual microcopy with verified attribution if a fact appears. Keep scrolling calm and reduced-motion friendly.
+
 ### Icon-led navigation on phones and laptops
 
 Every visible menu item has a recognizable icon **and a short translated label**. Apply this to primary navigation, all 10 collections, all 100 category menus, division and intent filters, utility actions, and experience cards. The icon helps people scan. The label tells them where the item goes. Keep the shared header’s one-logo rule. Use the approved icon family where available, or an approved consistent line-icon set. Feature icons such as a network diagram, gamepad, folded paper, compass, music note and bar chart are functional symbols.
