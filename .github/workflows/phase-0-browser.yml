@@ -128,8 +128,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('32 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 32);
+                await frame.getByText('36 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 36);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -421,7 +421,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('32 playable', {exact:true}).waitFor();
+                await frame.getByText('36 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -544,6 +544,16 @@ jobs:
                 assert.ok(decoderBounds.y+decoderBounds.height<=page.viewportSize().height,'Decoder controls fit onscreen');
                 await withinViewport(frame.locator('html'));
                 await page.screenshot({path:name+'-emoji-decoder.png'});
+                for(const [title,answer,explanation] of [["How GPS Finds You","Signal travel time","A receiver uses the signal travel time to estimate distance. It combines signals from multiple satellites to find its position."],["How Memory (RAM) Works","RAM","RAM holds working data for quick access. Typical RAM loses that data when power is removed."],["How a Touchscreen Senses Touch","Electrical capacitance","The finger changes the electrical capacitance sensed by nearby electrodes. The screen uses those changes to locate the touch."],["How Compilers Turn Code into Apps","Translate the code","A compiler translates source code into another form, such as machine code or bytecode."]]){
+                  await page.goto('https://adigun.test/#demo/home/play-now');
+                  await frame.getByRole('link',{name:title,exact:true}).click();
+                  const choice=frame.getByRole('button',{name:answer,exact:true});
+                  if(name==='phone') await choice.tap(); else await choice.press('Enter');
+                  await frame.getByText(explanation,{exact:false}).waitFor();
+                  await frame.getByRole('button',{name:'Reset',exact:true}).click();
+                  assert.equal(await choice.getAttribute('aria-pressed'),'false');
+                  await withinViewport(frame.locator('html'));
+                }
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
