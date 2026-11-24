@@ -1,0 +1,126 @@
+name: Verify and deploy AdigunIoT
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'CNAME'
+      - 'docs/preview/AdigunIoT-portfolio-preview.html'
+      - '.github/workflows/phase-0-browser.yml'
+  pull_request:
+    paths:
+      - 'docs/preview/AdigunIoT-portfolio-preview.html'
+      - 'index.html'
+      - '.github/workflows/phase-0-browser.yml'
+permissions:
+  contents: read
+jobs:
+  preview:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install browser test tools in runner temp
+        run: |
+          npm install --prefix "$RUNNER_TEMP/adigun-qa" --no-package-lock playwright@1.55.0
+          "$RUNNER_TEMP/adigun-qa/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Exercise phone and laptop routes
+        run: |
+          node <<'JS'
+          const assert = require('node:assert/strict');
+          const fs = require('node:fs');
+          const { chromium } = require(process.env.RUNNER_TEMP + '/adigun-qa/node_modules/playwright');
+          const entry = fs.readFileSync('index.html', 'utf8');
+          const html = fs.readFileSync('docs/preview/AdigunIoT-portfolio-preview.html', 'utf8');
+          async function withinViewport(locator) {
+            assert.equal(await locator.evaluate(e => e.scrollWidth <= e.clientWidth + 2), true, 'horizontal overflow');
+          }
+          (async () => {
+            const browser = await chromium.launch();
+            try {
+              for (const [name, viewport] of [['phone', {width: 390, height: 844}], ['laptop', {width: 1366, height: 768}]]) {
+                const context = await browser.newContext({ viewport, reducedMotion: name === 'phone' ? 'reduce' : 'no-preference', hasTouch: name === 'phone' });
+                const page = await context.newPage();
+                const errors = [];
+                page.on('pageerror', error => errors.push(error.message));
+                await page.route('**/*', route => {
+                  const url = new URL(route.request().url());
+                  if (url.origin !== 'https://adigun.test') return route.abort();
+                  const body = url.pathname === '/' ? entry :
+                    url.pathname === '/docs/preview/AdigunIoT-portfolio-preview.html' ? html : null;
+                  return body ? route.fulfill({contentType:'text/html; charset=utf-8', body}) : route.abort();
+                });
+                await page.goto('https://adigun.test/');
+                await page.waitForURL('**/AdigunIoT-portfolio-preview.html');
+                assert.equal(await page.locator('.board > .panel').count(), 30);
+                await withinViewport(page.locator('html'));
+                await page.screenshot({ path: name + '-portfolio.png' });
+                await page.locator('.samples').getByRole('link', { name: /AdigunBored/ }).click();
+                const frame = page.frameLocator('.demo-frame');
+                await frame.getByRole('heading', { name: /AdigunBored/ }).first().waitFor();
+                await withinViewport(frame.locator('html'));
+                assert.equal(await frame.locator('.bored-grid > .card').count(), 30);
+                await page.screenshot({ path: name + '-board.png' });
+                await frame.getByRole('link', { name: /Play & Learn/ }).first().click();
+                await frame.getByRole('link', { name: /How DNS Resolves/ }).click();
+                await frame.getByRole('button', { name: 'Server' }).click();
+                await frame.getByText('Try another answer.').waitFor();
+                await frame.getByRole('button', { name: 'Cache' }).click();
+                await frame.getByText(/avoids an extra network lookup/).waitFor();
+                await frame.getByRole('button', { name: 'Reset' }).click();
+                assert.equal(await frame.locator('#learning-result').textContent(), '');
+                await withinViewport(frame.locator('html'));
+                await page.screenshot({ path: name + '-activity.png' });
+                await page.getByRole('link', { name: 'Back to portfolio' }).click();
+                await page.locator('.samples').getByRole('link', { name: /Protocol Explorer/ }).click();
+                await frame.getByRole('heading', { name: 'Packet timeline' }).waitFor();
+                await frame.getByRole('button', { name: 'Next', exact: true }).click();
+                await frame.getByText(/0.000 s/).waitFor();
+                await frame.getByRole('button', { name: 'Sequence', exact: true }).click();
+                await frame.locator('.sequence .active').waitFor();
+                await withinViewport(frame.locator('html'));
+                assert.deepEqual(errors, []);
+                await context.close();
+                console.log(name + ': layout and interactions passed');
+              }
+            } finally {
+              await browser.close();
+            }
+          })().catch(error => { console.error(error); process.exitCode = 1; });
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase-0-browser-screens
+          path: '*-*.png'
+          if-no-files-found: ignore
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: preview
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: adiguniot-pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.publish.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/configure-pages@v5
+      - name: Stage verified site files
+        run: |
+          mkdir -p _site/docs/preview
+          cp index.html CNAME _site/
+          cp docs/preview/AdigunIoT-portfolio-preview.html _site/docs/preview/
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - uses: actions/deploy-pages@v4
+        id: publish

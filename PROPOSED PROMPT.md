@@ -1,186 +1,212 @@
-# AdigunIoT production build prompt
+# AdigunIoT portfolio · Phase 0 production brief
 
-## Assignment
+## The product boundary
 
-When the owner gives you this prompt to implement, begin Phase 0 in [AdigunIoT](https://github.com/HephzibahBehulahHQ/AdigunIoT). Deliver a running website and working interactions. Stop at the owner’s Phase 0 review gate. The first release is a prototype of the actual product architecture.
+AdigunIoT is the product repository and portfolio. It houses **100 editorial categories with 100 mini-website positions in each**. The ten collections are navigation groupings of ten categories apiece. A mini-website has an independent visitor promise, name, home route, visual identity within HB standards, and an activity or tool of its own. It may have multiple screens. Count it once. A menu, topic, tab, theme, setting, simulation scenario, or route alias does not add another site.
 
-AdigunIoT is a browser playground by HB Artificial Intelligence. A visitor who has five spare minutes opens the homepage, finds something interesting, and immediately plays, learns, makes, or discovers. Each card is the doorway to an independent mini-experience on the same domain. Protocol Explorer is the interaction reference for seeing an invisible process unfold. Bored.com is the discovery reference for choosing a category or finding a surprise. Implement original experiences and visual assets in the Hephzibah Behulah design system.
+**AdigunBored** is one mini-website in Random Discovery. AdigunBored.com is its proposed domain pending verification. It offers a compact, image- and icon-led discovery experience, including ways to find other Adigun sites. **Adigun Protocol Explorer** is another mini-website in Internet & Protocols. Its dark, illustrated, animated workbench is the reference for Internet Explorer experiences. **Signal Catch** and **Paper Circuit** occupy distinct positions in Arcade and Paper & Cardboard. The portfolio directory is the map of the whole project. It occupies no mini-website slot. AdigunBored’s layout applies to its own browse screens. Other mini-websites use the layout that fits their primary activity.
 
-The publishing target is 10,000 working experiences organized into 100 categories with 100 experiences each. Phase 0 proves the interface with three working pages. Phase 1 specifies all 10,000, followed by authorized build and publication milestones. Show accurate module counts throughout the product. Use the existing authorized host if available. Treat adiguniot.hephzibahbehulah.com as a candidate until ownership and configuration are verified.
+## Review these Phase 0 previews first
 
-## Read these sources and apply them
+1. Open [AdigunIoT Portfolio Preview](docs/preview/AdigunIoT-portfolio-preview.html). Open any category and see all 100 positions. Search category and lead-site names, use the collection filters, or enter an exact slot ID.
+2. In that same file, open AdigunBored and the three sample experiences. Use **Back to portfolio** to return to the previous collection, category or slot. Keep this single preview as the current review artifact.
+3. Review on phone and laptop. Verify arrows, breadcrumbs, Back, keyboard focus, visual density, image usefulness, and whether each example feels like a separate mini-website. The prototype labels unfilled positions and distinguishes sample previews from published sites.
 
-| Source | Implementation decision |
-| --- | --- |
-| [Corporate identity and scope](https://github.com/HephzibahBehulahHQ/HephzibahBehulahHQ.github.io/blob/main/docs/repository-scope.md) | Keep this product entirely in AdigunIoT. The corporate site remains the public gateway for five divisions. |
-| [Universal product template](https://github.com/HephzibahBehulahHQ/hb-design-system/tree/main/templates/universal-product) | Start from the current schema v3 product.config.json. Replace identity and repository references with AdigunIoT values. Confirm the AI brand key against the canonical token source. Set en, de, yo and pcm with en default. Set capability fields from implementation and keep unavailable integrations false or null. |
-| [Naming and identity](https://github.com/HephzibahBehulahHQ/hb-design-system/blob/main/docs/brand-and-product-naming.md) | One corporate logo, AdigunIoT text wordmark, and a stable BY HB ARTIFICIAL INTELLIGENCE label. Use the exact approved corporate artwork and verified typography. Where asset verification fails, document the limitation and use the standard text fallback. Verify footer links before enabling them. |
-| [Design system](https://github.com/HephzibahBehulahHQ/hb-design-system) | Read actual files under tokens/ and assets/corporate/. Use the AI division’s Midnight Navy and Violet as the initial dark palette. Import approved accent values for collections and map them to product-level CSS variables. Keep approved assets and token values intact. |
-| [HB Artificial Intelligence](https://github.com/HephzibahBehulahHQ/hb-artificial-intelligence/blob/main/docs/responsible-technology-guidance.md) | Use synthetic local inputs for defensive learning and label demonstrations. Use editorial content and deterministic behavior in Phase 0. The module disclosure states the actual AI and data behavior. |
-| [Adigun BOT](https://github.com/HephzibahBehulahHQ/hb-design-system/tree/main/components/AdigunBot) | Set disabled for Phase 0. Keep the module context contract ready for a future authenticated, server-side, product-aware integration. Enable only after a working integration and required approval and verification. |
-| [HB AI Engineering Policy](https://github.com/HephzibahBehulahHQ/hb-AI-policy/blob/main/docs/policy-index.md) | Use version 2.0 adoption template with a verified immutable policy commit and real adoption details when authorized. Follow applicable checkpoint, security, acceptance and reporting rules. Record source refs and verification evidence in the walkthrough or current status. |
+**Current Phase 0 review scope:** 10 collections, 100 visible categories, 10,000 addressable positions, one proposed lead site per category, and four clickable mini-website previews. Positions without an editorial concept remain open. An open position reserves capacity. It does not represent a completed idea or working website. Do not start product implementation or populate the full taxonomy until the owner approves the portfolio structure and Phase 0 direction. Follow the release gate in [AGENTS.md](AGENTS.md). Routine small increments may merge and deploy once the exact release candidate passes the checks in AGENTS.md.
 
-Verify local path, Git remote, branch, cleanly scoped changes, existing dependencies and cache before installing. Inspect the current project first and reuse any compatible stack and existing lockfile. If the verified checkout is documentation-only, use **Astro static output, TypeScript and CSS**, using interactive browser scripts for the three modules and shared navigation. Use the available compatible Node/npm versions and lock the dependency versions. In the selected Windows project folder use the existing authorized checkout. If it is still only a repository-link item, resolve access to the intended checkout or report the concrete blocker. Keep productive work in the selected product, with no extra project copies or cloud workspaces. Use a dedicated branch and a reviewable PR. Public deployment and merging product code require the applicable authorization. A local preview is sufficient for the review gate.
+## Use the HB templates and rules
 
-## Phase 0 — Build the live prototype
+- [Company](https://github.com/HephzibahBehulahHQ/HephzibahBehulahHQ.github.io) defines the corporate identity and five divisions. Product code stays in this repository.
+- [Universal product template](https://github.com/HephzibahBehulahHQ/hb-design-system/tree/main/templates/universal-product) supplies the current configuration contract. Verify the schema, official logo, token paths and typography. Use the one-logo rule and text wordmark. Apply approved division accents. Use real supported capabilities and en, de, yo and pcm where adopted in the product configuration.
+- [AI division](https://github.com/HephzibahBehulahHQ/hb-artificial-intelligence) supplies domain guidance for responsible AI and defensive learning. Make simulation and actual AI use clear where relevant. Enable Adigun BOT only once a real integration meets [its component standard](https://github.com/HephzibahBehulahHQ/hb-design-system/tree/main/components/AdigunBot).
+- [Engineering policy](https://github.com/HephzibahBehulahHQ/hb-AI-policy) supplies governance, security, checkpoint and testing requirements. Confirm the actual policy revision and scope. Record the exact candidate and review evidence.
+- Verify the selected checkout and existing stack before modifying application code. Reuse the package manager, lockfile and compatible tools. For a verified documentation-only checkout, use Astro static output and TypeScript as the initial implementation choice. Keep the standalone HTML review files independent of the production build.
 
-### Screen 1 · Discover
+## Phase 0 visual review and first production slices
 
-The desktop dark theme is a restrained sci-fi observatory: midnight background, a low-contrast grid, violet focus and selection accents, and finely outlined cards. Use the brand system for text, spacing and contrast. Give the top of the screen a single main message, **Find something to play, learn, or make**, and two real actions, **Explore** and **Surprise me**. The hero’s live animation shows an abstract message moving between three nodes. Pause ambient animation when offscreen and respect reduced motion.
+The preview is a decision artifact. Review the portfolio directory, an AdigunBored category, and a playable site as separate screens.
 
-Use this screen order:
+1. **Portfolio review.** Open categories at opposite ends of the directory. Check the 100-by-100 structure, slot lookup, and labels for proposed and playable entries.
+2. **AdigunBored review.** Open Arcade from Board Home, select a playable row, return, then open a related category. Confirm the centered list and Related rail, original icons and colors, a concise header, and the single-column phone flow. The current 100 category routes demonstrate structure. Publish counts from real entries.
+3. **Explorer review.** Play a protocol lesson, select a timeline event, switch to Sequence, and retry with reduced motion. Confirm the path, active event and inspector agree.
+4. **Brand review.** The standalone file embeds the exact approved corporate JPEG from the HB design-system template. The portfolio shows AdigunIoT as its text wordmark, and each site shows its product name. Verify the logo at phone and laptop widths.
 
-1. Shared header with approved identity and responsive access to Home, Browse, Search, Surprise Me, division and language as specified below.
-2. Hero with the two actions and a link to the featured experience.
-3. Three playable cards. Each shows its title, one sentence describing the action, category, and primary collection. Use motion previews only where they communicate what the experience does. Each card has a real link.
-4. Category directory and honest playable counts. Show zero-count categories with clear empty pages and links back to playable experiences.
-5. Product footer with verified corporate links and working project documentation.
+For the first build slice, create registry validation and a real directory-to-activity flow using one owned activity. Maintain separate registry records for portfolio sites, board categories and board destinations. A Board destination resolves to a native activity route or an approved existing portfolio site. Reject self-links, dangling references, duplicate canonical IDs and published records with unavailable destinations. An entry appears in Play, published counts and Surprise only when its destination is verified. Extend with related links, browsing by mood, recent history, layout preferences, and feedback in individually testable increments.
 
-Use **Play, Learn, Make, Discover** as quick filters or intent shortcuts. Show the ten catalog collections as the browse entry to 100 categories. The separate division filter applies a verified accent and filters the catalog by division. Keep the product owner label fixed. Show the three Phase 0 modules across the AI and Elektroniker division views. The remaining division views still open their own useful empty view. Preserve browser history and shareable filter state.
+## Current implementation goals
 
-### Bored.com discovery reference
+1. **One review artifact.** Maintain only the self-contained portfolio preview. Start from Home and verify every category, slot, and demo link. Keep all product work in the selected AdigunIoT folder and draft branch.
+2. **Complete the first interaction slice.** Verify the flow from portfolio to category to demo and back. Review all four sample layouts on a phone and laptop. Use the approved compact, centered, icon-led design.
+3. **Build the catalog foundation.** Adopt the HB product template in the verified project, establish a typed registry and distinct site routes, and carry the validated 100-by-100 inventory into production. Incrementally specify distinct concepts after the structure review.
+4. **Release in small verified increments.** Verify the changed pages, menus and affected shared navigation. Merge and deploy each passing slice to the existing authorized target and smoke-test the deployed revision.
 
-Use the owner-provided Bored.com screenshot as a functional reference. It shows a prominent search box, a shuffle action, grouped panels with playable counts, compact icon-led links, a featured destination, and a recent additions list. Translate those discovery patterns into the original HB visual system with approved colors, typography and assets.
+## Exact category structure
 
-- Put a labeled search field near the top of Home and a nearby Surprise Me action. Keep the intro compact so people can see and open a playable experience near the first screen.
-- On laptops, use a two- or three-column board of collection panels where space allows. Each shows its icon, title, count and up to five available experience links with icons. The full collection opens with a clear View all action. In the three-module prototype, show each playable link once in the main browse panels and use a compact category grid for the remaining directory. Add Recently added only when real publication dates are available. Feature Protocol Explorer as an immediate action.
-- On phones, stack the panels in one readable column, with a short list of tappable rows and a View all link in each panel. Keep the search reachable from the bottom bar when the visitor scrolls. Keep category and experience navigation on the same domain.
-- Preserve HB’s original visual treatment across the panels, featured card and controls. Use factual microcopy with verified attribution if a fact appears. Keep scrolling calm and reduced-motion friendly.
-
-### Icon-led navigation on phones and laptops
-
-Every visible menu item has a recognizable icon **and a short translated label**. Apply this to primary navigation, all 10 collections, all 100 category menus, division and intent filters, utility actions, and experience cards. The icon helps people scan. The label tells them where the item goes. Keep the shared header’s one-logo rule. Use the approved icon family where available, or an approved consistent line-icon set. Feature icons such as a network diagram, gamepad, folded paper, compass, music note and bar chart are functional symbols.
-
-- **Phone:** Use a bottom bar with four destinations: Home, Browse, Search and Surprise Me. Keep corporate identity, division and language controls in a compact header or labeled settings panel. Browse opens a two-column icon-card grid where width permits, with a single column when labels need more room. The visitor sees 10 collections first, then the selected collection’s 10 categories, then experience cards. Leave room for safe-area insets and keep the bottom bar from covering content or focus. Every destination works by tap with no hover dependency.
-- **Laptop:** Use one header with the same four labeled destinations. Show the ten collections in a spacious icon-card grid and surface the full directory behind Browse. Collection and category pages use breadcrumbs and clearly labeled back links. Wide layouts can show the catalog filters beside the results. Keep the same destination names and symbols across screen sizes.
-- **Implementation:** Add an icon key to the collection and category manifests and support a module-level icon override that falls back to its category icon. Use one local typed icon registry shared by menus, search and cards. Assign a recognizable symbol to each collection and each category, avoiding indistinguishable sibling icons. The build validates the 10 collection mappings, 100 category mappings and any module overrides. Use decorative icon semantics when the adjacent label names the control, visible focus and an active state that uses more than color. Aim for 44 × 44 CSS px touch areas. Allow translated labels to wrap. Use clearly named controls when compact utility buttons use icon-only presentation.
-- **Acceptance:** At 360, 768 and 1440 CSS px, verify Home → Browse → Collection → Category → Experience and back. Test opening Search and Surprise Me on both phone and laptop. Check tab order, focus visibility, keyboard operation, touch reachability, no overlapping fixed controls, and no clipped labels across all four languages. Verify all catalog menu entries render their intended icon and label. Include the phone and laptop views in the Phase 0 walkthrough.
-
-### Screen 2 · Categories and search
-
-Use /categories/ for the directory, /collections/{collection}/ for collection pages and /category/{category}/ for category pages. Phase 0 renders all ten collections and 100 categories from the directory. A category page has a heading, concise description, live count, filtered card grid and a clear-filter action. Display empty states for inactive or narrow combinations.
-
-Use one command palette on all routes. Open it from the header or Ctrl/Cmd+K. Search translated titles, aliases, category and keywords using a cached static index. Normalize case, diacritics and whitespace. Rank exact title then prefix then token matches. Show at most eight quick results, with a link to the complete filter view when applicable. Support keyboard navigation, Enter to open, Escape to close, and focus return to the trigger. Include an accessible empty state. Use the same published registry for cards, search and random selection. Surprise me opens a playable internal module, excluding the current or most recent selection when alternatives exist. If filters yield nothing, offer a clear way to reset them.
-
-### Screen 3 · Universal experience shell
-
-Generate /{category}/{slug}/ from one module route and use canonical URLs for cards and search. On desktop show breadcrumbs and module title above the interaction workspace and its inspector/help column. On narrow screens stack the workspace, controls and help. Keep the same parts across modules: category and division badges, prompt, workspace, actions, actionable feedback, reset, help/source links, and a short AI/data disclosure. Browser Back returns to the previous view, including filters. Use enhanced in-app transitions with ordinary links, working direct URLs and history as the baseline. Provide a styled 404 with search and a return link.
-
-Use visible keyboard focus, semantic headings, named controls, readable contrast and touch targets. Announce meaningful state changes in a live region without reading every animation frame. Make the full flow operable with reduced motion. Check at 360, 768 and 1440 CSS px with no horizontal overflow. Translate shell, controls, statuses, errors, search aliases, and sample content in English, German, Yoruba and Nigerian Pidgin. Persist only intended non-sensitive settings such as locale. Use versioned browser keys and handle storage denial gracefully. Record which translations were reviewed and which require linguistic review.
-
-### Three working experiences
-
-| Route and collection | What happens in the workspace | Acceptance case |
+| # | Collection | Ten categories |
 | --- | --- | --- |
-| /internet-protocols/adigun-protocol-explorer/ · HB Artificial Intelligence | Choose a fictional destination and press Send. Follow a browser, name resolver, gateway and server through a simplified DNS lookup, request and response. Use a fixed synthetic event sequence with a visible timeline, packet inspector, Play/Pause/Step/Reset and a labeled text log. An optional simulated delay visibly changes the delivery time. Identify which networking details the model simplifies. Keep all packets in local simulation. | Step reaches the same end state as Play. Pause freezes progress. Reset clears the timeline and selection. The event log exposes source, destination, purpose and outcome in keyboard and reduced-motion use. Reload restarts the demo. |
-| /arcade/signal-catch/ · HB Artificial Intelligence | A 20-second reaction game. A pulse travels along a grid and briefly appears on one of four receiver pads. Click a pad or use keys 1–4 to catch it. A correct catch earns one point once per pulse. A wrong or missed catch breaks the streak. Offer an untimed practice round and a results screen with Replay. Use original art and sound, with sound off by default. | Starting multiple times creates one timer. The same pulse cannot score twice. The timed round ends once and shows the final score. Replay clears round state, and keyboard input works only in the active game. |
-| /paper-cardboard/paper-circuit/ · HB Elektroniker | A four-step virtual build: place the source symbol, route the two foil paths, orient the LED, and close the switch. Offer both placement controls and buttons. The diagram lights only with a closed path and correct simulated polarity. Provide reset and a short explanation of the result. Physical-build instructions are out of scope for the prototype. | Open circuit and reversed polarity yield different feedback. A correct closed path lights the virtual LED. Step navigation and reset behave consistently and all interactions work with a keyboard. |
+| 1 | Systems & Engineering | Internet & Protocols · Signals & Wireless · Computers & Operating Systems · Electronics & Circuits · Sensors & Measurement · Robotics & Motion · Automation & PLCs · Energy & Power Grids · Machines & Mechanisms · Transport & Navigation |
+| 2 | Arcade & Challenges | Arcade · Reaction & Timing · Logic & Deduction · Memory & Attention · Spatial Puzzles · Number Puzzles · Strategy Boards · Daily Challenges · Pattern Spotting · Trivia |
+| 3 | DIY & Making | DIY & Making Projects · Paper & Cardboard · Wood & Workshop · Textiles & Stitching · Recycling & Repair · Kitchen Science & Food Making · Garden & Growing · Models & Prototyping · Photography & Optics · Home Organization |
+| 4 | Science & Nature | Space & Astronomy · Physics Playgrounds · Chemistry Models · Earth & Geology · Weather & Climate · Life & Cells · Human Body & Senses · Oceans & Water · Animals & Ecosystems · Materials Science |
+| 5 | Creative Studio | Pixel Art & Sprites · Drawing & Illustration · Animation & Motion · Generative Art · Color & Design · Sound & Music · Beat & Rhythm · Writing & Story · Words & Language · Creative Generators |
+| 6 | Web & Digital Worlds | Homepage Builder · Retro Computing · Web History · Interactive Toys · Virtual Worlds · Multiplayer & Social · Data & Visualization · Maps & Geography · Random Discovery · Curious Facts |
+| 7 | AI & Digital Trust | AI Foundations · Training Data & Labels · Model Evaluation · AI Explanations · Text & Language AI · Vision & Audio AI · Human–AI Workflows · Privacy & Permissions · Secure Habits · Defensive Monitoring |
+| 8 | Money & Markets | Money & Budgeting · Interest & Compounding · Market Mechanics · Charts & Indicators · Fees & Friction · Risk & Uncertainty · Diversification · Trading Journals · Strategy Testing · Economic Signals |
+| 9 | Faith & Biblical Learning | Bible Overview · Bible Geography · Biblical Timelines · People of the Bible · Parables · Biblical Themes · Scripture Memory · Bible Study Methods · Church & Community History · Faith & Service |
+| 10 | Civic Life & Society | Public Institutions · Public Budgets · Elections & Representation · Local Government · How Laws Are Made · Public Services · Rights & Responsibilities · Media & Information Literacy · Policy Trade-offs · Community Planning |
 
-### Implementation contract
+## AdigunBored · one site, its own 5,000-destination catalog
 
-Use a single content registry and a typed renderer map. Where the repository lacks equivalent structure, use these paths:
+Use AdigunBored as the product name. Treat AdigunBored.com as a candidate domain until verified. AdigunBored occupies **one portfolio position**. Its internal categories, games, tools and other destinations have their own catalog. Allocate **100 board categories with a target of 50 distinct destinations each**, for about **5,000 board destinations**. Keep these counts separate from the 10,000-site portfolio. A board destination can own an original activity or point to another verified Adigun site. A cross-link does not create a second portfolio site.
 
-```text
-product.config.json
-src/layouts/ProductShell.astro
-src/components/
-src/content/collections.ts
-src/content/categories.ts
-src/content/modules/
-src/lib/catalog.ts
-src/lib/module-contract.ts
-src/modules/explainer/
-src/modules/game/
-src/modules/builder/
-src/pages/index.astro
-src/pages/categories.astro
-src/pages/collections/[collection].astro
-src/pages/category/[category].astro
-src/pages/[category]/[slug].astro
-src/pages/404.astro
-src/i18n/
-src/styles/
-tests/
-docs/phase-0-walkthrough.md
-```
+### AdigunBored menu inventory
 
-Each manifest defines stable id, schema version, slug, category, primary division and additional division tags, module type, publish status, per-locale title/pitch/instructions/keywords, runtime configuration, disclosure, source references and asset provenance where applicable. Validate each runtime configuration against its renderer type. The initial three renderers own their state machines and DOM lifecycle. Keep configuration declarative and support a registry of shipped renderer types. Config must never execute arbitrary script, reference a remote executable or render unsanitized rich text. Additional module types enter the registry only after a real renderer exists.
+The owner-provided navigation contains 98 named category entries. Map every entry below to a distinct AdigunBored category route, and add two original categories for a total of 100. These are navigation equivalents. A category with no verified activity has a clear empty state.
 
-Reject duplicate IDs and routes, reserved paths, unknown categories/divisions, incompatible renderer configs, missing required translations, broken asset paths and invalid published records in the build. Use stable slugs across locales. Store progress only when a feature explicitly requires it. Generate static route entries and the lightweight discovery index at build time. Load only the selected module’s interactive code; a larger catalog should not serialize each simulation into the homepage. Paginate or incrementally render catalog results, test indexing with ephemeral scale fixtures, and keep fixtures out of the public build.
+| # | Reference menu label | AdigunBored category |
+| --- | --- | --- |
+| 1 | Pointless fun | No-Goal Toys |
+| 2 | Mini games | Quick Games |
+| 3 | Rage room | Smash & Reset |
+| 4 | Mind readers | Guess My Thought |
+| 5 | Oddly satisfying | Satisfying Loops |
+| 6 | Tick all that apply | Check the Boxes |
+| 7 | Sims & sandboxes | Sim Worlds |
+| 8 | Visual toys | Visual Play |
+| 9 | AI experiments | AI Playgrounds |
+| 10 | Psych tests | Personality Quizzes |
+| 11 | Look productive | Desk Distractions |
+| 12 | Liminal space | In-Between Places |
+| 13 | Combo lab | Mix & Discover |
+| 14 | Crowd experiments | Group Experiments |
+| 15 | Tiny towns | Little Towns |
+| 16 | Prank screens | Pretend Screens |
+| 17 | Tough calls | Hard Choices |
+| 18 | Pointless portals | Odd Web Doorways |
+| 19 | Just cats | Cat Corner |
+| 20 | Business tycoons | Business Sims |
+| 21 | Blank canvas | Draw Freely |
+| 22 | Epic RPG campaigns | Quest Campaigns |
+| 23 | Trivia quiz | Trivia Room |
+| 24 | Draw it right | Drawing Challenges |
+| 25 | Geo games | Geography Games |
+| 26 | Mystery solve | Mystery Desk |
+| 27 | Love lab | Relationship Quizzes |
+| 28 | Word nerd | Word Play |
+| 29 | Avatar makers | Avatar Studio |
+| 30 | Curious facts | Curiosity Cards |
+| 31 | Almost real | Almost Believable |
+| 32 | First person shooters | Arena Shooters |
+| 33 | Brain train | Brain Puzzles |
+| 34 | Chaos IO arena | Browser Arenas |
+| 35 | Adventure quests | Adventure Trails |
+| 36 | Dress up dolls | Dress-Up Studio |
+| 37 | Browser party | Browser Party |
+| 38 | Retro web | Retro Web |
+| 39 | Which is which | Spot the Difference |
+| 40 | Therapy racing | Relaxed Racing |
+| 41 | Music makers | Music Studio |
+| 42 | Brain fuel | Think Break |
+| 43 | Lazy idle clickers | Idle Toys |
+| 44 | Brain reset | Quiet Break |
+| 45 | Santa season | Winter Play |
+| 46 | Horror vault | Spooky Stories |
+| 47 | Grudge golf | Mini Golf |
+| 48 | Weird shops | Odd Shops |
+| 49 | Escape hatch | Escape Puzzles |
+| 50 | Emoji fun | Emoji Playground |
+| 51 | Random rabbit hole | Surprise Trails |
+| 52 | Close enough | Estimate It |
+| 53 | Grid & tile puzzles | Grid Puzzles |
+| 54 | Reflex check | Reflex Games |
+| 55 | Design dojos | Design Challenges |
+| 56 | Celebrity gossip | Pop Culture News |
+| 57 | Optical illusions | Optical Tricks |
+| 58 | Anime alley | Animation Culture |
+| 59 | Niche obsessions | Niche Hobbies |
+| 60 | Audio toys | Sound Toys |
+| 61 | Tactical defense | Defense Strategy |
+| 62 | Couch sports | Couch Sports |
+| 63 | Typing speed | Typing Challenges |
+| 64 | Food frenzy | Food Fun |
+| 65 | Hacker cosplay | Terminal Roleplay |
+| 66 | Movie nerds | Film Quizzes |
+| 67 | Decision disasters | Decision Games |
+| 68 | Half a keyboard | Keyboard Curiosities |
+| 69 | Old net art | Early Web Art |
+| 70 | Feel good | Good Mood |
+| 71 | Odd search | Odd Search |
+| 72 | Digital boards | Interactive Boards |
+| 73 | Nature watch | Nature Watch |
+| 74 | Design playgrounds | Design Studio |
+| 75 | Finger mash action | Button Games |
+| 76 | Space & cosmos | Space Play |
+| 77 | Internet culture | Web Culture |
+| 78 | Scheming strategy | Strategy Games |
+| 79 | Gags & humor | Jokes & Gags |
+| 80 | Weather data | Weather Views |
+| 81 | Arcade portals | Arcade Collections |
+| 82 | Map archives | Historic Maps |
+| 83 | Text adventures | Text Adventures |
+| 84 | Coding play | Coding Toys |
+| 85 | Free flicks | Short Films |
+| 86 | Geo explorers | Map Adventures |
+| 87 | Map data | Geographic Data |
+| 88 | Virtual museum | Virtual Exhibits |
+| 89 | Data beautiful | Data Art |
+| 90 | Web comics | Web Comics |
+| 91 | No-mess cards | Card Games |
+| 92 | Offbeat news | Odd News |
+| 93 | Stickman chaos | Stick Figure Play |
+| 94 | Sound discovery | Sound Discovery |
+| 95 | Astrology vibes | Star-Sign Fun |
+| 96 | Radio streams | Radio Discovery |
+| 97 | K-pop corner | K-Pop Discovery |
+| 98 | The unclassifiables | Unsorted Wonders |
+| 99 | Adigun addition | DIY Projects |
+| 100 | Adigun addition | How It Works |
 
-Collect no personal data for Phase 0. Do not embed or redirect to competitor sites as experiences. Keep external documentation links separate from gameplay. Use original content and rightsholder-approved assets. In later modules, use synthetic markets with educational framing, source and date civic claims without partisan targeting, verify Bible translation rights, and review DIY safety and technical claims before publication.
+### Landing blocks and interactive activity menus
 
-### Build order and acceptance
+Keep the existing ten directory groups intact. Add twenty useful editorial browse blocks to each of the portfolio and AdigunBored landing pages. On laptops, show thirty blocks in ten complete rows of three. Adjust the number of columns at narrower widths. Editorial blocks link into the canonical directory or activity library and do not create new categories or add to published site counts.
 
-1. Verify sources and scaffold the product shell. Land a thin vertical slice linking the homepage to the working Protocol Explorer and back.
-2. Add typed catalog, route validation, category navigation, search and surprise. Ship the game and DIY module through the same shell.
-3. Complete translations and interaction polish. Confirm one identity header, division theming, history/deep links, and visible disclosure. Handle unknown routes, empty search and browser storage failures.
-4. Run lint or equivalent, type checks, contract tests, the production build and browser checks against the built preview. Exercise all three modules, filter/search/surprise, direct URL refresh, keyboard focus and reduced motion. Inspect representative screen sizes and console errors. Record actual commands, outcomes, preview URL and exact revision. Document how to run and explore the preview and identify any unresolved limitations.
-5. Give the owner the running preview and walkthrough. Ask for approval of the visual direction, hub-to-module navigation, shared shell, search, and division filtering. Iterate on requested changes. Stop before Phase 1 until approval is explicit.
+Use short, icon-led box-tree menus and distinct accessible color accents. Animate entry to a branch and feedback from an action. Honor reduced motion and keep keyboard and touch navigation equivalent. Open activity menus into named routes. Aim for 50 distinct real destinations per AdigunBored category. Preserve all 15 owner-provided seed groups and use original concepts for entries inspired by existing games.
 
-## Phase 1 — Specify the full catalog after approval
+The current prototype includes a searchable Activities menu with 402 named entries and 50-entry submenus for No-Goal Toys, Quick Games, DIY Projects and How It Works. Planned entries open a status view and remain outside playable counts. Button Bouquet, Confetti Compass and Wobble Window are playable examples. For new activities, put the direct interaction first and explain what happened in one short line. Grow the other submenus through verified increments.
 
-## Catalog architecture — 10 collections × 10 categories × 100 experiences
+### Secondary menus and footer
 
-**The product target is 10,000 working interactive pages.** The navigation has 10 broad collections and exactly 100 named categories. Each category has 100 planned experiences. Collections help people browse. Categories own the experience URLs and quotas. Division tags are a separate editorial dimension, so one module can belong to several HB missions without counting twice. The Phase 1 taxonomy is the blueprint for the 10,000 working pages. Build and publish those pages progressively after the taxonomy and release slices are authorized.
+- **Arcade** — All games · Compliment game · Odd One Out · Office Smash · Daily Trivia · Word Sets · Word Games · Logic Puzzles · Trivia · Action · Platform Games · Two Players · Party · Sandbox
+- **Moods** — All moods · Free Games · Fun · Beat Boredom · Cool Finds · Curious Finds · Make Me Laugh · Learn · Relax · Nostalgia · School Break · Work Break · Play Together · Cozy · Night Owl · Five Minutes
+- **Updates** — All posts · Spooky Play Guide · How Surprise Works · Tiny Worlds to Try · How to Find Two-Player Games · Daily Games Guide · Quick Arcade Picks · What’s in the Arcade · Why We Build Original Games
+- **Site** — Home · About · FAQ · Privacy · Terms · Recently Added · Recently Visited · Feedback
 
-### Locked starting directory
+The four secondary menus contain 47 child routes. The reference Blog is presented as Updates with original copy. The Arcade and Moods filters list only available matching experiences. The Site menu provides the footer and history entry points. A functional menu destination and a playable published experience are separate acceptance criteria.
 
-Use these proposed names and keys as implementation defaults. Translate displays without changing keys. Every collection owns the ten categories listed in its row.
+- **Centered from Home to detail.** At laptop widths use a centered directory with a maximum content width near 980 px, generous side margins, compact three-column panels on Home, and a two-column category page. Give the actual list about two-thirds of the category page and related-category cards the remaining space. On phones stack the list above Related, with 44 px touch targets and no horizontal scrolling. Use original HB visual styling, readable color accents, emoji, small illustrations, short labels and clickable rows.
+- **Full reference coverage.** Carry forward the reference behaviors from the supplied recordings and transcripts: category and subcategory browsing, Arcade, Moods, Updates, search, Surprise, featured tiles, recent additions, clearable recent visits, layout switching, session summary, feedback, help and footer links. Add category share/copy, a local opt-in “Worth it?” vote on eligible return visits with a suppress option, and a pause control for any moving fact strip. Publish genuine counts. Surface playable rows before optional details.
+- **Standalone activities.** Include quick games, visual toys, art, sound, unusual questions, discovery, small simulations, short reads and original pointless fun. Each native destination has a real interaction or useful content. Group destinations by visitor action. Preserve original title, icon, route, availability, publication date, age/rights and accessibility metadata. Keep fixture and planned records out of published counts and Surprise. Build and verify small slices as they become ready.
+- **Phase 0 evidence.** The standalone preview demonstrates AdigunBored’s 100 separate category routes and a centered category view with a related rail. The 50-per-category figure is capacity. Verify real counts and links incrementally as the native destinations are built.
 
-| Collection and key | Categories and canonical keys |
-| --- | --- |
-| 1. Systems & Engineering (`systems-engineering`) | Internet & Protocols (`internet-protocols`) · Signals & Wireless (`signals-wireless`) · Computers & Operating Systems (`computers-operating-systems`) · Electronics & Circuits (`electronics-circuits`) · Sensors & Measurement (`sensors-measurement`) · Robotics & Motion (`robotics-motion`) · Automation & PLCs (`automation-plcs`) · Energy & Power Grids (`energy-power-grids`) · Machines & Mechanisms (`machines-mechanisms`) · Transport & Navigation (`transport-navigation`) |
-| 2. Arcade & Challenges (`arcade-challenges`) | Arcade (`arcade`) · Reaction & Timing (`reaction-timing`) · Logic & Deduction (`logic-deduction`) · Memory & Attention (`memory-attention`) · Spatial Puzzles (`spatial-puzzles`) · Number Puzzles (`number-puzzles`) · Strategy Boards (`strategy-boards`) · Daily Challenges (`daily-challenges`) · Pattern Spotting (`pattern-spotting`) · Trivia (`trivia`) |
-| 3. DIY & Making (`diy-making`) | DIY & Making Projects (`diy-making-projects`) · Paper & Cardboard (`paper-cardboard`) · Wood & Workshop (`wood-workshop`) · Textiles & Stitching (`textiles-stitching`) · Recycling & Repair (`recycling-repair`) · Kitchen Science & Food Making (`kitchen-science-food-making`) · Garden & Growing (`garden-growing`) · Models & Prototyping (`models-prototyping`) · Photography & Optics (`photography-optics`) · Home Organization (`home-organization`) |
-| 4. Science & Nature (`science-nature`) | Space & Astronomy (`space-astronomy`) · Physics Playgrounds (`physics-playgrounds`) · Chemistry Models (`chemistry-models`) · Earth & Geology (`earth-geology`) · Weather & Climate (`weather-climate`) · Life & Cells (`life-cells`) · Human Body & Senses (`human-body-senses`) · Oceans & Water (`oceans-water`) · Animals & Ecosystems (`animals-ecosystems`) · Materials Science (`materials-science`) |
-| 5. Creative Studio (`creative-studio`) | Pixel Art & Sprites (`pixel-art-sprites`) · Drawing & Illustration (`drawing-illustration`) · Animation & Motion (`animation-motion`) · Generative Art (`generative-art`) · Color & Design (`color-design`) · Sound & Music (`sound-music`) · Beat & Rhythm (`beat-rhythm`) · Writing & Story (`writing-story`) · Words & Language (`words-language`) · Creative Generators (`creative-generators`) |
-| 6. Web & Digital Worlds (`web-digital-worlds`) | Homepage Builder (`homepage-builder`) · Retro Computing (`retro-computing`) · Web History (`web-history`) · Interactive Toys (`interactive-toys`) · Virtual Worlds (`virtual-worlds`) · Multiplayer & Social (`multiplayer-social`) · Data & Visualization (`data-visualization`) · Maps & Geography (`maps-geography`) · Random Discovery (`random-discovery`) · Curious Facts (`curious-facts`) |
-| 7. AI & Digital Trust (`ai-digital-trust`) | AI Foundations (`ai-foundations`) · Training Data & Labels (`training-data-labels`) · Model Evaluation (`model-evaluation`) · AI Explanations (`ai-explanations`) · Text & Language AI (`text-language-ai`) · Vision & Audio AI (`vision-audio-ai`) · Human–AI Workflows (`human-ai-workflows`) · Privacy & Permissions (`privacy-permissions`) · Secure Habits (`secure-habits`) · Defensive Monitoring (`defensive-monitoring`) |
-| 8. Money & Markets (`money-markets`) | Money & Budgeting (`money-budgeting`) · Interest & Compounding (`interest-compounding`) · Market Mechanics (`market-mechanics`) · Charts & Indicators (`charts-indicators`) · Fees & Friction (`fees-friction`) · Risk & Uncertainty (`risk-uncertainty`) · Diversification (`diversification`) · Trading Journals (`trading-journals`) · Strategy Testing (`strategy-testing`) · Economic Signals (`economic-signals`) |
-| 9. Faith & Biblical Learning (`faith-biblical-learning`) | Bible Overview (`bible-overview`) · Bible Geography (`bible-geography`) · Biblical Timelines (`biblical-timelines`) · People of the Bible (`people-of-the-bible`) · Parables (`parables`) · Biblical Themes (`biblical-themes`) · Scripture Memory (`scripture-memory`) · Bible Study Methods (`bible-study-methods`) · Church & Community History (`church-community-history`) · Faith & Service (`faith-service`) |
-| 10. Civic Life & Society (`civic-life-society`) | Public Institutions (`public-institutions`) · Public Budgets (`public-budgets`) · Elections & Representation (`elections-representation`) · Local Government (`local-government`) · How Laws Are Made (`how-laws-are-made`) · Public Services (`public-services`) · Rights & Responsibilities (`rights-responsibilities`) · Media & Information Literacy (`media-information-literacy`) · Policy Trade-offs (`policy-trade-offs`) · Community Planning (`community-planning`) |
+## Portfolio implementation contract after approval
 
-This directory preserves the earlier topic coverage across the 100 categories. Learn-how-it-works material lives throughout the systems and science collections. Games, DIY, toy simulations, discovery, generators, visualization, daily challenges, homepage building, multiplayer, music, words, art, nature and retro each have explicit homes. Use cross-links and tags for related pages. Keep one canonical category per module.
+- Maintain one typed registry of immutable category and site IDs. Allocate 100 ordered positions to each category. Example position ID `C01-001` means category 1, position 1. Keep IDs independent of titles. Generate stable, shareable category and site routes from the registry. Keep preview file hashes separate from production URLs.
+- Use ID, category, slug, title, intent, core activity, result, visual assets, owner division, related sites, accessibility, disclosures and publish state per site. Reserve optional custom domains as verified aliases of canonical routes. A custom domain requires ownership, configuration and explicit authorization. Keep the directory functional on the primary host.
+- Portfolio pages share a centered, compact design. Show the full category directory, short labels, topic emoji or icons, optional useful illustrations, and prominent search. Provide direct category access, Back, and mobile touch targets. A category page can surface a handful of existing sites, then list or paginate its positions in planning view. Public view counts and links only published sites. Share search and browse state where appropriate.
+- Site manifests select a shared interaction renderer where it fits. Provide an isolated, typed route and an extension point for bespoke sites. Load only the selected site runtime. Preserve consistent identity, keyboard access, reduced motion, help, and routing across all sites. Give each site an intentional activity-focused layout.
+- Separate AdigunBored’s editorial lists, moods, arcade filters, layout preferences, featured images, local session stats, and clearable history from the portfolio registry interface. Search discovers approved internal sites. Keep categories, Arcade, Moods, Updates, help and feedback from header to footer. Use real content and counts.
+- For Internet Explorer sites, use an illustrated dark stage with original device drawings and animated events. The active path, network/sequence view, steps, timeline and inspector derive from the same simulation cursor. Support Play/Pause, Previous, Next, Restart, speed, and reduced motion. Use synthetic scenarios and reserved example addresses. Avoid real traffic capture or targeting.
+- For all others, put the primary interaction and visible result ahead of explanation. Keep required instructions short, offer details on demand, and use original artwork and content. Trade simulators use fictional data and explicit assumptions. Civic content uses verified, dated sources. Bible content requires rights clearance. DIY content needs practical safety and source review.
 
-### Design the 100 slots before writing the titles
+## Phase 0 acceptance and later production milestones
 
-Give every category an editorial brief with a visitor promise, category boundaries, suitable interaction types, source and rights needs, and ten topic families. Assign ten experiences per family. Give each item a meaningful action, a result the visitor can observe, and a clear reason to spend time on it. An item may teach, entertain, help someone make something, or combine those goals. Derive ideas from the subject and user action. Use the grids for coverage and accountability.
+Review all 100 categories and confirm each exposes 100 ordered positions without duplicate IDs. Verify navigation across the first and last category, slot lookup, category filtering, and the four sample sites. Check layouts at phone, tablet and laptop widths. Record which checks ran. Owners should decide whether the categories, the split between portfolio and AdigunBored, and the four visual directions are right before implementation.
 
-For **Internet & Protocols**, start with these ten families: addresses, name lookup, routing, local links, delivery and retries, encrypted connections, browser requests, caches, real-time messages, and outage diagnosis. The name-lookup family has space for ten distinct interactions. Examples include tracing a lookup, comparing a cached and uncached answer, stepping through an expired record, and matching names to synthetic record types. A single DNS simulator with ten settings is one module. A separate experience earns a slot when its main interaction or outcome warrants its own visit.
+After Phase 0 approval, fill the 10,000 slots with distinct original site concepts using ten topic families per category and ten concepts per family. Each concept needs a distinct user action or learning outcome. Keep the original seed inventory traceable, flag overlaps, and require editorial review before turning an idea into a build specification. Export a machine-readable registry and a reviewable catalog from the same records. Validate 100 categories, 100 concepts per category, 10,000 total, unique routes, all five divisions represented, and separate planned, built, verified and published counts.
 
-For **Public Budgets**, families could include revenue, public services, capital projects, trade-offs, fiscal calendars, borrowing, maintenance, emergency reserves, community input and budget transparency. A visitor balancing a fictional library budget and a visitor tracing how a road repair moves from a proposal to an appropriation perform meaningfully different activities. Use fictional numbers with stated assumptions.
+Build in reviewable slices. First aim for a verified site in each category, then milestones of 1,000, 5,000 and 10,000. Verify actual behavior, content, accessibility, responsive visuals and deep links. Never claim the full build based on the count of positions or ideas. Merge and deploy each passing increment as it is ready. Record the before-merge checks and verify the deployed revision.
 
-Use the same discipline for creative and play categories. For **Sound & Music**, a pulse sequencer, a rhythm transcription puzzle, and a tool for comparing timbres each offer a different experience. Recoloring a sequencer comes under customization for the original module.
-
-### Visitor navigation at scale
-
-- Home shows the ten collections and a focused selection of published pages. The category directory shows all 100 with collection filters. Keep the header small on phones. Provide an All Categories destination, a short collection menu and a keyboard-friendly search entry.
-- Give each collection a landing page at /collections/{collection}/ with its 10 category cards. Give each category a page at /category/{category}/. Keep experiences at /{category}/{slug}/. Show Home → Collection → Category → Experience in breadcrumbs. Add related experiences from another category when there is a genuine connection.
-- On category pages, show published counts, paginate at 24 cards and preserve filter and page state in the URL. Provide Play, Learn, Make and Discover intent filters. Use a shareable browse state. Distinguish these filters from collections and the five division tags.
-- **Surprise Me** supports the whole published site or the current filter. Announce the scope. In Phase 0 avoid the current or most recent choice when there is an alternative. At scale use a short session history to avoid repeats and offer another experience from the destination. For an empty scope, offer the all-site choice explicitly.
-- Index only published modules. Build lightweight per-locale search summaries and lazy-load search data when needed. At scale shard results or use an equivalent measured approach. Keep renderer configs out of the catalog index. Verify meaningful queries at 100, 1,000 and 10,000 records using unpublished synthetic fixtures. Never expose fixture records or show planned counts as available experiences.
-- Offer editorial discovery routes after the prototype, beginning with **I have two minutes**, **Make something**, and **Teach me something**. Use duration and action metadata so those links predict what will happen. Keep browsing useful without sign-in.
-
-### Editorial and production workflow
-
-Phase 1 delivers one reviewable Markdown taxonomy and a machine-readable catalog ledger generated from the same records. Each record includes stable ID, collection, canonical category, family, slug, primary division and optional secondary divisions, module type, user intent, title, one-line pitch, core action, visible outcome, brand rationale, template dependencies, disclosure needs, source or rights requirements, estimated duration, and status. Give each category a three-item pilot slate selected for contrast of interaction. Keep public UI counts tied to published entries only.
-
-Generate a validation report with 10 collections, 10 categories in each, 10 families per category, 10 records per family, 100 records per category and exactly 10,000 total. Verify contiguous taxonomy IDs, immutable module identifiers, unique canonical paths, valid references and coverage across all five divisions. Flag near-duplicates using normalized title and action/outcome text, then review flagged pairs. Record the review decision. Generate the Markdown from the ledger so it can be reviewed by category and maintained without divergent copies.
-
-Use editorial states **idea → specified → built → verified → published**. Each promotion has evidence: a defined interaction, implemented renderer, checks against the acceptance case, then release approval and the published route. Only published modules enter discovery and public counts. Keep renderer additions tied to a verified interaction need.
-
-After the three-module prototype and Phase 1 approval, plan publication in cumulative milestones of **100, 1,000, 5,000 and 10,000**. At 100, aim for one verified experience in every category to test actual breadth. At 1,000, aim for ten per category and evaluate search, accessibility and editorial throughput. At 5,000 and 10,000, enforce the same publication checks and measure browse performance and coverage. Every milestone counts actual working pages. Require approved release slices for the implementation effort. Keep the project status explicit if some category has a rights, moderation, safety or technical dependency.
-
-### Division anchors and original examples
-
-- **Elektroniker** — Relay Race Board. Trace a virtual control input and work out which indicator changes.
-- **Trading** — Fee Drag. Compare fictional transaction costs at different activity levels with visible assumptions.
-- **Artificial Intelligence** — Train a Shape Sorter. Label shapes, test held-out examples, and inspect how label imbalance changes errors.
-- **Evangelism** — Parable Story Map. Arrange scenes in order and explore the passage with rights-cleared material.
-- **Politics** — Public Budget Table. Make trade-offs in a fictional municipal budget and inspect how services are affected.
-
-Keep the existing owner-provided seed inventory. Map each seed to its new home and create original equivalents for cues based on existing products. Consolidate true overlaps and keep a traceability record. Include the repo review, brand map, template map, policy summary and gap analysis in the Phase 1 delivery.
+## Reference annex
 
 ### Owner-provided seed inventory
 
