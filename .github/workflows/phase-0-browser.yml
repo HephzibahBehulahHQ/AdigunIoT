@@ -128,8 +128,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('31 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 31);
+                await frame.getByText('32 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 32);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -421,7 +421,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('31 playable', {exact:true}).waitFor();
+                await frame.getByText('32 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -526,6 +526,24 @@ jobs:
                 assert.ok(reactionBounds.y+reactionBounds.height<=page.viewportSize().height,'Reaction controls fit onscreen');
                 await withinViewport(frame.locator('html'));
                 await page.screenshot({path:name+'-reaction-timer.png'});
+                await page.goto('https://adigun.test/#demo/home/play-now');
+                await frame.getByRole('link',{name:'Emoji Decoder',exact:true}).click();
+                await page.waitForURL(/#demo\/home\/concept\/1\/19$/);
+                const decoder=frame.locator('.emoji-stage');
+                await decoder.getByRole('img',{name:'Rain and a bow'}).waitFor();
+                const guess=decoder.getByRole('button',{name:'Raindrop',exact:true});
+                if(name==='phone') await guess.tap(); else await guess.press('Enter');
+                await decoder.getByText('Try combining the two clues.').waitFor();
+                for(const answer of ['Rainbow','Starfish','Moonlight']){
+                  await decoder.getByRole('button',{name:answer,exact:true}).click();
+                }
+                await decoder.getByText('All 3 decoded!').waitFor();
+                await decoder.getByRole('button',{name:/Replay/}).click();
+                await decoder.getByText('Puzzle 1 of 3').waitFor();
+                const decoderBounds=await decoder.boundingBox();
+                assert.ok(decoderBounds.y+decoderBounds.height<=page.viewportSize().height,'Decoder controls fit onscreen');
+                await withinViewport(frame.locator('html'));
+                await page.screenshot({path:name+'-emoji-decoder.png'});
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
