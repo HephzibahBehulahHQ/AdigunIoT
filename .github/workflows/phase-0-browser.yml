@@ -386,7 +386,7 @@ jobs:
                 await page.getByText('Try CORD.').waitFor();
                 for(const choice of ['CORD','CARD','WARD','WARM']) await word(choice).click();
                 await page.getByText('Ladder complete in 4 moves!').waitFor();
-                await page.getByLabel('Puzzle').selectOption('1');
+                await page.getByLabel('Puzzle',{exact:true}).selectOption('1');
                 for(const choice of ['COT','DOT','DOG']) await word(choice).click();
                 await page.getByText('Ladder complete in 3 moves!').waitFor();
                 await page.getByRole('button',{name:/Reset/}).click();
