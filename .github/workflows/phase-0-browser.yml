@@ -128,6 +128,7 @@ jobs:
                 for (const choice of ['Nest','Tree','Egg','Goat','Train']) await frame.getByRole('button', { name: choice, exact: true }).click();
                 await frame.getByText('Chain complete! You linked five words.').waitFor();
                 await withinViewport(frame.locator('html'));
+                await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('button', { name: /Surprise Me/ }).click();
                 await page.waitForURL(url => /#demo\/home\/(?:protocol|signal|circuit|relay|budget|calibration|grid-balance|concept\/\d+\/\d+)$/.test(url.hash) && !url.hash.endsWith('/1/2'));
                 assert.equal(await frame.getByText('In the build queue.').count(), 0);
@@ -215,6 +216,22 @@ jobs:
                 await page.screenshot({path: name + '-grid.png'});
                 await frame.getByRole('button', {name: /Reset/}).click();
                 await frame.getByText('Supply 0 · Demand 8 · 8 units short.').waitFor();
+                if(name==='phone') await page.setViewportSize({width:360,height:640});
+                for(const game of ['signal','home/concept/1/1','home/concept/1/2','home/concept/1/4','home/concept/1/6']){
+                  await page.evaluate(hash=>location.hash=hash,'#demo/'+game);
+                  await frame.getByRole('link',{name:'Arcade',exact:true}).waitFor();
+                  const gameFits=await frame.locator('html').evaluate(e=>e.scrollHeight <= e.clientHeight + 2 && e.scrollWidth <= e.clientWidth + 2);
+                  assert.equal(gameFits,true, name+' game fits: '+game);
+                  const exitVisible=await frame.getByRole('link',{name:'Arcade',exact:true}).evaluate(e=>e.getBoundingClientRect().bottom<=innerHeight);
+                  assert.equal(exitVisible,true);
+                }
+                await page.evaluate(()=>location.hash='#demo/signal');
+                await frame.getByRole('button',{name:/Start round/}).click();
+                await frame.getByRole('button',{name:/Pause/}).click();
+                await frame.getByText(/Paused · Score/).waitFor();
+                await frame.getByRole('button',{name:/Resume/}).click();
+                await frame.getByRole('button',{name:/Pause/}).waitFor();
+                await page.screenshot({path:name+'-one-screen-game.png'});
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
