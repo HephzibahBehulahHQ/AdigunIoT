@@ -128,8 +128,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('28 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 28);
+                await frame.getByText('29 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 29);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -421,7 +421,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('28 playable', {exact:true}).waitFor();
+                await frame.getByText('29 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -466,6 +466,26 @@ jobs:
                 assert.ok(gameFrame.y + gameFrame.height <= page.viewportSize().height, 'Lantern Grid fits on screen');
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-lantern-grid.png'});
+                await page.goBack();
+                await frame.getByRole('link',{name:'Number Bridge',exact:true}).click();
+                await page.waitForURL('**/sites/number-bridge/');
+                const bridge=page.getByRole('region',{name:'Number Bridge puzzle'});
+                await bridge.getByText('Puzzle 1 · Sum 2 / 15').waitFor();
+                const firstTile=bridge.getByRole('button',{name:'row 1, column 2, number 3'});
+                if(name==='phone') await firstTile.tap(); else await firstTile.press('Enter');
+                await bridge.getByText('Puzzle 1 · Sum 5 / 15').waitFor();
+                await bridge.getByRole('button',{name:/Undo/}).click();
+                await bridge.getByText('Puzzle 1 · Sum 2 / 15').waitFor();
+                for(const label of ['row 1, column 2, number 3','row 2, column 2, number 4','row 2, column 3, number 5','Finish, row 3, column 3, number 1']){
+                  await bridge.getByRole('button',{name:label,exact:true}).click();
+                }
+                await bridge.getByText(/Bridge complete/).waitFor();
+                await bridge.getByRole('button',{name:/Next puzzle/}).click();
+                await bridge.getByText('Puzzle 2 · Sum 4 / 20').waitFor();
+                const bridgeBounds=await bridge.boundingBox();
+                assert.ok(bridgeBounds.y+bridgeBounds.height<=page.viewportSize().height,'Number Bridge fits onscreen');
+                await withinViewport(page.locator('html'));
+                await page.screenshot({path:name+'-number-bridge.png'});
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
