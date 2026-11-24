@@ -36,7 +36,9 @@ jobs:
           const fs = require('node:fs');
           const { chromium } = require(process.env.RUNNER_TEMP + '/adigun-qa/node_modules/playwright');
           const entry = fs.readFileSync('index.html', 'utf8');
-          const shapeSorter = fs.readFileSync('sites/shape-sorter/index.html', 'utf8');
+          const standalone = Object.fromEntries(['shape-sorter','pendulum-playground'].map(key =>
+            ['/sites/'+key+'/',fs.readFileSync('sites/'+key+'/index.html','utf8')]));
+
           const html = fs.readFileSync('docs/preview/AdigunIoT-portfolio-preview.html', 'utf8');
           async function withinViewport(locator) {
             assert.equal(await locator.evaluate(e => e.scrollWidth <= e.clientWidth + 2), true, 'horizontal overflow');
@@ -54,7 +56,7 @@ jobs:
                   if (url.origin !== 'https://adigun.test') return route.abort();
                   const body = url.pathname === '/' ? entry :
                     url.pathname === '/docs/preview/AdigunIoT-portfolio-preview.html' ? html :
-                    url.pathname === '/sites/shape-sorter/' ? shapeSorter : null;
+                    standalone[url.pathname];
                   return body ? route.fulfill({contentType:'text/html; charset=utf-8', body}) : route.abort();
                 });
                 await page.goto('https://adigun.test/');
@@ -278,6 +280,25 @@ jobs:
                 await page.getByRole('link',{name:/Portfolio/}).click();
                 await page.waitForURL(/#category\/ai-foundations$/);
                 await page.getByRole('heading',{name:/AI Foundations/}).waitFor();
+                await page.getByRole('link', {name:'Home',exact:true}).click();
+                await page.getByRole('link',{name:/Physics Playgrounds 100 slots/}).first().click();
+                await page.getByRole('link',{name:/Open preview/}).click();
+                await page.waitForURL('**/sites/pendulum-playground/');
+                await page.getByText('One full swing: 2.01 s').waitFor();
+                await page.getByRole('slider',{name:'Length'}).press('End');
+                await page.getByText('One full swing: 2.84 s').waitFor();
+                await page.getByLabel('Gravity').selectOption('1.62');
+                await page.getByText('One full swing: 6.98 s').waitFor();
+                await page.getByRole('button',{name:/Start/}).press('Enter');
+                await page.getByRole('button',{name:/Pause/}).waitFor();
+                assert.equal(await page.locator('.arm').evaluate(el=>getComputedStyle(el).animationName==='none'),name==='phone');
+                await page.getByRole('button',{name:/Pause/}).click();
+                await page.getByRole('button',{name:/Reset/}).click();
+                await page.getByText('One full swing: 2.01 s').waitFor();
+                await withinViewport(page.locator('html'));
+                const bounds=await page.locator('.bench').evaluate(el=>({bottom:el.getBoundingClientRect().bottom+scrollY,height:innerHeight}));
+                assert.ok(bounds.bottom<=bounds.height, 'pendulum controls fit: '+JSON.stringify(bounds));
+                await page.screenshot({path:name+'-pendulum.png'});
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
