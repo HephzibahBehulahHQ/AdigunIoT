@@ -131,8 +131,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('111 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 111);
+                await frame.getByText('112 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 112);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -424,7 +424,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('111 playable', {exact:true}).waitFor();
+                await frame.getByText('112 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -588,7 +588,7 @@ jobs:
                 await playableSearch.fill('nothing matches xyz');
                 await playableResults.getByText(/No playable activities match/).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
-                assert.equal(await playableResults.getByRole('link').count(),111);
+                assert.equal(await playableResults.getByRole('link').count(),112);
                 assert.equal(await playableSearch.evaluate(input=>document.activeElement===input),true);
                 await playableSearch.fill('terrain trek');
                 await playableResults.getByRole('link',{name:'Terrain Trek',exact:true}).click();
@@ -615,7 +615,7 @@ jobs:
                 await frame.locator('#play-results').getByRole('link',{name:'Emoji Decoder',exact:true}).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
                 await page.waitForURL(/play-now$/);
-                assert.equal(await frame.locator('#play-results a').count(),111);
+                assert.equal(await frame.locator('#play-results a').count(),112);
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/home/play-now?q=paper+lantern');
                 await frame.getByRole('link',{name:'Make a Paper Lantern Model',exact:true}).click();
@@ -1429,6 +1429,16 @@ jobs:
                 for(const [sample,feedback] of [['A','Both demo checks passed'],['B','Wrong previous block link'],['C','Hash exceeds the target']]){
                   const blockControl=frame.getByRole('button',{name:'Check sample '+sample,exact:true});
                   if(name==='phone') await blockControl.tap(); else await blockControl.press('Enter');
+                  await frame.locator('#model-result').filter({hasText:feedback}).waitFor();
+                }
+                await frame.locator('[data-model="reset"]').click();
+                await frame.getByText('Reset.',{exact:true}).waitFor();
+                await withinViewport(frame.locator('html'));
+                await page.goto('https://adigun.test/#demo/home/concept/0/2');
+                await frame.getByRole('heading',{name:/How HTTPS Handshakes/}).waitFor();
+                for(const [label,feedback] of [['Start handshake','exchange key shares'],['Reject certificate','connection stops'],['Send request','Complete the handshake'],['Start handshake','exchange key shares'],['Verify certificate','Site identity verified'],['Send request','protected channel']]){
+                  const control=frame.getByRole('button',{name:label,exact:true});
+                  if(name==='phone') await control.tap(); else await control.press('Enter');
                   await frame.locator('#model-result').filter({hasText:feedback}).waitFor();
                 }
                 await frame.locator('[data-model="reset"]').click();
