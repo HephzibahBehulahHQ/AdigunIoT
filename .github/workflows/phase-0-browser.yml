@@ -1228,7 +1228,8 @@ jobs:
                 assert.equal(await page.locator('body').evaluate(body=>body.getBoundingClientRect().bottom<=innerHeight),true,'Pulley Lab must fit on one screen');
                 await page.screenshot({path:name+'-pulley-lift-lab.png'});
                 await page.getByRole('link',{name:/Portfolio/}).click();
-                await page.waitForURL('**/#home');
+                await page.waitForURL(/AdigunIoT-portfolio-preview\.html#home$/);
+                await page.locator('.board > .panel').first().waitFor();
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
