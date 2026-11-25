@@ -131,8 +131,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('87 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 87);
+                await frame.getByText('89 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 89);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -424,7 +424,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('87 playable', {exact:true}).waitFor();
+                await frame.getByText('89 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -588,7 +588,7 @@ jobs:
                 await playableSearch.fill('nothing matches xyz');
                 await playableResults.getByText(/No playable activities match/).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
-                assert.equal(await playableResults.getByRole('link').count(),87);
+                assert.equal(await playableResults.getByRole('link').count(),89);
                 assert.equal(await playableSearch.evaluate(input=>document.activeElement===input),true);
                 await playableSearch.fill('terrain trek');
                 await playableResults.getByRole('link',{name:'Terrain Trek',exact:true}).click();
@@ -615,7 +615,7 @@ jobs:
                 await frame.locator('#play-results').getByRole('link',{name:'Emoji Decoder',exact:true}).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
                 await page.waitForURL(/play-now$/);
-                assert.equal(await frame.locator('#play-results a').count(),87);
+                assert.equal(await frame.locator('#play-results a').count(),89);
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/home/play-now?q=paper+lantern');
                 await frame.getByRole('link',{name:'Make a Paper Lantern Model',exact:true}).click();
@@ -1158,6 +1158,26 @@ jobs:
                 await frame.getByText(/0\.2 ms round trip · 30 km away/).waitFor();
                 await frame.getByRole('button',{name:'Scan distant rain',exact:true}).click();
                 await frame.getByText(/0\.6 ms round trip · 90 km away/).waitFor();
+                await frame.locator('[data-model="reset"]').click();
+                await frame.getByText('Reset.',{exact:true}).waitFor();
+                await withinViewport(frame.locator('html'));
+                await page.goto('https://adigun.test/#demo/home/play-now?q=wind+turbine');
+                await frame.getByRole('link',{name:'How a Wind Turbine Adjusts Its Blades',exact:true}).click();
+                const strongWind=frame.getByRole('button',{name:'Toggle strong wind',exact:true});
+                if(name==='phone') await strongWind.tap(); else await strongWind.press('Enter');
+                await frame.getByText(/High load/).waitFor();
+                await frame.getByRole('button',{name:'Adjust blade pitch',exact:true}).click();
+                await frame.getByText(/Power limited/).waitFor();
+                await frame.locator('[data-model="reset"]').click();
+                await frame.getByText('Reset.',{exact:true}).waitFor();
+                await withinViewport(frame.locator('html'));
+                await page.goto('https://adigun.test/#demo/home/play-now?q=refrigerator');
+                await frame.getByRole('link',{name:'How a Refrigerator Moves Heat',exact:true}).click();
+                const advanceCycle=frame.getByRole('button',{name:'Advance cycle',exact:true});
+                for(const effect of [/absorbs heat/,/pressure and temperature rise/,/releases heat/,/pressure and temperature drop/]){
+                  if(name==='phone') await advanceCycle.tap(); else await advanceCycle.press('Enter');
+                  await frame.locator('#model-result').filter({hasText:effect}).waitFor();
+                }
                 await frame.locator('[data-model="reset"]').click();
                 await frame.getByText('Reset.',{exact:true}).waitFor();
                 await withinViewport(frame.locator('html'));
