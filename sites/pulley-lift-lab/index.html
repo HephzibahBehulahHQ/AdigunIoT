@@ -11,7 +11,7 @@ header{background:var(--panel);border-bottom:1px solid var(--line)}header .wrap{
 main{padding:8px 0}h1{margin:0 0 4px;font-size:clamp(21px,5vw,28px)}p{margin:4px 0 8px}.lab{text-align:center;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:8px}
 .diagram{position:relative;height:100px;overflow:hidden;width:180px;margin:0 auto;border-top:4px solid var(--line)}.rope{position:absolute;inset:0 42px 25px;border:3px solid #ffd276;border-top:0;border-radius:0 0 20px 20px}.rope[data-lines="1"]{border-right:0;border-bottom:0;border-radius:0}.rope[data-lines="4"]::after{content:'';position:absolute;inset:0 19px 0;border:3px solid #ffd276;border-top:0;border-radius:0 0 12px 12px}
 .load{position:absolute;bottom:0;left:50%;translate:-50% 0;background:var(--accent);color:#10232b;padding:3px 8px;border-radius:6px;font-weight:800;transition:transform .25s ease}.load.lifted{transform:translateY(-26px)}.controls{display:flex;justify-content:center;gap:5px;flex-wrap:wrap}button{min-height:44px;border:1px solid var(--line);border-radius:8px;background:#223e50;color:var(--ink);font:inherit;padding:4px 8px;cursor:pointer}button[aria-pressed=true]{background:var(--accent);color:#10232b}a:focus-visible,button:focus-visible{outline:3px solid #ffd276;outline-offset:2px}#result{min-height:2.7em;margin:6px 0;color:var(--accent);font-weight:700}
-@media(max-height:460px){.diagram{height:76px}}@media(prefers-reduced-motion:reduce){.load{transition:none}}
+@media(max-height:460px){header .wrap{min-height:44px}header img{width:24px;height:24px}main{padding:4px 0}main>p{font-size:14px;margin:2px 0 5px}.lab{padding:5px}.diagram{height:58px}.controls{display:grid;grid-auto-flow:column;grid-auto-columns:1fr}.controls button{font-size:14px;padding:3px 2px}#result{font-size:14px;min-height:2.4em;margin:4px 0}}@media(prefers-reduced-motion:reduce){.load{transition:none}}
 </style>
 </head>
 <body>
@@ -29,6 +29,7 @@ main{padding:8px 0}h1{margin:0 0 4px;font-size:clamp(21px,5vw,28px)}p{margin:4px
 </section>
 </main>
 <script>
+if(location.protocol==='file:')document.querySelector('header a').href='../../AdigunIoT-portfolio-preview.html#home';
 const buttons=[...document.querySelectorAll('button[data-lines]')];
 const rope=document.querySelector('.rope');
 const load=document.querySelector('.load');
