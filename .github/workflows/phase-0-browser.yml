@@ -590,6 +590,17 @@ jobs:
                 await playableSearch.fill('terrain trek');
                 await playableResults.getByRole('link',{name:'Terrain Trek',exact:true}).click();
                 await page.waitForURL('**/sites/terrain-trek/');
+                await page.goto('https://adigun.test/#demo/home/concept/13/17');
+                const moon=frame.getByRole('region',{name:'Moon phase explorer'});
+                await moon.getByText('New Moon · 1 of 8').waitFor();
+                const previousPhase=moon.getByRole('button',{name:/Previous phase/});
+                if(name==='phone') await previousPhase.tap(); else await previousPhase.press('Enter');
+                await moon.getByText('Waning Crescent · 8 of 8').waitFor();
+                const nextPhase=moon.getByRole('button',{name:/Next phase/});
+                for(let step=0;step<5;step++) await nextPhase.click();
+                await moon.getByText('Full Moon · 5 of 8').waitFor();
+                assert.ok(await nextPhase.evaluate(button=>button.getBoundingClientRect().bottom<=innerHeight));
+                await withinViewport(frame.locator('html'));
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
