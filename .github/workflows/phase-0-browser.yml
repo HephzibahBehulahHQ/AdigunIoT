@@ -131,8 +131,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('67 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 67);
+                await frame.getByText('68 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 68);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -424,7 +424,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('67 playable', {exact:true}).waitFor();
+                await frame.getByText('68 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -588,7 +588,7 @@ jobs:
                 await playableSearch.fill('nothing matches xyz');
                 await playableResults.getByText(/No playable activities match/).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
-                assert.equal(await playableResults.getByRole('link').count(),67);
+                assert.equal(await playableResults.getByRole('link').count(),68);
                 assert.equal(await playableSearch.evaluate(input=>document.activeElement===input),true);
                 await playableSearch.fill('terrain trek');
                 await playableResults.getByRole('link',{name:'Terrain Trek',exact:true}).click();
@@ -615,7 +615,7 @@ jobs:
                 await frame.locator('#play-results').getByRole('link',{name:'Emoji Decoder',exact:true}).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
                 await page.waitForURL(/play-now$/);
-                assert.equal(await frame.locator('#play-results a').count(),67);
+                assert.equal(await frame.locator('#play-results a').count(),68);
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/home/play-now?q=paper+lantern');
                 await frame.getByRole('link',{name:'Make a Paper Lantern Model',exact:true}).click();
@@ -946,6 +946,20 @@ jobs:
                   assert.equal(await mediaAnswer.getAttribute('aria-pressed'),'false');
                   await withinViewport(frame.locator('html'));
                 }
+                await page.goto('https://adigun.test/#demo/home/play-now?q=image+compression');
+                await frame.getByRole('link',{name:'How Image Compression Saves Space',exact:true}).click();
+                const packPixels=frame.getByRole('button',{name:'Pack runs',exact:true});
+                const unpackPixels=frame.getByRole('button',{name:'Unpack runs',exact:true});
+                if(name==='phone') await packPixels.tap(); else await packPixels.press('Enter');
+                await frame.getByText('Six pixels become 4 fields in 2 runs.',{exact:true}).waitFor();
+                await unpackPixels.click();
+                await frame.getByText(/Unpacked all six pixels/).waitFor();
+                await frame.getByRole('button',{name:'Alternating row',exact:true}).click();
+                await packPixels.click();
+                await frame.getByText('Six pixels become 12 fields in 6 runs.',{exact:true}).waitFor();
+                await unpackPixels.click();
+                await frame.getByText(/Unpacked all six pixels/).waitFor();
+                await withinViewport(frame.locator('html'));
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
