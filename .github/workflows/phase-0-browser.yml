@@ -128,8 +128,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('36 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 36);
+                await frame.getByText('40 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 40);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -421,7 +421,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('36 playable', {exact:true}).waitFor();
+                await frame.getByText('40 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -565,6 +565,16 @@ jobs:
                 assert.equal(await arcadeList.getByRole('link').count(),2);
                 await withinViewport(frame.locator('html'));
                 await page.screenshot({path:name+'-arcade-filters.png'});
+                for(const [title,answer,explanation] of [["Why Leaves Change Color","Chlorophyll","As chlorophyll breaks down, yellow and orange pigments already in the leaf become easier to see."],["What Makes a Rainbow","Raindrops","Light bends and reflects inside raindrops. The colors bend by different amounts."],["Why the Moon Has Phases","We see different amounts of its sunlit half","As the Moon orbits Earth, we see different portions of its sunlit half."],["Where Sound Can Travel","Air","Sound travels as vibrations through matter, including air. An empty vacuum has no matter to carry those vibrations."]]){
+                  await page.goto('https://adigun.test/#demo/home/play-now');
+                  await frame.getByRole('link',{name:title,exact:true}).click();
+                  const scienceAnswer=frame.getByRole('button',{name:answer,exact:true});
+                  if(name==='phone') await scienceAnswer.tap(); else await scienceAnswer.press('Enter');
+                  await frame.getByText(explanation,{exact:false}).waitFor();
+                  await frame.getByRole('button',{name:'Reset',exact:true}).click();
+                  assert.equal(await scienceAnswer.getAttribute('aria-pressed'),'false');
+                  await withinViewport(frame.locator('html'));
+                }
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
