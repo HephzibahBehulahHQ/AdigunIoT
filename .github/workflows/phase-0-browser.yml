@@ -575,6 +575,21 @@ jobs:
                   assert.equal(await scienceAnswer.getAttribute('aria-pressed'),'false');
                   await withinViewport(frame.locator('html'));
                 }
+                await page.goto('https://adigun.test/#demo/home/play-now');
+                const playableSearch=frame.getByRole('searchbox',{name:'Find a playable activity'});
+                const playableResults=frame.locator('#play-results');
+                await playableSearch.fill('  MOON phases ');
+                await frame.getByText('1 match',{exact:true}).waitFor();
+                await playableResults.getByRole('link',{name:'Why the Moon Has Phases',exact:true}).waitFor();
+                assert.equal(await playableResults.getByRole('link').count(),1);
+                await playableSearch.fill('nothing matches xyz');
+                await playableResults.getByText(/No playable activities match/).waitFor();
+                await frame.getByRole('button',{name:/Clear/}).click();
+                assert.equal(await playableResults.getByRole('link').count(),40);
+                assert.equal(await playableSearch.evaluate(input=>document.activeElement===input),true);
+                await playableSearch.fill('terrain trek');
+                await playableResults.getByRole('link',{name:'Terrain Trek',exact:true}).click();
+                await page.waitForURL('**/sites/terrain-trek/');
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
