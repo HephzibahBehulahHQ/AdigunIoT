@@ -131,8 +131,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('98 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 98);
+                await frame.getByText('99 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 99);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -424,7 +424,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('98 playable', {exact:true}).waitFor();
+                await frame.getByText('99 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -588,7 +588,7 @@ jobs:
                 await playableSearch.fill('nothing matches xyz');
                 await playableResults.getByText(/No playable activities match/).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
-                assert.equal(await playableResults.getByRole('link').count(),98);
+                assert.equal(await playableResults.getByRole('link').count(),99);
                 assert.equal(await playableSearch.evaluate(input=>document.activeElement===input),true);
                 await playableSearch.fill('terrain trek');
                 await playableResults.getByRole('link',{name:'Terrain Trek',exact:true}).click();
@@ -615,7 +615,7 @@ jobs:
                 await frame.locator('#play-results').getByRole('link',{name:'Emoji Decoder',exact:true}).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
                 await page.waitForURL(/play-now$/);
-                assert.equal(await frame.locator('#play-results a').count(),98);
+                assert.equal(await frame.locator('#play-results a').count(),99);
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/home/play-now?q=paper+lantern');
                 await frame.getByRole('link',{name:'Make a Paper Lantern Model',exact:true}).click();
@@ -1271,6 +1271,27 @@ jobs:
                 await withinViewport(page.locator('html'));
                 assert.equal(await page.locator('body').evaluate(body=>body.getBoundingClientRect().bottom<=innerHeight),true,'Budget Builder must fit on one screen');
                 await page.screenshot({path:name+'-budget-builder.png'});
+                await page.getByRole('link',{name:/Portfolio/}).click();
+                await page.waitForURL(/AdigunIoT-portfolio-preview\.html#home$/);
+                await page.goto('https://adigun.test/#demo/home/play-now?q=solar+storage');
+                await frame.getByRole('link',{name:'Solar Storage Lab',exact:true}).click();
+                await page.waitForURL('**/sites/solar-storage-lab/');
+                const solarLab=page.getByRole('region',{name:'Solar storage simulation'});
+                const runPeriod=solarLab.getByRole('button',{name:/Run period/});
+                for(const feedback of [/4 kWh stored · 1 kWh unused/,/3 kWh supplied.*0 kWh unmet/,/1 kWh supplied.*1 kWh unmet/]){
+                  if(name==='phone') await runPeriod.tap(); else await runPeriod.press('Enter');
+                  await solarLab.getByRole('status').filter({hasText:feedback}).waitFor();
+                }
+                await solarLab.getByText(/Day complete · 1 kWh unmet/).waitFor();
+                const resetSolar=solarLab.getByRole('button',{name:/Reset/});
+                await resetSolar.click();
+                await solarLab.getByRole('button',{name:/Battery on/}).click();
+                await runPeriod.click();
+                await solarLab.getByRole('status').filter({hasText:/0 kWh stored · 5 kWh unused/}).waitFor();
+                await resetSolar.click();
+                await solarLab.getByText('0 / 4 kWh stored',{exact:true}).waitFor();
+                await withinViewport(page.locator('html'));
+                assert.equal(await page.locator('body').evaluate(body=>body.getBoundingClientRect().bottom<=innerHeight),true,'Solar Storage Lab must fit on one screen');
                 await page.getByRole('link',{name:/Portfolio/}).click();
                 await page.waitForURL(/AdigunIoT-portfolio-preview\.html#home$/);
                 assert.deepEqual(errors, []);
