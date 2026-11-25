@@ -131,8 +131,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('83 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 83);
+                await frame.getByText('84 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 84);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -424,7 +424,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('83 playable', {exact:true}).waitFor();
+                await frame.getByText('84 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -588,7 +588,7 @@ jobs:
                 await playableSearch.fill('nothing matches xyz');
                 await playableResults.getByText(/No playable activities match/).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
-                assert.equal(await playableResults.getByRole('link').count(),83);
+                assert.equal(await playableResults.getByRole('link').count(),84);
                 assert.equal(await playableSearch.evaluate(input=>document.activeElement===input),true);
                 await playableSearch.fill('terrain trek');
                 await playableResults.getByRole('link',{name:'Terrain Trek',exact:true}).click();
@@ -615,7 +615,7 @@ jobs:
                 await frame.locator('#play-results').getByRole('link',{name:'Emoji Decoder',exact:true}).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
                 await page.waitForURL(/play-now$/);
-                assert.equal(await frame.locator('#play-results a').count(),83);
+                assert.equal(await frame.locator('#play-results a').count(),84);
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/home/play-now?q=paper+lantern');
                 await frame.getByRole('link',{name:'Make a Paper Lantern Model',exact:true}).click();
@@ -1110,6 +1110,20 @@ jobs:
                 await frame.getByText(/1 second elapsed · 0 pulses/).waitFor();
                 await frame.getByRole('button',{name:'Add one pulse',exact:true}).click();
                 await frame.getByText(/1 second elapsed · 1 pulse/).waitFor();
+                await frame.locator('[data-model="reset"]').click();
+                await frame.getByText('Reset.',{exact:true}).waitFor();
+                await withinViewport(frame.locator('html'));
+                await page.goto('https://adigun.test/#demo/home/play-now?q=electric+motor');
+                await frame.getByRole('link',{name:'How an Electric Motor Turns',exact:true}).click();
+                const motorPower=frame.getByRole('button',{name:'Toggle power',exact:true});
+                if(name==='phone') await motorPower.tap(); else await motorPower.press('Enter');
+                await frame.getByText('Clockwise rotation.',{exact:true}).waitFor();
+                await frame.getByRole('button',{name:'Reverse current',exact:true}).click();
+                await frame.getByText('Counterclockwise rotation.',{exact:true}).waitFor();
+                await frame.getByRole('button',{name:'Reverse field',exact:true}).click();
+                await frame.getByText('Clockwise rotation.',{exact:true}).waitFor();
+                await motorPower.click();
+                await frame.getByText('Motor stopped. Power is off.',{exact:true}).waitFor();
                 await frame.locator('[data-model="reset"]').click();
                 await frame.getByText('Reset.',{exact:true}).waitFor();
                 await withinViewport(frame.locator('html'));
