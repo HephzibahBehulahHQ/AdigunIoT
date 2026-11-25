@@ -131,8 +131,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('51 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 51);
+                await frame.getByText('52 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 52);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -424,7 +424,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('51 playable', {exact:true}).waitFor();
+                await frame.getByText('52 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -588,7 +588,7 @@ jobs:
                 await playableSearch.fill('nothing matches xyz');
                 await playableResults.getByText(/No playable activities match/).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
-                assert.equal(await playableResults.getByRole('link').count(),51);
+                assert.equal(await playableResults.getByRole('link').count(),52);
                 assert.equal(await playableSearch.evaluate(input=>document.activeElement===input),true);
                 await playableSearch.fill('terrain trek');
                 await playableResults.getByRole('link',{name:'Terrain Trek',exact:true}).click();
@@ -615,7 +615,7 @@ jobs:
                 await frame.locator('#play-results').getByRole('link',{name:'Emoji Decoder',exact:true}).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
                 await page.waitForURL(/play-now$/);
-                assert.equal(await frame.locator('#play-results a').count(),51);
+                assert.equal(await frame.locator('#play-results a').count(),52);
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/home/play-now?q=paper+lantern');
                 await frame.getByRole('link',{name:'Make a Paper Lantern Model',exact:true}).click();
@@ -737,6 +737,17 @@ jobs:
                 await frame.getByText(/8× the power at 4 m\/s/).waitFor();
                 await frame.getByRole('button',{name:'12 m/s',exact:true}).click();
                 await frame.getByText(/27× the power at 4 m\/s/).waitFor();
+                await frame.locator('[data-model="reset"]').click();
+                await frame.getByText('Reset.',{exact:true}).waitFor();
+                await withinViewport(frame.locator('html'));
+                await page.goto('https://adigun.test/#demo/home/play-now?q=straw+tower');
+                await frame.getByRole('link',{name:'Build a Straw Tower',exact:true}).click();
+                const shiftWeight=frame.getByRole('button',{name:'Shift weight',exact:true});
+                if(name==='phone') await shiftWeight.tap(); else await shiftWeight.press('Enter');
+                await frame.getByText(/The tower tips/).waitFor();
+                await frame.getByRole('button',{name:'12 cm base',exact:true}).click();
+                await shiftWeight.click();
+                await frame.getByText(/The tower stays up/).waitFor();
                 await frame.locator('[data-model="reset"]').click();
                 await frame.getByText('Reset.',{exact:true}).waitFor();
                 await withinViewport(frame.locator('html'));
