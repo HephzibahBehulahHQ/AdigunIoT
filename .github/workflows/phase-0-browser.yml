@@ -1151,6 +1151,16 @@ jobs:
                 await frame.locator('[data-model="reset"]').click();
                 await frame.getByText('Reset.',{exact:true}).waitFor();
                 await withinViewport(frame.locator('html'));
+                await page.goto('https://adigun.test/#demo/home/play-now?q=weather+radar');
+                await frame.getByRole('link',{name:'How a Weather Radar Sees Rain',exact:true}).click();
+                const nearbyRain=frame.getByRole('button',{name:'Scan nearby rain',exact:true});
+                if(name==='phone') await nearbyRain.tap(); else await nearbyRain.press('Enter');
+                await frame.getByText(/0\.2 ms round trip · 30 km away/).waitFor();
+                await frame.getByRole('button',{name:'Scan distant rain',exact:true}).click();
+                await frame.getByText(/0\.6 ms round trip · 90 km away/).waitFor();
+                await frame.locator('[data-model="reset"]').click();
+                await frame.getByText('Reset.',{exact:true}).waitFor();
+                await withinViewport(frame.locator('html'));
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
