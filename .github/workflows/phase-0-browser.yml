@@ -131,8 +131,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('113 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 113);
+                await frame.getByText('114 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 114);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -424,7 +424,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('113 playable', {exact:true}).waitFor();
+                await frame.getByText('114 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -588,7 +588,7 @@ jobs:
                 await playableSearch.fill('nothing matches xyz');
                 await playableResults.getByText(/No playable activities match/).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
-                assert.equal(await playableResults.getByRole('link').count(),113);
+                assert.equal(await playableResults.getByRole('link').count(),114);
                 assert.equal(await playableSearch.evaluate(input=>document.activeElement===input),true);
                 await playableSearch.fill('terrain trek');
                 await playableResults.getByRole('link',{name:'Terrain Trek',exact:true}).click();
@@ -615,7 +615,7 @@ jobs:
                 await frame.locator('#play-results').getByRole('link',{name:'Emoji Decoder',exact:true}).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
                 await page.waitForURL(/play-now$/);
-                assert.equal(await frame.locator('#play-results a').count(),113);
+                assert.equal(await frame.locator('#play-results a').count(),114);
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/home/play-now?q=paper+lantern');
                 await frame.getByRole('link',{name:'Make a Paper Lantern Model',exact:true}).click();
@@ -1471,8 +1471,26 @@ jobs:
                 assert.equal(await activityGroup.inputValue(),'games');
                 await activityGroup.selectOption('');
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                assert.equal(await activityResults.getByRole('link').count(),113);
+                assert.equal(await activityResults.getByRole('link').count(),114);
                 await withinViewport(frame.locator('html'));
+                await page.goto('https://adigun.test/#demo/home/play-now?q=paper+mirror&group=standalone');
+                await frame.getByRole('link',{name:'Paper Mirror',exact:true}).click();
+                await page.waitForURL('**/sites/paper-mirror/');
+                const mirror=page.getByRole('region',{name:'Paper mirror puzzle'});
+                for(const point of ['Row 1, column 2','Row 2, column 1','Row 2, column 2','Row 3, column 1']){
+                  const tile=mirror.getByRole('button',{name:point,exact:true});
+                  if(name==='phone') await tile.tap(); else await tile.press('Enter');
+                }
+                await mirror.getByRole('status').filter({hasText:'Mirror complete!'}).waitFor();
+                await mirror.getByRole('button',{name:/Reset/}).click();
+                await mirror.getByRole('status').filter({hasText:'Pattern 1 of 3'}).waitFor();
+                await mirror.getByRole('button',{name:/Next pattern/}).click();
+                await mirror.getByRole('status').filter({hasText:'Pattern 2 of 3'}).waitFor();
+                if(name==='phone') await page.setViewportSize({width:320,height:420});
+                await withinViewport(page.locator('html'));
+                assert.equal(await page.locator('body').evaluate(body=>body.getBoundingClientRect().bottom<=innerHeight),true,'Paper Mirror must fit on one screen');
+                await page.getByRole('link',{name:/Portfolio/}).click();
+                await page.waitForURL(/AdigunIoT-portfolio-preview\.html#home$/);
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
