@@ -131,8 +131,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('64 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 64);
+                await frame.getByText('67 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 67);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -424,7 +424,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('64 playable', {exact:true}).waitFor();
+                await frame.getByText('67 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -588,7 +588,7 @@ jobs:
                 await playableSearch.fill('nothing matches xyz');
                 await playableResults.getByText(/No playable activities match/).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
-                assert.equal(await playableResults.getByRole('link').count(),64);
+                assert.equal(await playableResults.getByRole('link').count(),67);
                 assert.equal(await playableSearch.evaluate(input=>document.activeElement===input),true);
                 await playableSearch.fill('terrain trek');
                 await playableResults.getByRole('link',{name:'Terrain Trek',exact:true}).click();
@@ -615,7 +615,7 @@ jobs:
                 await frame.locator('#play-results').getByRole('link',{name:'Emoji Decoder',exact:true}).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
                 await page.waitForURL(/play-now$/);
-                assert.equal(await frame.locator('#play-results a').count(),64);
+                assert.equal(await frame.locator('#play-results a').count(),67);
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/home/play-now?q=paper+lantern');
                 await frame.getByRole('link',{name:'Make a Paper Lantern Model',exact:true}).click();
@@ -936,6 +936,16 @@ jobs:
                 await frame.locator('[data-model="reset"]').click();
                 await frame.getByText('Reset.',{exact:true}).waitFor();
                 await withinViewport(frame.locator('html'));
+                for(const [title,label,explanation] of [["How an SSD Stores Bits","An electrical charge state","Flash cells use stored charge to change the voltage at which a transistor conducts."],["How Digital Audio Is Sampled","Sound amplitude","Each sample represents the signal amplitude at one instant."],["How Video Streaming Buffers","Save upcoming video data","It holds upcoming video data so a brief slowdown in the connection is less likely to interrupt playback."]]){
+                  await page.goto('https://adigun.test/#demo/home/play-now');
+                  await frame.getByRole('link',{name:title,exact:true}).click();
+                  const mediaAnswer=frame.getByRole('button',{name:label,exact:true});
+                  if(name==='phone') await mediaAnswer.tap(); else await mediaAnswer.press('Enter');
+                  await frame.getByText(explanation,{exact:false}).waitFor();
+                  await frame.getByRole('button',{name:'Reset',exact:true}).click();
+                  assert.equal(await mediaAnswer.getAttribute('aria-pressed'),'false');
+                  await withinViewport(frame.locator('html'));
+                }
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
