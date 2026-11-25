@@ -131,8 +131,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('103 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 103);
+                await frame.getByText('104 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 104);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -424,7 +424,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('103 playable', {exact:true}).waitFor();
+                await frame.getByText('104 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -588,7 +588,7 @@ jobs:
                 await playableSearch.fill('nothing matches xyz');
                 await playableResults.getByText(/No playable activities match/).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
-                assert.equal(await playableResults.getByRole('link').count(),103);
+                assert.equal(await playableResults.getByRole('link').count(),104);
                 assert.equal(await playableSearch.evaluate(input=>document.activeElement===input),true);
                 await playableSearch.fill('terrain trek');
                 await playableResults.getByRole('link',{name:'Terrain Trek',exact:true}).click();
@@ -615,7 +615,7 @@ jobs:
                 await frame.locator('#play-results').getByRole('link',{name:'Emoji Decoder',exact:true}).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
                 await page.waitForURL(/play-now$/);
-                assert.equal(await frame.locator('#play-results a').count(),103);
+                assert.equal(await frame.locator('#play-results a').count(),104);
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/home/play-now?q=paper+lantern');
                 await frame.getByRole('link',{name:'Make a Paper Lantern Model',exact:true}).click();
@@ -936,7 +936,7 @@ jobs:
                 await frame.locator('[data-model="reset"]').click();
                 await frame.getByText('Reset.',{exact:true}).waitFor();
                 await withinViewport(frame.locator('html'));
-                for(const [title,label,explanation] of [["How an SSD Stores Bits","An electrical charge state","Flash cells use stored charge to change the voltage at which a transistor conducts."],["How Digital Audio Is Sampled","Sound amplitude","Each sample represents the signal amplitude at one instant."],["How Video Streaming Buffers","Save upcoming video data","It holds upcoming video data so a brief slowdown in the connection is less likely to interrupt playback."]]){
+                for(const [title,label,explanation] of [["How an SSD Stores Bits","An electrical charge state","Flash cells use stored charge to change the voltage at which a transistor conducts."],["How Digital Audio Is Sampled","Sound amplitude","Each sample represents the signal amplitude at one instant."]]){
                   await page.goto('https://adigun.test/#demo/home/play-now');
                   await frame.getByRole('link',{name:title,exact:true}).click();
                   const mediaAnswer=frame.getByRole('button',{name:label,exact:true});
@@ -1344,6 +1344,20 @@ jobs:
                   for(const [label,feedback] of actions){
                     const lessonControl=frame.getByRole('button',{name:label,exact:true});
                     if(name==='phone') await lessonControl.tap(); else await lessonControl.press('Enter');
+                    await frame.locator('#model-result').filter({hasText:feedback}).waitFor();
+                  }
+                  await frame.locator('[data-model="reset"]').click();
+                  await frame.getByText('Reset.',{exact:true}).waitFor();
+                  await withinViewport(frame.locator('html'));
+                }
+                for(const [id,steps] of [
+                  [22,[['Send message','primary path · Cost 3'],['Toggle primary path','Primary path unavailable'],['Send message','backup path · Cost 7']]],
+                  [23,[['Play 1 second','Playback paused'],['Download 3 seconds','3 seconds ready'],['Play 1 second','Played one second']]]
+                ]){
+                  await page.goto('https://adigun.test/#demo/home/concept/0/'+id);
+                  for(const [label,feedback] of steps){
+                    const control=frame.getByRole('button',{name:label,exact:true});
+                    if(name==='phone') await control.tap(); else await control.press('Enter');
                     await frame.locator('#model-result').filter({hasText:feedback}).waitFor();
                   }
                   await frame.locator('[data-model="reset"]').click();
