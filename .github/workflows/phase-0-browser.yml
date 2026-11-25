@@ -131,8 +131,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('97 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 97);
+                await frame.getByText('98 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 98);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -424,7 +424,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('97 playable', {exact:true}).waitFor();
+                await frame.getByText('98 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -588,7 +588,7 @@ jobs:
                 await playableSearch.fill('nothing matches xyz');
                 await playableResults.getByText(/No playable activities match/).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
-                assert.equal(await playableResults.getByRole('link').count(),97);
+                assert.equal(await playableResults.getByRole('link').count(),98);
                 assert.equal(await playableSearch.evaluate(input=>document.activeElement===input),true);
                 await playableSearch.fill('terrain trek');
                 await playableResults.getByRole('link',{name:'Terrain Trek',exact:true}).click();
@@ -615,7 +615,7 @@ jobs:
                 await frame.locator('#play-results').getByRole('link',{name:'Emoji Decoder',exact:true}).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
                 await page.waitForURL(/play-now$/);
-                assert.equal(await frame.locator('#play-results a').count(),97);
+                assert.equal(await frame.locator('#play-results a').count(),98);
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/home/play-now?q=paper+lantern');
                 await frame.getByRole('link',{name:'Make a Paper Lantern Model',exact:true}).click();
@@ -1251,6 +1251,26 @@ jobs:
                 await withinViewport(page.locator('html'));
                 assert.equal(await page.locator('body').evaluate(body=>body.getBoundingClientRect().bottom<=innerHeight),true,'Offset & Check must fit on one screen');
                 await page.screenshot({path:name+'-offset-and-check.png'});
+                await page.getByRole('link',{name:/Portfolio/}).click();
+                await page.waitForURL(/AdigunIoT-portfolio-preview\.html#home$/);
+                await page.goto('https://adigun.test/#demo/home/play-now?q=budget+builder');
+                await frame.getByRole('link',{name:'Budget Builder',exact:true}).click();
+                await page.waitForURL('**/sites/budget-builder/');
+                const builder=page.getByRole('region',{name:'Town budget challenge'});
+                const initialTokens=builder.getByText('6 tokens left',{exact:true});
+                await initialTokens.waitFor();
+                for(const project of ['Library','Library','Park','Bus','Bus','Bus']){
+                  const allocate=builder.getByRole('button',{name:new RegExp(project)});
+                  if(name==='phone') await allocate.tap(); else await allocate.press('Enter');
+                }
+                await builder.getByRole('status').filter({hasText:'All three goals funded.'}).waitFor();
+                await builder.getByRole('button',{name:/Undo/}).click();
+                await builder.getByText('1 token left',{exact:true}).waitFor();
+                await builder.getByRole('button',{name:/Reset/}).click();
+                await initialTokens.waitFor();
+                await withinViewport(page.locator('html'));
+                assert.equal(await page.locator('body').evaluate(body=>body.getBoundingClientRect().bottom<=innerHeight),true,'Budget Builder must fit on one screen');
+                await page.screenshot({path:name+'-budget-builder.png'});
                 await page.getByRole('link',{name:/Portfolio/}).click();
                 await page.waitForURL(/AdigunIoT-portfolio-preview\.html#home$/);
                 assert.deepEqual(errors, []);
