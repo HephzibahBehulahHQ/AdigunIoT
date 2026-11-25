@@ -131,8 +131,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('61 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 61);
+                await frame.getByText('62 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 62);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -424,7 +424,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('61 playable', {exact:true}).waitFor();
+                await frame.getByText('62 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -561,7 +561,7 @@ jobs:
                 const arcadeList=frame.locator('.bored-detail > section');
                 await arcadeList.getByRole('link',{name:'Emoji Decoder',exact:true}).waitFor();
                 await frame.getByRole('link',{name:'Word Games',exact:true}).click();
-                assert.deepEqual(await arcadeList.getByRole('link').allTextContents().then(items=>items.map(t=>t.replace(/^[^A-Za-z]+|[^A-Za-z]+$/g,'')).sort()),['Emoji Decoder','Word Snake']);
+                assert.deepEqual(await arcadeList.getByRole('link').allTextContents().then(items=>items.map(t=>t.replace(/^[^A-Za-z]+|[^A-Za-z]+$/g,'')).sort()),['Emoji Decoder','Letter Lifeboat','Word Snake']);
                 await frame.getByRole('link',{name:'Action',exact:true}).click();
                 await arcadeList.getByRole('link',{name:'Reaction Timer',exact:true}).waitFor();
                 await arcadeList.getByRole('link',{name:'Signal Catch',exact:true}).waitFor();
@@ -588,7 +588,7 @@ jobs:
                 await playableSearch.fill('nothing matches xyz');
                 await playableResults.getByText(/No playable activities match/).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
-                assert.equal(await playableResults.getByRole('link').count(),61);
+                assert.equal(await playableResults.getByRole('link').count(),62);
                 assert.equal(await playableSearch.evaluate(input=>document.activeElement===input),true);
                 await playableSearch.fill('terrain trek');
                 await playableResults.getByRole('link',{name:'Terrain Trek',exact:true}).click();
@@ -615,7 +615,7 @@ jobs:
                 await frame.locator('#play-results').getByRole('link',{name:'Emoji Decoder',exact:true}).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
                 await page.waitForURL(/play-now$/);
-                assert.equal(await frame.locator('#play-results a').count(),61);
+                assert.equal(await frame.locator('#play-results a').count(),62);
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/home/play-now?q=paper+lantern');
                 await frame.getByRole('link',{name:'Make a Paper Lantern Model',exact:true}).click();
@@ -891,6 +891,20 @@ jobs:
                 const shapeReset=frame.locator('[data-model="reset"]');
                 assert.ok(await shapeReset.evaluate(el=>el.getBoundingClientRect().bottom<=innerHeight));
                 await shapeReset.click();
+                await frame.getByText('Reset.',{exact:true}).waitFor();
+                await withinViewport(frame.locator('html'));
+                await page.goto('https://adigun.test/#demo/home/play-now?q=letter+lifeboat');
+                await frame.getByRole('link',{name:'Letter Lifeboat',exact:true}).click();
+                const lifeboatLetter=letter=>frame.getByRole('button',{name:letter,exact:true});
+                if(name==='phone') await lifeboatLetter('T').tap(); else await lifeboatLetter('T').press('Enter');
+                await frame.getByText(/Try another letter/).waitFor();
+                for(const letter of 'SEA') await lifeboatLetter(letter).click();
+                await frame.getByText(/SEA rescued/).waitFor();
+                for(const letter of 'EAST') await lifeboatLetter(letter).click();
+                await frame.getByText('Both words rescued!',{exact:true}).waitFor();
+                const wordReset=frame.locator('[data-model="reset"]');
+                assert.ok(await wordReset.evaluate(el=>el.getBoundingClientRect().bottom<=innerHeight));
+                await wordReset.click();
                 await frame.getByText('Reset.',{exact:true}).waitFor();
                 await withinViewport(frame.locator('html'));
                 assert.deepEqual(errors, []);
