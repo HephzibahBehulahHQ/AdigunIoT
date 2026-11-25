@@ -20,6 +20,9 @@ jobs:
   preview:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    outputs:
+      pages_artifact_name: ${{ steps.stage.outputs.name }}
+      pages_artifact_id: ${{ steps.package.outputs.artifact_id }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -616,6 +619,21 @@ jobs:
           name: phase-0-browser-screens
           path: '*-*.png'
           if-no-files-found: ignore
+      - name: Stage verified site files
+        id: stage
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        run: |
+          mkdir -p _site/docs/preview
+          cp index.html CNAME _site/
+          cp -r sites _site/
+          cp docs/preview/AdigunIoT-portfolio-preview.html _site/docs/preview/
+          echo "name=github-pages-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-pages-artifact@v4
+        id: package
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        with:
+          path: _site
+          name: ${{ steps.stage.outputs.name }}
   deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: preview
@@ -632,32 +650,27 @@ jobs:
       name: github-pages
       url: ${{ steps.publish.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v6
       - uses: actions/configure-pages@v5
-      - name: Stage verified site files
-        run: |
-          mkdir -p _site/docs/preview
-          cp index.html CNAME _site/
-          cp -r sites _site/
-          cp docs/preview/AdigunIoT-portfolio-preview.html _site/docs/preview/
-      - uses: actions/upload-pages-artifact@v4
-        with:
-          path: _site
-          name: github-pages-${{ github.run_attempt }}
-      - name: Wait for the Pages artifact
+      - name: Verify the uploaded Pages artifact
         env:
           GH_TOKEN: ${{ github.token }}
-          PAGES_ARTIFACT: github-pages-${{ github.run_attempt }}
+          PAGES_ARTIFACT_ID: ${{ needs.preview.outputs.pages_artifact_id }}
+          PAGES_ARTIFACT_NAME: ${{ needs.preview.outputs.pages_artifact_name }}
         run: |
+          if [[ ! "$PAGES_ARTIFACT_ID" =~ ^[0-9]+$ ]] || [[ -z "$PAGES_ARTIFACT_NAME" ]]; then
+            echo "Verified build did not return a Pages artifact." >&2
+            exit 1
+          fi
           for attempt in {1..15}; do
-            if count=$(gh api --method GET "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" -f name="$PAGES_ARTIFACT" --jq '.total_count') && [ "$count" = 1 ]; then
+            if metadata=$(gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$PAGES_ARTIFACT_ID" --jq '[.name,.workflow_run.id,.expired] | @tsv') &&
+              [[ "$metadata" == "$PAGES_ARTIFACT_NAME"$'\t'"$GITHUB_RUN_ID"$'\t'false ]]; then
               exit 0
             fi
             sleep 4
           done
-          echo "Pages artifact did not become visible: $PAGES_ARTIFACT" >&2
+          echo "Pages artifact $PAGES_ARTIFACT_ID did not become available." >&2
           exit 1
       - uses: actions/deploy-pages@v4
         id: publish
         with:
-          artifact_name: github-pages-${{ github.run_attempt }}
+          artifact_name: ${{ needs.preview.outputs.pages_artifact_name }}
