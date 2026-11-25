@@ -1176,7 +1176,7 @@ jobs:
                 const advanceCycle=frame.getByRole('button',{name:'Advance cycle',exact:true});
                 for(const effect of [/absorbs heat/,/pressure and temperature rise/,/releases heat/,/pressure and temperature drop/]){
                   if(name==='phone') await advanceCycle.tap(); else await advanceCycle.press('Enter');
-                  await frame.getByText(effect).waitFor();
+                  await frame.locator('#model-result').filter({hasText:effect}).waitFor();
                 }
                 await frame.locator('[data-model="reset"]').click();
                 await frame.getByText('Reset.',{exact:true}).waitFor();
