@@ -131,8 +131,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('106 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 106);
+                await frame.getByText('107 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 107);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -424,7 +424,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('106 playable', {exact:true}).waitFor();
+                await frame.getByText('107 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -588,7 +588,7 @@ jobs:
                 await playableSearch.fill('nothing matches xyz');
                 await playableResults.getByText(/No playable activities match/).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
-                assert.equal(await playableResults.getByRole('link').count(),106);
+                assert.equal(await playableResults.getByRole('link').count(),107);
                 assert.equal(await playableSearch.evaluate(input=>document.activeElement===input),true);
                 await playableSearch.fill('terrain trek');
                 await playableResults.getByRole('link',{name:'Terrain Trek',exact:true}).click();
@@ -615,7 +615,7 @@ jobs:
                 await frame.locator('#play-results').getByRole('link',{name:'Emoji Decoder',exact:true}).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
                 await page.waitForURL(/play-now$/);
-                assert.equal(await frame.locator('#play-results a').count(),106);
+                assert.equal(await frame.locator('#play-results a').count(),107);
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/home/play-now?q=paper+lantern');
                 await frame.getByRole('link',{name:'Make a Paper Lantern Model',exact:true}).click();
@@ -1379,6 +1379,16 @@ jobs:
                 for(const [label,feedback] of [['Save dark theme','saved a theme cookie'],['Revisit site','restores the dark theme'],['Clear cookie','Cookie cleared'],['Revisit site','default light theme']]){
                   const cookieControl=frame.getByRole('button',{name:label,exact:true});
                   if(name==='phone') await cookieControl.tap(); else await cookieControl.press('Enter');
+                  await frame.locator('#model-result').filter({hasText:feedback}).waitFor();
+                }
+                await frame.locator('[data-model="reset"]').click();
+                await frame.getByText('Reset.',{exact:true}).waitFor();
+                await withinViewport(frame.locator('html'));
+                await page.goto('https://adigun.test/#demo/home/play-now?q=internet+works');
+                await frame.getByRole('link',{name:'How the Internet Works',exact:true}).click();
+                for(const [packet,feedback] of [[3,'1 of 3 received'],[3,'already received'],[1,'2 of 3 received'],[2,'HELLO WORLD']]){
+                  const packetControl=frame.getByRole('button',{name:'Deliver packet '+packet,exact:true});
+                  if(name==='phone') await packetControl.tap(); else await packetControl.press('Enter');
                   await frame.locator('#model-result').filter({hasText:feedback}).waitFor();
                 }
                 await frame.locator('[data-model="reset"]').click();
