@@ -131,8 +131,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('95 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 95);
+                await frame.getByText('96 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 96);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -424,7 +424,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('95 playable', {exact:true}).waitFor();
+                await frame.getByText('96 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -588,7 +588,7 @@ jobs:
                 await playableSearch.fill('nothing matches xyz');
                 await playableResults.getByText(/No playable activities match/).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
-                assert.equal(await playableResults.getByRole('link').count(),95);
+                assert.equal(await playableResults.getByRole('link').count(),96);
                 assert.equal(await playableSearch.evaluate(input=>document.activeElement===input),true);
                 await playableSearch.fill('terrain trek');
                 await playableResults.getByRole('link',{name:'Terrain Trek',exact:true}).click();
@@ -615,7 +615,7 @@ jobs:
                 await frame.locator('#play-results').getByRole('link',{name:'Emoji Decoder',exact:true}).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
                 await page.waitForURL(/play-now$/);
-                assert.equal(await frame.locator('#play-results a').count(),95);
+                assert.equal(await frame.locator('#play-results a').count(),96);
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/home/play-now?q=paper+lantern');
                 await frame.getByRole('link',{name:'Make a Paper Lantern Model',exact:true}).click();
@@ -1211,6 +1211,25 @@ jobs:
                   await frame.getByText('Reset.',{exact:true}).waitFor();
                   await withinViewport(frame.locator('html'));
                 }
+                await page.goto('https://adigun.test/#demo/home/play-now?q=pulley');
+                await frame.getByRole('link',{name:'Pulley Lift Lab',exact:true}).click();
+                await page.waitForURL('**/sites/pulley-lift-lab/');
+                const pulley=page.getByRole('region',{name:'Ideal pulley model'});
+                await pulley.getByText('120 N pull · 1 m of rope',{exact:true}).waitFor();
+                const fourRopes=pulley.getByRole('button',{name:/4 ropes/});
+                if(name==='phone') await fourRopes.tap(); else await fourRopes.press('Enter');
+                await pulley.getByText('30 N pull · 4 m of rope',{exact:true}).waitFor();
+                await pulley.getByRole('button',{name:/Lift load/}).click();
+                await pulley.getByText(/30 N × 4 m = 120 J/).waitFor();
+                await pulley.getByRole('button',{name:/Reset/}).click();
+                await pulley.getByText('120 N pull · 1 m of rope',{exact:true}).waitFor();
+                if(name==='phone') await page.setViewportSize({width:320,height:420});
+                await withinViewport(page.locator('html'));
+                assert.equal(await page.locator('body').evaluate(body=>body.getBoundingClientRect().bottom<=innerHeight),true,'Pulley Lab must fit on one screen');
+                await page.screenshot({path:name+'-pulley-lift-lab.png'});
+                await page.getByRole('link',{name:/Portfolio/}).click();
+                await page.waitForURL(/AdigunIoT-portfolio-preview\.html#home$/);
+                await page.locator('.board > .panel').first().waitFor();
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
