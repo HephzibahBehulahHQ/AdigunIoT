@@ -131,8 +131,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('73 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 73);
+                await frame.getByText('75 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 75);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -424,7 +424,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('73 playable', {exact:true}).waitFor();
+                await frame.getByText('75 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -588,7 +588,7 @@ jobs:
                 await playableSearch.fill('nothing matches xyz');
                 await playableResults.getByText(/No playable activities match/).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
-                assert.equal(await playableResults.getByRole('link').count(),73);
+                assert.equal(await playableResults.getByRole('link').count(),75);
                 assert.equal(await playableSearch.evaluate(input=>document.activeElement===input),true);
                 await playableSearch.fill('terrain trek');
                 await playableResults.getByRole('link',{name:'Terrain Trek',exact:true}).click();
@@ -615,7 +615,7 @@ jobs:
                 await frame.locator('#play-results').getByRole('link',{name:'Emoji Decoder',exact:true}).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
                 await page.waitForURL(/play-now$/);
-                assert.equal(await frame.locator('#play-results a').count(),73);
+                assert.equal(await frame.locator('#play-results a').count(),75);
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/home/play-now?q=paper+lantern');
                 await frame.getByRole('link',{name:'Make a Paper Lantern Model',exact:true}).click();
@@ -1021,6 +1021,16 @@ jobs:
                 await frame.locator('[data-model="reset"]').click();
                 await frame.getByText('Reset.',{exact:true}).waitFor();
                 await withinViewport(frame.locator('html'));
+                for(const [title,label,explanation] of [["How a Camera Sensor Reads Light","Electrical charge","Light frees charge carriers in the sensor. The pixel collects charge that the camera reads to measure the light."],["How an E-Ink Screen Changes","Moving charged pigment particles","An electric field moves charged pigment particles. The pigment nearest the surface determines whether the pixel looks light or dark."]]){
+                  await page.goto('https://adigun.test/#demo/home/play-now');
+                  await frame.getByRole('link',{name:title,exact:true}).click();
+                  const imageAnswer=frame.getByRole('button',{name:label,exact:true});
+                  if(name==='phone') await imageAnswer.tap(); else await imageAnswer.press('Enter');
+                  await frame.getByText(explanation,{exact:false}).waitFor();
+                  await frame.getByRole('button',{name:'Reset',exact:true}).click();
+                  assert.equal(await imageAnswer.getAttribute('aria-pressed'),'false');
+                  await withinViewport(frame.locator('html'));
+                }
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
