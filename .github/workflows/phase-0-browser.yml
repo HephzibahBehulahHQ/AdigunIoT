@@ -547,7 +547,7 @@ jobs:
                 assert.ok(decoderBounds.y+decoderBounds.height<=page.viewportSize().height,'Decoder controls fit onscreen');
                 await withinViewport(frame.locator('html'));
                 await page.screenshot({path:name+'-emoji-decoder.png'});
-                for(const [title,answer,explanation] of [["How GPS Finds You","Signal travel time","A receiver uses the signal travel time to estimate distance. It combines signals from multiple satellites to find its position."],["How Memory (RAM) Works","RAM","RAM holds working data for quick access. Typical RAM loses that data when power is removed."],["How a Touchscreen Senses Touch","Electrical capacitance","The finger changes the electrical capacitance sensed by nearby electrodes. The screen uses those changes to locate the touch."],["How Compilers Turn Code into Apps","Translate the code","A compiler translates source code into another form, such as machine code or bytecode."]]){
+                for(const [title,answer,explanation] of [["How GPS Finds You","Signal travel time","A receiver uses the signal travel time to estimate distance. It combines signals from multiple satellites to find its position."],["How Memory (RAM) Works","RAM","RAM holds working data for quick access. Typical RAM loses that data when power is removed."],["How Compilers Turn Code into Apps","Translate the code","A compiler translates source code into another form, such as machine code or bytecode."]]){
                   await page.goto('https://adigun.test/#demo/home/play-now');
                   await frame.getByRole('link',{name:title,exact:true}).click();
                   const choice=frame.getByRole('button',{name:answer,exact:true});
@@ -1321,6 +1321,16 @@ jobs:
                   const layer=frame.getByRole('button',{name:label,exact:true});
                   if(name==='phone') await layer.tap(); else await layer.press('Enter');
                   await frame.locator('#model-result').filter({hasText:feedback}).waitFor();
+                }
+                await frame.locator('[data-model="reset"]').click();
+                await frame.getByText('Reset.',{exact:true}).waitFor();
+                await withinViewport(frame.locator('html'));
+                await page.goto('https://adigun.test/#demo/home/play-now?q=touchscreen');
+                await frame.getByRole('link',{name:'How a Touchscreen Senses Touch',exact:true}).click();
+                for(const [label,point] of [['Touch top left','Row 1, column 1'],['Touch center','Row 2, column 2'],['Touch bottom right','Row 3, column 3']]){
+                  const position=frame.getByRole('button',{name:label,exact:true});
+                  if(name==='phone') await position.tap(); else await position.press('Enter');
+                  await frame.locator('#model-result').filter({hasText:point}).waitFor();
                 }
                 await frame.locator('[data-model="reset"]').click();
                 await frame.getByText('Reset.',{exact:true}).waitFor();
