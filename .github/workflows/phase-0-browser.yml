@@ -131,8 +131,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('96 playable', {exact:true}).waitFor();
-                assert.equal(await frame.locator('.bored-grid .open').count(), 96);
+                await frame.getByText('97 playable', {exact:true}).waitFor();
+                assert.equal(await frame.locator('.bored-grid .open').count(), 97);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -424,7 +424,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('96 playable', {exact:true}).waitFor();
+                await frame.getByText('97 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -588,7 +588,7 @@ jobs:
                 await playableSearch.fill('nothing matches xyz');
                 await playableResults.getByText(/No playable activities match/).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
-                assert.equal(await playableResults.getByRole('link').count(),96);
+                assert.equal(await playableResults.getByRole('link').count(),97);
                 assert.equal(await playableSearch.evaluate(input=>document.activeElement===input),true);
                 await playableSearch.fill('terrain trek');
                 await playableResults.getByRole('link',{name:'Terrain Trek',exact:true}).click();
@@ -615,7 +615,7 @@ jobs:
                 await frame.locator('#play-results').getByRole('link',{name:'Emoji Decoder',exact:true}).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
                 await page.waitForURL(/play-now$/);
-                assert.equal(await frame.locator('#play-results a').count(),96);
+                assert.equal(await frame.locator('#play-results a').count(),97);
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/home/play-now?q=paper+lantern');
                 await frame.getByRole('link',{name:'Make a Paper Lantern Model',exact:true}).click();
@@ -1230,6 +1230,29 @@ jobs:
                 await page.getByRole('link',{name:/Portfolio/}).click();
                 await page.waitForURL(/AdigunIoT-portfolio-preview\.html#home$/);
                 await page.locator('.board > .panel').first().waitFor();
+                await page.goto('https://adigun.test/#demo/home/play-now?q=offset');
+                await frame.getByRole('link',{name:'Offset & Check',exact:true}).click();
+                await page.waitForURL('**/sites/offset-and-check/');
+                const calibration=page.getByRole('region',{name:'Thermometer offset challenge'});
+                await calibration.getByRole('status').filter({hasText:'3 °C too high.'}).waitFor();
+                const lowerOffset=calibration.getByRole('button',{name:/Lower/});
+                for(let step=0;step<3;step++){
+                  if(name==='phone') await lowerOffset.tap(); else await lowerOffset.press('Enter');
+                }
+                await calibration.getByRole('status').filter({hasText:'Calibrated.'}).waitFor();
+                await calibration.getByRole('button',{name:/Next sensor/}).click();
+                await calibration.getByRole('status').filter({hasText:'2 °C too low.'}).waitFor();
+                const raiseOffset=calibration.getByRole('button',{name:/Raise/});
+                await raiseOffset.click();
+                await raiseOffset.click();
+                await calibration.getByRole('status').filter({hasText:'Calibrated.'}).waitFor();
+                await calibration.getByRole('button',{name:/Reset/}).click();
+                await calibration.getByRole('status').filter({hasText:'2 °C too low.'}).waitFor();
+                await withinViewport(page.locator('html'));
+                assert.equal(await page.locator('body').evaluate(body=>body.getBoundingClientRect().bottom<=innerHeight),true,'Offset & Check must fit on one screen');
+                await page.screenshot({path:name+'-offset-and-check.png'});
+                await page.getByRole('link',{name:/Portfolio/}).click();
+                await page.waitForURL(/AdigunIoT-portfolio-preview\.html#home$/);
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
