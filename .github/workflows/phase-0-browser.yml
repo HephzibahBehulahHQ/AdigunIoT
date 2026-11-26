@@ -1555,6 +1555,7 @@ jobs:
                   if(name==='phone') await pixel.tap(); else await pixel.press('Enter');
                   await frame.locator('#model-result').filter({hasText:feedback}).waitFor();
                 }
+                assert.equal(await frame.locator('#model-result').evaluate(status=>status.getBoundingClientRect().bottom<=innerHeight),true,'Pixel Painter feedback must fit on one screen');
                 await pixelReset.click();
                 await frame.getByText('Reset.',{exact:true}).waitFor();
                 await withinViewport(frame.locator('html'));
