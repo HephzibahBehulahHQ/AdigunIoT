@@ -1534,7 +1534,8 @@ jobs:
                 await page.goto('https://adigun.test/#demo/home/play-now?group=learn');
                 await frame.locator('#play-results a').first().waitFor();
                 const learnLinks=await frame.locator('#play-results a').evaluateAll(links=>links.map(link=>link.getAttribute('href')));
-                assert.deepEqual(learnLinks,Array.from({length:50},(_,index)=>'#concept/0/'+index));
+                assert.deepEqual(learnLinks.filter(href=>href.startsWith('#concept/0/')),Array.from({length:50},(_,index)=>'#concept/0/'+index));
+                assert.deepEqual(learnLinks.slice(50),['#concept/13/15','#concept/13/16','#concept/13/17','#concept/13/18','#concept/1/4','#concept/13/0']);
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
