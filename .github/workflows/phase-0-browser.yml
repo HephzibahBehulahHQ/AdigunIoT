@@ -1588,6 +1588,17 @@ jobs:
                 assert.equal(await scenarioPicker.inputValue(),'First visit');
                 await scenarioPicker.selectOption({label:'DNS answer cached'});
                 await page.waitForURL(/#demo\/home\/protocol\?scenario=cached-dns$/);
+                await page.goto('https://adigun.test/#demo/protocol?scenario=cached-dns&step=1');
+                await frame.locator('#event-summary').filter({hasText:'Reuse the address from the local cache'}).waitFor();
+                await frame.getByRole('button',{name:'Next',exact:true}).click();
+                await page.waitForURL(/scenario=cached-dns&step=2$/);
+                await page.reload();
+                await frame.locator('#progress').filter({hasText:'Step 2 of'}).waitFor();
+                await frame.getByRole('button',{name:'Restart',exact:true}).click();
+                await page.waitForURL(/#demo\/protocol\?scenario=cached-dns$/);
+                await page.goto('https://adigun.test/#demo/home/protocol?scenario=cached-dns&step=7');
+                await frame.locator('#progress').filter({hasText:'Step 0 of'}).waitFor();
+                await page.waitForURL(/#demo\/home\/protocol\?scenario=cached-dns$/);
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
