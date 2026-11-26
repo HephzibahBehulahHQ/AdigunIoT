@@ -1599,6 +1599,17 @@ jobs:
                 await page.goto('https://adigun.test/#demo/home/protocol?scenario=cached-dns&step=7');
                 await frame.locator('#progress').filter({hasText:'Step 0 of'}).waitFor();
                 await page.waitForURL(/#demo\/home\/protocol\?scenario=cached-dns$/);
+                await page.goto('https://adigun.test/#demo/protocol?scenario=cached-dns&step=2&view=sequence');
+                await frame.locator('#stage .sequence .active').waitFor();
+                assert.equal(await frame.getByRole('button',{name:'Sequence',exact:true}).getAttribute('aria-pressed'),'true');
+                await page.reload();
+                await frame.locator('#stage .sequence .active').waitFor();
+                await frame.locator('#progress').filter({hasText:'Step 2 of'}).waitFor();
+                await frame.getByRole('button',{name:'Network',exact:true}).click();
+                await page.waitForURL(/scenario=cached-dns&step=2$/);
+                await frame.locator('#stage .network').waitFor();
+                await frame.getByRole('button',{name:'Sequence',exact:true}).click();
+                await page.waitForURL(/step=2&view=sequence$/);
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
