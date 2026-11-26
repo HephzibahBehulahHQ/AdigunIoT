@@ -133,7 +133,7 @@ jobs:
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
                 await frame.getByRole('heading',{name:/Play Now/}).waitFor().catch(error=>{throw Error(error.message+' · page errors: '+JSON.stringify(errors));});
-                assert.equal(await frame.locator('.title-row .pill').innerText(),'123 playable');
+                assert.equal(await frame.locator('.title-row .pill').innerText(),'124 playable');
                 assert.equal(await frame.locator('.bored-grid .open').count(), 123);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
@@ -426,7 +426,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('123 playable', {exact:true}).waitFor();
+                await frame.getByText('124 playable', {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -1695,6 +1695,24 @@ jobs:
                 await marbleReset.click();
                 await frame.getByText('Reset.',{exact:true}).waitFor();
                 await withinViewport(frame.locator('html'));
+                await frame.getByRole('link',{name:'Arcade',exact:true}).click();
+                await frame.getByRole('link',{name:'Glyph Sprint',exact:true}).click();
+                await frame.getByRole('heading',{name:/Glyph Sprint/}).waitFor();
+                const glyphControls=frame.locator('[data-model],.game-exit');
+                assert.equal(await glyphControls.evaluateAll(controls=>controls.length===6&&controls.every(control=>{
+                  const rect=control.getBoundingClientRect();
+                  return rect.height>=44&&rect.top>=0&&rect.bottom<=innerHeight;
+                })),true,'Glyph Sprint actions fit without scrolling');
+                await frame.locator('[data-model="0"]').click();
+                await frame.locator('#model-result').filter({hasText:'Streak reset'}).waitFor();
+                await frame.locator('[data-model="reset"]').click();
+                for(const action of [2,0,3,1,2,3]){
+                  const control=frame.locator('[data-model="'+action+'"]');
+                  if(name==='phone')await control.tap();else await control.press('Enter');
+                }
+                await frame.locator('#model-result').filter({hasText:'Six in a row'}).waitFor();
+                await frame.locator('[data-model="reset"]').click();
+                await frame.locator('#model-result').filter({hasText:'Reset.'}).waitFor();
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
