@@ -1530,6 +1530,10 @@ jobs:
                 await page.goto('https://adigun.test/sites/logic-gate-desk/');
                 await page.getByRole('link',{name:/Portfolio/}).waitFor();
                 assert.equal(await page.getByRole('link',{name:'Back to results',exact:true}).count(),0);
+                await page.goto('https://adigun.test/#demo/home/play-now?group=learn');
+                await frame.locator('#play-results a').first().waitFor();
+                const learnLinks=await frame.locator('#play-results a').evaluateAll(links=>links.map(link=>link.getAttribute('href')));
+                assert.deepEqual(learnLinks,Array.from({length:50},(_,index)=>'#concept/0/'+index));
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
