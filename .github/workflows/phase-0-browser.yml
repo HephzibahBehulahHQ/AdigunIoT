@@ -36,6 +36,7 @@ jobs:
         run: |
           node <<'JS'
           const assert = require('node:assert/strict');
+          const expectedPlayable = 124;
           const fs = require('node:fs');
           const { chromium } = require(process.env.RUNNER_TEMP + '/adigun-qa/node_modules/playwright');
           const entry = fs.readFileSync('index.html', 'utf8');
@@ -133,8 +134,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
                 await frame.getByRole('heading',{name:/Play Now/}).waitFor().catch(error=>{throw Error(error.message+' · page errors: '+JSON.stringify(errors));});
-                assert.equal(await frame.locator('.title-row .pill').innerText(),'124 playable');
-                assert.equal(await frame.locator('.bored-grid .open').count(), 123);
+                assert.equal(await frame.locator('.title-row .pill').innerText(),`${expectedPlayable} playable`);
+                assert.equal(await frame.locator('.bored-grid .open').count(), expectedPlayable);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
                 await frame.getByText('Find an unused word starting with N.').waitFor();
@@ -426,7 +427,7 @@ jobs:
                 await withinViewport(page.locator('html'));
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
-                await frame.getByText('124 playable', {exact:true}).waitFor();
+                await frame.getByText(`${expectedPlayable} playable`, {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
                 assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
@@ -590,7 +591,7 @@ jobs:
                 await playableSearch.fill('nothing matches xyz');
                 await playableResults.getByText(/No playable activities match/).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
-                assert.equal(await playableResults.getByRole('link').count(),123);
+                assert.equal(await playableResults.getByRole('link').count(),expectedPlayable);
                 assert.equal(await playableSearch.evaluate(input=>document.activeElement===input),true);
                 await playableSearch.fill('terrain trek');
                 await playableResults.getByRole('link',{name:'Terrain Trek',exact:true}).click();
@@ -617,7 +618,7 @@ jobs:
                 await frame.locator('#play-results').getByRole('link',{name:'Emoji Decoder',exact:true}).waitFor();
                 await frame.getByRole('button',{name:/Clear/}).click();
                 await page.waitForURL(/play-now$/);
-                assert.equal(await frame.locator('#play-results a').count(),123);
+                assert.equal(await frame.locator('#play-results a').count(),expectedPlayable);
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/home/play-now?q=paper+lantern');
                 await frame.getByRole('link',{name:'Make a Paper Lantern Model',exact:true}).click();
@@ -1473,7 +1474,7 @@ jobs:
                 assert.equal(await activityGroup.inputValue(),'games');
                 await activityGroup.selectOption('');
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                assert.equal(await activityResults.getByRole('link').count(),123);
+                assert.equal(await activityResults.getByRole('link').count(),expectedPlayable);
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/home/play-now?q=paper+mirror&group=standalone');
                 await frame.getByRole('link',{name:'Paper Mirror',exact:true}).click();
