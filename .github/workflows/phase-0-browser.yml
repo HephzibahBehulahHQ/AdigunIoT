@@ -58,6 +58,7 @@ jobs:
                 await page.route('**/*', route => {
                   const url = new URL(route.request().url());
                   if (url.origin !== 'https://adigun.test') return route.abort();
+                  if(url.pathname==='/sites/play-return.js')return route.fulfill({contentType:'text/javascript; charset=utf-8',body:fs.readFileSync('sites/play-return.js','utf8')});
                   const body = url.pathname === '/' ? entry :
                     url.pathname === '/docs/preview/AdigunIoT-portfolio-preview.html' ? html :
                     standalone[url.pathname];
@@ -1227,9 +1228,9 @@ jobs:
                 await withinViewport(page.locator('html'));
                 assert.equal(await page.locator('body').evaluate(body=>body.getBoundingClientRect().bottom<=innerHeight),true,'Pulley Lab must fit on one screen');
                 await page.screenshot({path:name+'-pulley-lift-lab.png'});
-                await page.getByRole('link',{name:/Portfolio/}).click();
-                await page.waitForURL(/AdigunIoT-portfolio-preview\.html#home$/);
-                await page.locator('.board > .panel').first().waitFor();
+                await page.getByRole('link',{name:'Back to results',exact:true}).click();
+                await page.waitForURL(/#demo\/home\/play-now\?q=/);
+                await frame.getByRole('link',{name:'Pulley Lift Lab',exact:true}).waitFor();
                 await page.goto('https://adigun.test/#demo/home/play-now?q=offset');
                 await frame.getByRole('link',{name:'Offset & Check',exact:true}).click();
                 await page.waitForURL('**/sites/offset-and-check/');
@@ -1251,8 +1252,8 @@ jobs:
                 await withinViewport(page.locator('html'));
                 assert.equal(await page.locator('body').evaluate(body=>body.getBoundingClientRect().bottom<=innerHeight),true,'Offset & Check must fit on one screen');
                 await page.screenshot({path:name+'-offset-and-check.png'});
-                await page.getByRole('link',{name:/Portfolio/}).click();
-                await page.waitForURL(/AdigunIoT-portfolio-preview\.html#home$/);
+                await page.getByRole('link',{name:'Back to results',exact:true}).click();
+                await page.waitForURL(/#demo\/home\/play-now\?q=/);
                 await page.goto('https://adigun.test/#demo/home/play-now?q=budget+builder');
                 await frame.getByRole('link',{name:'Budget Builder',exact:true}).click();
                 await page.waitForURL('**/sites/budget-builder/');
@@ -1271,8 +1272,8 @@ jobs:
                 await withinViewport(page.locator('html'));
                 assert.equal(await page.locator('body').evaluate(body=>body.getBoundingClientRect().bottom<=innerHeight),true,'Budget Builder must fit on one screen');
                 await page.screenshot({path:name+'-budget-builder.png'});
-                await page.getByRole('link',{name:/Portfolio/}).click();
-                await page.waitForURL(/AdigunIoT-portfolio-preview\.html#home$/);
+                await page.getByRole('link',{name:'Back to results',exact:true}).click();
+                await page.waitForURL(/#demo\/home\/play-now\?q=/);
                 await page.goto('https://adigun.test/#demo/home/play-now?q=solar+storage');
                 await frame.getByRole('link',{name:'Solar Storage Lab',exact:true}).click();
                 await page.waitForURL('**/sites/solar-storage-lab/');
@@ -1292,8 +1293,8 @@ jobs:
                 await solarLab.getByText('0 / 4 kWh stored',{exact:true}).waitFor();
                 await withinViewport(page.locator('html'));
                 assert.equal(await page.locator('body').evaluate(body=>body.getBoundingClientRect().bottom<=innerHeight),true,'Solar Storage Lab must fit on one screen');
-                await page.getByRole('link',{name:/Portfolio/}).click();
-                await page.waitForURL(/AdigunIoT-portfolio-preview\.html#home$/);
+                await page.getByRole('link',{name:'Back to results',exact:true}).click();
+                await page.waitForURL(/#demo\/home\/play-now\?q=/);
                 await page.goto('https://adigun.test/#demo/home/play-now?q=probability+bag');
                 await frame.getByRole('link',{name:'Probability Bag',exact:true}).click();
                 await page.waitForURL('**/sites/probability-bag/');
@@ -1313,8 +1314,8 @@ jobs:
                 await bagOdds.filter({hasText:'60% gold'}).waitFor();
                 await withinViewport(page.locator('html'));
                 assert.equal(await page.locator('body').evaluate(body=>body.getBoundingClientRect().bottom<=innerHeight),true,'Probability Bag must fit on one screen');
-                await page.getByRole('link',{name:/Portfolio/}).click();
-                await page.waitForURL(/AdigunIoT-portfolio-preview\.html#home$/);
+                await page.getByRole('link',{name:'Back to results',exact:true}).click();
+                await page.waitForURL(/#demo\/home\/play-now\?q=/);
                 await page.goto('https://adigun.test/#demo/home/play-now?q=qr+codes');
                 await frame.getByRole('link',{name:'How QR Codes Store Data',exact:true}).click();
                 for(const [label,feedback] of [['Find the corners',/locate and orient/],['Read the grid',/grid spacing/],['Follow the data',/zigzag/]]){
@@ -1489,8 +1490,8 @@ jobs:
                 if(name==='phone') await page.setViewportSize({width:320,height:420});
                 await withinViewport(page.locator('html'));
                 assert.equal(await page.locator('body').evaluate(body=>body.getBoundingClientRect().bottom<=innerHeight),true,'Paper Mirror must fit on one screen');
-                await page.getByRole('link',{name:/Portfolio/}).click();
-                await page.waitForURL(/AdigunIoT-portfolio-preview\.html#home$/);
+                await page.getByRole('link',{name:'Back to results',exact:true}).click();
+                await page.waitForURL(/#demo\/home\/play-now\?q=/);
                 await page.goto('https://adigun.test/#demo/home/play-now?q=logic+gate&group=standalone');
                 await frame.getByRole('link',{name:'Logic Gate Desk',exact:true}).click();
                 await page.waitForURL('**/sites/logic-gate-desk/');
@@ -1505,8 +1506,8 @@ jobs:
                 if(name==='phone') await page.setViewportSize({width:320,height:420});
                 await withinViewport(page.locator('html'));
                 assert.equal(await page.locator('body').evaluate(body=>body.getBoundingClientRect().bottom<=innerHeight),true,'Logic Gate Desk must fit on one screen');
-                await page.getByRole('link',{name:/Portfolio/}).click();
-                await page.waitForURL(/AdigunIoT-portfolio-preview\.html#home$/);
+                await page.getByRole('link',{name:'Back to results',exact:true}).click();
+                await page.waitForURL(/#demo\/home\/play-now\?q=/);
                 await page.goto('https://adigun.test/#demo/home/play-now?q=internet+works&group=learn');
                 await frame.getByRole('link',{name:'How the Internet Works',exact:true}).click();
                 const returnToResults=page.getByRole('link',{name:/Back to results/});
@@ -1519,6 +1520,16 @@ jobs:
                 await page.goto('https://adigun.test/#demo/home/concept/0/2');
                 assert.equal(await returnToResults.count(),0);
                 await withinViewport(page.locator('html'));
+                await page.goto('https://adigun.test/#demo/home/play-now?q=logic+gate&group=standalone');
+                await frame.getByRole('link',{name:'Logic Gate Desk',exact:true}).click();
+                await page.waitForURL('**/sites/logic-gate-desk/');
+                await page.reload();
+                await page.getByRole('link',{name:'Back to results',exact:true}).click();
+                await page.waitForURL(/q=logic\+gate&group=standalone$/);
+                await frame.getByRole('link',{name:'Logic Gate Desk',exact:true}).waitFor();
+                await page.goto('https://adigun.test/sites/logic-gate-desk/');
+                await page.getByRole('link',{name:/Portfolio/}).waitFor();
+                assert.equal(await page.getByRole('link',{name:'Back to results',exact:true}).count(),0);
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
