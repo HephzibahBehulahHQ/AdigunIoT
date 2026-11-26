@@ -173,7 +173,15 @@ window.addEventListener('message',event=>{
   if(location.hash!==hash)history.replaceState(null,'',hash);
   return;
  }
- if(data?.type==='adigun-open-standalone'){if(standaloneKeys.has(data.site))location.assign(siteHref(data.site));return;}
+ if(data?.type==='adigun-open-standalone'){
+  if(!standaloneKeys.has(data.site))return;
+  const destination=new URL(siteHref(data.site),location.href);
+  if(location.hash.split('?')[0]==='#demo/home/play-now'){
+   try{sessionStorage.setItem('adigun-play-return:'+destination.pathname,location.hash);}catch{}
+  }
+  location.assign(destination);
+  return;
+ }
  if(data?.type!=='adigun-demo-route'||typeof data.route!=='string'||!demoRoutePattern.test(data.route))return;
  const hash='#demo/'+key+(data.route===key?'':'/'+data.route);
  if(location.hash!==hash){
