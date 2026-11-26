@@ -132,7 +132,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('115 playable', {exact:true}).waitFor();
+                await frame.getByRole('heading',{name:/Play Now/}).waitFor().catch(error=>{throw Error(error.message+' · page errors: '+JSON.stringify(errors));});
+                assert.equal(await frame.locator('.title-row .pill').innerText(),'115 playable');
                 assert.equal(await frame.locator('.bored-grid .open').count(), 115);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
