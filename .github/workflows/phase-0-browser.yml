@@ -132,7 +132,8 @@ jobs:
                 await frame.getByRole('link', { name: 'Arcade', exact: true }).click();
                 await frame.getByRole('link', { name: 'Play Now', exact: true }).click();
                 await page.waitForURL(/#demo\/home\/play-now$/);
-                await frame.getByText('115 playable', {exact:true}).waitFor();
+                await frame.getByRole('heading',{name:/Play Now/}).waitFor().catch(error=>{throw Error(error.message+' · page errors: '+JSON.stringify(errors));});
+                assert.equal(await frame.locator('.title-row .pill').innerText(),'115 playable');
                 assert.equal(await frame.locator('.bored-grid .open').count(), 115);
                 await frame.getByRole('link', { name: 'Word Snake', exact: true }).click();
                 await frame.getByRole('button', { name: 'Goat', exact: true }).click();
@@ -1530,6 +1531,11 @@ jobs:
                 await page.goto('https://adigun.test/sites/logic-gate-desk/');
                 await page.getByRole('link',{name:/Portfolio/}).waitFor();
                 assert.equal(await page.getByRole('link',{name:'Back to results',exact:true}).count(),0);
+                await page.goto('https://adigun.test/#demo/home/play-now?group=learn');
+                await frame.locator('#play-results a').first().waitFor();
+                const learnLinks=await frame.locator('#play-results a').evaluateAll(links=>links.map(link=>link.getAttribute('href')));
+                assert.deepEqual(learnLinks.filter(href=>href.startsWith('#concept/0/')),Array.from({length:50},(_,index)=>'#concept/0/'+index));
+                assert.deepEqual(learnLinks.slice(50),['#concept/13/15','#concept/13/16','#concept/13/17','#concept/13/18','#concept/1/4','#concept/13/0']);
                 assert.deepEqual(errors, []);
                 await context.close();
                 console.log(name + ': layout and interactions passed');
