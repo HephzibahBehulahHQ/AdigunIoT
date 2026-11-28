@@ -1587,7 +1587,17 @@ jobs:
                 assert.equal(sharedLesson.searchParams.get('scenario'),'secure-visit');
                 assert.equal(sharedLesson.searchParams.get('step'),'5');
                 assert.equal(sharedLesson.searchParams.get('view'),'sequence');
-                await frame.locator('#stage .sequence .active').waitFor();
+                await frame.locator('.lesson-menu summary').click();
+                const lessonSearch=frame.getByRole('searchbox',{name:'Search lessons'});
+                await lessonSearch.fill('made-up lesson');
+                await frame.getByText('No matching lessons.',{exact:true}).waitFor();
+                await lessonSearch.fill('Wi-Fi DHCP');
+                const wifiLesson=frame.getByRole('button',{name:'Join a Wi-Fi network',exact:true});
+                if(name==='phone') await wifiLesson.tap(); else await wifiLesson.press('Enter');
+                await page.waitForURL(/scenario=wifi-join/);
+                assert.equal(await frame.locator('#scenario').evaluate(picker=>picker===document.activeElement),true);
+                assert.equal(await frame.locator('.lesson-menu').getAttribute('open'),null);
+                await frame.locator('#progress').filter({hasText:'Step 0 of 8'}).waitFor();
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/protocol?scenario=cached-dns');
                 const scenarioPicker=frame.getByRole('combobox',{name:'Scenario'});
