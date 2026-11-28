@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adigun Protocol Explorer</title>
+</head>
+<body>
+<p><a id="workbench" href="../../docs/preview/AdigunIoT-portfolio-preview.html#demo/protocol">Open Adigun Protocol Explorer</a></p>
+<script>
+const link = document.querySelector('#workbench');
+const workbench = new URL(link.href);
+const source = new URLSearchParams(location.search);
+const lesson = new URLSearchParams();
+for (const key of ['scenario', 'step', 'view']) {
+  if (source.has(key)) lesson.set(key, source.get(key));
+}
+if (lesson.size) workbench.hash += '?' + lesson.toString();
+link.href = workbench.href;
+location.replace(workbench.href);
+</script>
+</body>
+</html>

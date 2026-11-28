@@ -429,7 +429,8 @@ jobs:
                 await page.goto('https://adigun.test/#demo/home/play-now');
                 await frame.getByText(`${expectedPlayable} playable`, {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
-                assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
+                const standaloneDestinations=Object.keys(standalone).filter(route=>route!=='/sites/protocol-explorer/');
+                assert.deepEqual(standaloneLinks.sort(),standaloneDestinations.sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
                 assert.equal(await ladderLink.getAttribute('href'),'https://adigun.test/sites/word-ladder-lab/');
                 await ladderLink.press('Enter');
@@ -1575,6 +1576,13 @@ jobs:
                 await frame.getByText('Reset.',{exact:true}).waitFor();
                 await withinViewport(frame.locator('html'));
                 await page.setViewportSize(viewport);
+                await page.goto('https://adigun.test/sites/protocol-explorer/');
+                await page.waitForURL(url=>url.hash==='#demo/protocol');
+                await frame.getByRole('heading',{name:'Adigun Protocol Explorer',exact:true}).waitFor();
+                await page.goto('https://adigun.test/sites/protocol-explorer/?scenario=secure-visit&step=5&view=sequence');
+                await frame.locator('#event-summary').filter({hasText:'Send the server key share and certificate'}).waitFor();
+                await frame.locator('#stage .sequence .active').waitFor();
+                await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/protocol?scenario=cached-dns');
                 const scenarioPicker=frame.getByRole('combobox',{name:'Scenario'});
                 assert.equal(await scenarioPicker.inputValue(),'DNS answer cached');
