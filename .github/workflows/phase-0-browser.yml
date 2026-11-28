@@ -1575,6 +1575,13 @@ jobs:
                 await frame.getByText('Reset.',{exact:true}).waitFor();
                 await withinViewport(frame.locator('html'));
                 await page.setViewportSize(viewport);
+                await page.goto('https://adigun.test/sites/protocol-explorer/');
+                await page.waitForURL(url=>url.hash==='#demo/protocol');
+                await frame.getByRole('heading',{name:'Adigun Protocol Explorer',exact:true}).waitFor();
+                await page.goto('https://adigun.test/sites/protocol-explorer/?scenario=secure-visit&step=5&view=sequence');
+                await frame.locator('#event-summary').filter({hasText:'Send the server key share and certificate'}).waitFor();
+                await frame.locator('#stage .sequence .active').waitFor();
+                await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/protocol?scenario=cached-dns');
                 const scenarioPicker=frame.getByRole('combobox',{name:'Scenario'});
                 assert.equal(await scenarioPicker.inputValue(),'DNS answer cached');
