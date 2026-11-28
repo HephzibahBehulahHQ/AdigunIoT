@@ -1611,6 +1611,38 @@ jobs:
                 await frame.locator('#stage .network').waitFor();
                 await frame.getByRole('button',{name:'Sequence',exact:true}).click();
                 await page.waitForURL(/step=2&view=sequence$/);
+                const explorerCases=[
+                  ['',4,6,'Request the demonstration page'],
+                  ['cached-dns',1,5,'Reuse the address from the local cache'],
+                  ['slow-reply',5,7,'Simulate the server preparing a reply'],
+                  ['page-not-found',5,6,'Return a 404 Not Found response'],
+                  ['page-moved',8,8,'Display /guide at its new address'],
+                  ['secure-visit',5,8,'Send the server key share and certificate'],
+                  ['dns-not-found',2,3,'Return NXDOMAIN for missing.example']
+                ];
+                for(const [scenario,step,total,summary] of explorerCases){
+                  const params=new URLSearchParams({step:String(step),view:'sequence'});
+                  if(scenario) params.set('scenario',scenario);
+                  await page.goto('https://adigun.test/#demo/protocol?'+params);
+                  await frame.locator('#event-summary').filter({hasText:summary}).waitFor();
+                  assert.equal(await frame.locator('#scenario option').count(),explorerCases.length);
+                  assert.equal(await frame.locator('#progress').textContent(),'Step '+step+' of '+total+(step===total?' · Complete':''));
+                  assert.equal(await frame.locator('#steps [aria-pressed=true]').getAttribute('data-event'),String(step-1));
+                  assert.equal(await frame.locator('#events [aria-pressed=true]').getAttribute('data-event'),String(step-1));
+                  assert.match(await frame.locator('#stage .sequence .active').textContent(),new RegExp('^'+step+'\\.'));
+                  const networkView=frame.getByRole('button',{name:'Network',exact:true});
+                  if(name==='phone') await networkView.tap(); else await networkView.press('Enter');
+                  await frame.locator('#stage .network .active-path').waitFor({state:'attached'});
+                  const firstPacket=frame.locator('#events [data-event="0"]');
+                  if(name==='phone') await firstPacket.tap(); else await firstPacket.press('Enter');
+                  await frame.locator('#progress').filter({hasText:'Step 1 of '+total}).waitFor();
+                  assert.equal(await frame.locator('#steps [aria-pressed=true]').getAttribute('data-event'),'0');
+                  if(name==='phone'){
+                    assert.equal(await frame.locator('#stage .packet-moving').evaluate(packet=>getComputedStyle(packet).display),'none');
+                    await frame.locator('#stage .packet-still').waitFor({state:'visible'});
+                  }
+                  await withinViewport(frame.locator('html'));
+                }
                 if(name==='phone') await page.setViewportSize({width:320,height:420});
                 await page.goto('https://adigun.test/#demo/home/play-now?group=games');
                 await frame.getByRole('link',{name:'Bridge Builder Sprint',exact:true}).click();
