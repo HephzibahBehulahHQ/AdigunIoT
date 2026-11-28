@@ -1581,6 +1581,12 @@ jobs:
                 await frame.getByRole('heading',{name:'Adigun Protocol Explorer',exact:true}).waitFor();
                 await page.goto('https://adigun.test/sites/protocol-explorer/?scenario=secure-visit&step=5&view=sequence');
                 await frame.locator('#event-summary').filter({hasText:'Send the server key share and certificate'}).waitFor();
+                await page.getByRole('button',{name:'Share lesson',exact:true}).click();
+                const sharedLesson=new URL(await page.getByRole('textbox',{name:'Lesson link'}).inputValue());
+                assert.equal(sharedLesson.pathname,'/sites/protocol-explorer/');
+                assert.equal(sharedLesson.searchParams.get('scenario'),'secure-visit');
+                assert.equal(sharedLesson.searchParams.get('step'),'5');
+                assert.equal(sharedLesson.searchParams.get('view'),'sequence');
                 await frame.locator('#stage .sequence .active').waitFor();
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/protocol?scenario=cached-dns');
