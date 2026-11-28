@@ -36,7 +36,7 @@ jobs:
         run: |
           node <<'JS'
           const assert = require('node:assert/strict');
-          const expectedPlayable = 149;
+          const expectedPlayable = 151;
           const fs = require('node:fs');
           const { chromium } = require(process.env.RUNNER_TEMP + '/adigun-qa/node_modules/playwright');
           const entry = fs.readFileSync('index.html', 'utf8');
@@ -620,7 +620,7 @@ jobs:
                 await frame.getByRole('button',{name:/Clear/}).click();
                 await page.waitForURL(/play-now$/);
                 assert.equal(await frame.locator('#play-results a').count(),expectedPlayable);
-                for(const [title,key] of [['Cloud Eraser','19/4'],['Doodle Echo','19/8'],['Pocket Vortex','19/5'],['Orbiting Socks','19/6'],['Glow Pebble Pile','19/7'],['Rainbow Puddle','19/13'],['Slow-Motion Toast','19/9'],['Jelly Elevator','19/10']]){
+                for(const [title,key] of [['Cloud Eraser','19/4'],['Doodle Echo','19/8'],['Pocket Vortex','19/5'],['Orbiting Socks','19/6'],['Glow Pebble Pile','19/7'],['Rainbow Puddle','19/13'],['Slow-Motion Toast','19/9'],['Jelly Elevator','19/10'],['Sideways Snow','19/15'],['Tiny Umbrella Factory','19/16']]){
                   const toy=frame.locator('#play-results').getByRole('link',{name:title,exact:true});
                   assert.equal(await toy.count(),1);
                   assert.equal(await toy.getAttribute('href'),'#concept/'+key);
