@@ -1637,7 +1637,10 @@ jobs:
                   if(name==='phone') await firstPacket.tap(); else await firstPacket.press('Enter');
                   await frame.locator('#progress').filter({hasText:'Step 1 of '+total}).waitFor();
                   assert.equal(await frame.locator('#steps [aria-pressed=true]').getAttribute('data-event'),'0');
-                  if(name==='phone'){
+                  if(name==='phone'&&scenario==='cached-dns'){
+                    assert.equal(await frame.locator('#stage .packet-moving').count(),0);
+                    await frame.locator('#stage .packet-layer circle').waitFor({state:'visible'});
+                  }else if(name==='phone'){
                     assert.equal(await frame.locator('#stage .packet-moving').evaluate(packet=>getComputedStyle(packet).display),'none');
                     await frame.locator('#stage .packet-still').waitFor({state:'visible'});
                   }
