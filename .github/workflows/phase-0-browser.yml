@@ -1801,9 +1801,24 @@ jobs:
                 await frame.locator('[data-model="reset"]').click();
                 await frame.locator('#model-result').filter({hasText:'Reset.'}).waitFor();
 
+                if(name==='phone'){
+                  await page.setViewportSize({width:320,height:420});
+                  const entryRoutes=['signal', ...[...expectedGames,'#concept/1/4'].map(route=>'home/'+route.slice(1))];
+                  for(const route of entryRoutes){
+                    await page.goto('https://adigun.test/#demo/'+route);
+                    const game=frame.locator('body.game-view');
+                    await game.waitFor();
+                    await frame.locator('main .card, .signal-game').first().waitFor();
+                    const dimensions=await game.evaluate(body=>({
+                      viewport:[innerWidth,innerHeight],
+                      content:[document.documentElement.scrollWidth,Math.max(body.scrollHeight,document.documentElement.scrollHeight)]
+                    }));
+                    assert.ok(dimensions.viewport[1]>0&&dimensions.content.every((value,index)=>value<=dimensions.viewport[index]+1),'Small phone entry fits '+route+' '+JSON.stringify(dimensions));
+                  }
+                }
                 if(name==='phone') await page.setViewportSize({width:390,height:500});
                 else await page.setViewportSize(viewport);
-                for(const [slot,actions] of [[2,[5,0,1,2,3,4]],[6,[0,2,0,4,1,3]],[22,[2,0,1,2,2,0,2]],[38,[1,0,3,2,1]],[39,[2,0,2,0,1,2,0,2]],[42,[2,3,0,1,0,2]]]){
+                for(const [slot,actions] of [[2,[5,0,1,2,3,4]],[6,[0,2,0,4,1,3]],[22,[2,0,1,2,2,0,2]],[27,[2,1,1,2]],[38,[1,0,3,2,1]],[39,[2,0,2,0,1,2,0,2]],[42,[2,3,0,1,0,2]]]){
                   await page.goto('https://adigun.test/#demo/home/concept/1/'+slot);
                   await frame.locator('body.game-view').waitFor();
                   const verifyFixed=async()=>{
