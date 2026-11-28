@@ -20,7 +20,21 @@ Work in the selected `C:\Codex\AdigunIoT` folder and the [AdigunIoT repository](
 
 ## One-screen game interface
 
-Every game must run in a single fixed viewport from start to finish. Keep the play area, score or status, and every game-specific button, menu, and controller visible and usable together, including Start, Pause when applicable, Replay or Reset, and Exit. The game page, embedded game frame, and play area must require zero horizontal or vertical scrolling to play or reach any control. Scale the board and reflow the controls for laptop, phone, and short phone viewports. Optional help may open in a dismissible overlay. Keep keyboard focus visible and touch targets usable. Verify start, active play, and end-of-round states on the exact release candidate. Any game that needs scrolling fails the release gate.
+Every game must run in a single fixed viewport from start to finish. Keep the play area, score or status, and essential gameplay controls visible and usable together, including Start, Pause when applicable, Replay or Reset, and Exit. The game page, embedded game frame, and play area must require zero horizontal or vertical scrolling to play or reach any control. Scale the board and reflow the controls for laptop, phone, and short phone viewports. Optional help may open in a dismissible overlay. Keep keyboard focus visible and touch targets usable. Verify start, active play, and end-of-round states on the exact release candidate. Any game that needs scrolling fails the release gate.
+
+## Universal Game Studio layout and UI
+
+Apply this rule to every game and interactive app during use, including embedded studios. Keep portfolio and directory browsing in the directory layout described above.
+
+- **Lock the viewport.** Set `html`, `body`, and `#studio` to `100vw` by `100vh` with `overflow: hidden`. Use the dynamic viewport height on supported phones to account for browser chrome. Require zero horizontal and vertical scrolling. The full-bleed playfield fills the studio at `z-index: 1`. Leave about 90% of the canvas open, with persistent UI covering at most 15%. Keep sidebars, persistent text panels, and dashboard boxes out of the studio.
+- **Top-left HUD.** At a fixed 16px inset, show at most four small single-line glass pills. Each pill contains only an icon and short value, such as `❤️ 100` or `⏱️ 01:20`. Keep descriptions and sublabels in Help.
+- **Top-right controls.** At a fixed 16px inset, use 40px square icon buttons with accessible names for Help, Audio when available, and Pause or Menu. Keep exit reachable through Menu.
+- **Bottom-center dock.** Center a fixed horizontal dock 16px from the bottom. Keep it at or below 76px tall. Use 60px square tiles with icons and optional short badges for tools, cards, or abilities.
+- **Bottom-right actions.** At a fixed 16px inset, show one or two primary actions and quick reset or undo icons as applicable. On narrow phones, offset the dock or action group vertically only as needed to prevent overlap. Respect safe-area insets and keep controls within the viewport.
+- **On-demand overlays.** Put tutorials, rules, lore, detailed stats, and settings in centered glass dialogs at `z-index: 20`. Open them on explicit Help or Menu activation, or at game start or game over. Support dismissal, keyboard focus management, and return focus to the trigger where applicable.
+- **Pointer safety.** Set full-screen HUD wrappers to `pointer-events: none`. Restore `pointer-events: auto` on interactive buttons and docks so the rest of the canvas remains clickable.
+
+Verify the exact candidate at laptop and phone sizes, including a short phone viewport, through start, active play or use, reset, and end states. Check for zero scrolling, unobstructed canvas input, non-overlapping controls, persistent HUD coverage, usable touch and keyboard controls, and reachable exit. Hold releases that fail these checks.
 
 ## Ship small verified increments
 
