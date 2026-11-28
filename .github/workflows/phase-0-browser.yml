@@ -54,6 +54,21 @@ jobs:
               for (const [name, viewport] of [['phone', {width: 390, height: 844}], ['laptop', {width: 1366, height: 768}]]) {
                 const context = await browser.newContext({ viewport, reducedMotion: name === 'phone' ? 'reduce' : 'no-preference', hasTouch: name === 'phone' });
                 const page = await context.newPage();
+                const checkStudioLayout=async()=>{
+                  const metrics=await page.locator('#studio').evaluate(studio=>{
+                    const elements=[...studio.querySelectorAll('.hud button,.pill')];
+                    const boxes=elements.map(el=>el.getBoundingClientRect());
+                    return {
+                      locked:[document.documentElement,document.body,studio].every(el=>getComputedStyle(el).overflow==='hidden'&&el.scrollWidth<=innerWidth&&el.scrollHeight<=innerHeight),
+                      fullBleed:studio.querySelector('.playfield').getBoundingClientRect().width===innerWidth&&studio.querySelector('.playfield').getBoundingClientRect().height===innerHeight,
+                      coverage:boxes.reduce((sum,box)=>sum+box.width*box.height,0)/(innerWidth*innerHeight),
+                      fits:boxes.every(box=>box.top>=0&&box.left>=0&&box.right<=innerWidth&&box.bottom<=innerHeight),
+                      overlaps:boxes.some((box,i)=>boxes.slice(i+1).some(other=>box.left<other.right&&box.right>other.left&&box.top<other.bottom&&box.bottom>other.top)),
+                      clickThrough:!!document.elementFromPoint(innerWidth/2,innerHeight/2).closest('.playfield')
+                    };
+                  });
+                  assert.ok(metrics.locked&&metrics.fullBleed&&metrics.coverage<=0.15&&metrics.fits&&!metrics.overlaps&&metrics.clickThrough,JSON.stringify(metrics));
+                };
                 const errors = [];
                 page.on('pageerror', error => errors.push(error.message));
                 await page.route('**/*', route => {
@@ -270,21 +285,42 @@ jobs:
                 await page.getByRole('link',{name:/Open preview/}).click();
                 await page.waitForURL('**/sites/shape-sorter/');
                 assert.equal(await page.locator('iframe').count(),0);
-                await page.getByRole('button',{name:/Train/}).press('Enter');
-                await page.getByRole('button',{name:/Predict/}).click();
-                await page.getByText('Predicted triangle. Actual square.').waitFor();
+                const sortSize=page.viewportSize();
+                if(name==='phone')await page.setViewportSize({width:390,height:500});
+                const sortButton=name=>page.getByRole('button',{name,exact:true});
+                const choose=async prediction=>{
+                  if(name==='phone')await sortButton('Predict').tap();else await sortButton('Predict').press('Enter');
+                  await page.getByRole('dialog',{name:'Prediction'}).getByText(prediction,{exact:true}).waitFor();
+                  await sortButton('Close').click();
+                  await checkStudioLayout();
+                };
+                await checkStudioLayout();
+                await sortButton('Train').press('Enter');
+                await choose('Predicted triangle. Actual square.');
+                await sortButton('Menu').click();
                 await page.getByLabel('Add mixed-color examples').check();
-                assert.equal(await page.getByRole('button',{name:/Predict/}).isEnabled(),false);
-                await page.getByRole('button',{name:/Train/}).click();
-                await page.getByRole('button',{name:/Predict/}).click();
-                await page.getByText('Unsure: the examples tie. Actual square.').waitFor();
+                await sortButton('Close').click();
+                assert.equal(await sortButton('Predict').isEnabled(),false);
+                await sortButton('Train').click();
+                await choose('Unsure: the examples tie. Actual square.');
+                await sortButton('Menu').click();
                 await page.getByLabel('Clue').selectOption('corners');
-                await page.getByRole('button',{name:/Train/}).click();
-                await page.getByRole('button',{name:/Predict/}).click();
-                await page.getByText('Predicted square. Actual square.').waitFor();
-                await page.getByText('1 correct · 1 tested').waitFor();
-                await withinViewport(page.locator('html'));
+                await sortButton('Close').click();
+                await sortButton('Train').click();
+                await choose('Predicted square. Actual square.');
+                assert.equal(await page.locator('#score').innerText(),'1 / 1');
+                await sortButton('Next shape').click();
+                await choose('Predicted triangle. Actual triangle.');
+                assert.equal(await page.locator('#score').innerText(),'2 / 2');
+                await sortButton('Reset').click();
+                assert.equal(await page.locator('#score').innerText(),'0 / 0');
+                await sortButton('Help').press('Enter');
+                await page.getByRole('dialog',{name:'How to play'}).waitFor();
+                await page.keyboard.press('Escape');
+                await checkStudioLayout();
+                await page.setViewportSize(sortSize);
                 await page.screenshot({path:name+'-shape-sorter.png'});
+                await sortButton('Menu').click();
                 await page.getByRole('link',{name:/Portfolio/}).click();
                 await page.waitForURL(/#category\/ai-foundations$/);
                 await page.getByRole('heading',{name:/AI Foundations/}).waitFor();
@@ -477,21 +513,6 @@ jobs:
                 await page.waitForURL('**/sites/risk-dice/');
                 const riskSize=page.viewportSize();
                 if(name==='phone')await page.setViewportSize({width:390,height:500});
-                const checkStudioLayout=async()=>{
-                  const metrics=await page.locator('#studio').evaluate(studio=>{
-                    const elements=[...studio.querySelectorAll('.hud button,.pill')];
-                    const boxes=elements.map(el=>el.getBoundingClientRect());
-                    return {
-                      locked:[document.documentElement,document.body,studio].every(el=>getComputedStyle(el).overflow==='hidden'&&el.scrollWidth<=innerWidth&&el.scrollHeight<=innerHeight),
-                      fullBleed:studio.querySelector('.playfield').getBoundingClientRect().width===innerWidth&&studio.querySelector('.playfield').getBoundingClientRect().height===innerHeight,
-                      coverage:boxes.reduce((sum,box)=>sum+box.width*box.height,0)/(innerWidth*innerHeight),
-                      fits:boxes.every(box=>box.top>=0&&box.left>=0&&box.right<=innerWidth&&box.bottom<=innerHeight),
-                      overlaps:boxes.some((box,i)=>boxes.slice(i+1).some(other=>box.left<other.right&&box.right>other.left&&box.top<other.bottom&&box.bottom>other.top)),
-                      clickThrough:!!document.elementFromPoint(innerWidth/2,innerHeight/2).closest('.playfield')
-                    };
-                  });
-                  assert.ok(metrics.locked&&metrics.fullBleed&&metrics.coverage<=0.15&&metrics.fits&&!metrics.overlaps&&metrics.clickThrough,JSON.stringify(metrics));
-                };
                 const riskMenu=page.getByRole('button',{name:'Menu'});
                 const closeRisk=()=>page.getByRole('button',{name:'Close'}).click();
                 await checkStudioLayout();
