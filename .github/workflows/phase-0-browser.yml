@@ -477,7 +477,7 @@ jobs:
                 await page.waitForURL('**/sites/risk-dice/');
                 const riskSize=page.viewportSize();
                 if(name==='phone')await page.setViewportSize({width:390,height:500});
-                const riskCheck=async()=>{
+                const checkStudioLayout=async()=>{
                   const metrics=await page.locator('#studio').evaluate(studio=>{
                     const elements=[...studio.querySelectorAll('.hud button,.pill')];
                     const boxes=elements.map(el=>el.getBoundingClientRect());
@@ -494,7 +494,7 @@ jobs:
                 };
                 const riskMenu=page.getByRole('button',{name:'Menu'});
                 const closeRisk=()=>page.getByRole('button',{name:'Close'}).click();
-                await riskCheck();
+                await checkStudioLayout();
                 await riskMenu.click();
                 await page.getByText('6 / 36 · 16.7%').waitFor();
                 await closeRisk();
@@ -505,7 +505,7 @@ jobs:
                 assert.equal(await page.locator('#roll-count').innerText(),'21');
                 await page.getByRole('button',{name:'Lower target'}).click();
                 assert.equal(await page.locator('#target-pill').innerText(),'6');
-                await riskCheck();
+                await checkStudioLayout();
                 await riskMenu.click();
                 await page.getByLabel('Target sum').selectOption('2');
                 await page.getByText('1 / 36 · 2.8%').waitFor();
@@ -520,25 +520,42 @@ jobs:
                 await page.getByRole('dialog',{name:'How to play'}).waitFor();
                 await page.keyboard.press('Escape');
                 assert.equal(await page.getByRole('dialog').count(),0);
-                await riskCheck();
+                await checkStudioLayout();
                 await page.setViewportSize(riskSize);
                 await page.screenshot({path:name+'-risk-dice.png'});
                 await page.goBack();
                 await frame.getByRole('link',{name:'Lantern Grid',exact:true}).click();
                 await page.waitForURL('**/sites/lantern-grid/');
-                if (name === 'phone') await page.setViewportSize({width:360,height:640});
-                const game = page.getByRole('region',{name:'Lantern puzzle'});
-                await game.getByText('Puzzle 1 · Moves 0 · Lit 5').waitFor();
-                const center = game.getByRole('button',{name:'Row 2, column 3'});
-                if (name === 'phone') await center.tap(); else await center.press('Enter');
-                await game.getByText('Solved in 1 move!',{exact:false}).waitFor();
-                await game.getByRole('button',{name:/Restart/}).click();
-                await game.getByText('Puzzle 1 · Moves 0 · Lit 5').waitFor();
-                await game.getByRole('button',{name:/Next puzzle/}).click();
-                await game.getByText(/Puzzle 2 · Moves 0/).waitFor();
-                const gameFrame = await game.boundingBox();
-                assert.ok(gameFrame.y + gameFrame.height <= page.viewportSize().height, 'Lantern Grid fits on screen');
-                await withinViewport(page.locator('html'));
+                if(name==='phone')await page.setViewportSize({width:390,height:500});
+                const game=page.getByRole('region',{name:'Lantern puzzle'});
+                const lanternStats=async(puzzle,moves,lit)=>{
+                  assert.equal(await page.locator('#puzzle-value').innerText(),String(puzzle));
+                  assert.equal(await page.locator('#moves-value').innerText(),String(moves));
+                  assert.equal(await page.locator('#lit-value').innerText(),String(lit));
+                };
+                await checkStudioLayout();
+                await lanternStats(1,0,5);
+                const center=game.getByRole('button',{name:'Row 2, column 3'});
+                if(name==='phone')await center.tap();else await center.press('Enter');
+                await page.getByRole('dialog',{name:'Puzzle solved'}).getByText('Solved in 1 move!',{exact:false}).waitFor();
+                await page.keyboard.press('Escape');
+                await lanternStats(1,1,0);
+                await checkStudioLayout();
+                await page.getByRole('button',{name:'Restart'}).click();
+                await lanternStats(1,0,5);
+                await page.getByRole('button',{name:'Next puzzle'}).click();
+                await lanternStats(2,0,7);
+                await game.getByRole('button',{name:'Row 1, column 1'}).click();
+                await lanternStats(2,1,4);
+                await page.getByRole('button',{name:'Help'}).click();
+                await page.getByRole('dialog',{name:'How to play'}).waitFor();
+                await page.getByRole('button',{name:'Close'}).click();
+                await checkStudioLayout();
+                assert.equal(await game.locator('.cell').evaluateAll(cells=>cells.every(cell=>{
+                  const box=cell.getBoundingClientRect();
+                  return box.width>=44&&box.height>=44&&document.elementFromPoint(box.x+box.width/2,box.y+box.height/2)===cell;
+                })),true,'Every lantern can be tapped');
+                if(name==='phone')await page.setViewportSize({width:360,height:640});
                 await page.screenshot({path:name+'-lantern-grid.png'});
                 await page.goBack();
                 await frame.getByRole('link',{name:'Number Bridge',exact:true}).click();
