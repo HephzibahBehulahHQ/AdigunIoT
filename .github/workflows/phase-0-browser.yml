@@ -468,7 +468,8 @@ jobs:
                 await ladderLink.press('Enter');
                 await page.waitForURL('**/sites/word-ladder-lab/');
                 await page.getByRole('heading',{name:'Word Ladder Lab',exact:true}).waitFor();
-                await page.goBack();
+                await page.getByRole('button',{name:'Menu'}).click();
+                await page.getByRole('link',{name:'Back to results'}).click();
                 await frame.getByRole('heading',{name:/Play Now/}).waitFor();
                 await withinViewport(frame.locator('html'));
                 await page.screenshot({path:name+'-standalone-discovery.png'});
