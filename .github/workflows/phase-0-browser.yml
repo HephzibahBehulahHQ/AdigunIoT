@@ -36,7 +36,7 @@ jobs:
         run: |
           node <<'JS'
           const assert = require('node:assert/strict');
-          const expectedPlayable = 133;
+          const expectedPlayable = 134;
           const fs = require('node:fs');
           const { chromium } = require(process.env.RUNNER_TEMP + '/adigun-qa/node_modules/playwright');
           const entry = fs.readFileSync('index.html', 'utf8');
@@ -1537,7 +1537,7 @@ jobs:
                 const learnLinks=await frame.locator('#play-results a').evaluateAll(links=>links.map(link=>link.getAttribute('href')));
                 assert.deepEqual(learnLinks.filter(href=>href.startsWith('#concept/0/')),Array.from({length:50},(_,index)=>'#concept/0/'+index));
                 assert.deepEqual(learnLinks.slice(50),['#concept/13/15','#concept/13/16','#concept/13/17','#concept/13/18','#concept/1/4','#concept/13/0']);
-                const expectedGames=[1,2,3,6,8,13,19,21,22,23,24,26,27,28,30,31,32,33,34,35,36,37,38,39,40,41,42,44,45,46].map(i=>'#concept/1/'+i);
+                const expectedGames=[1,2,3,6,8,13,19,21,22,23,24,26,27,28,30,31,32,33,34,35,36,37,38,39,40,41,42,44,45,46,48].map(i=>'#concept/1/'+i);
                 await page.goto('https://adigun.test/#demo/home/play-now?group=games');
                 const gameLinks=frame.locator('#play-results a');
                 await gameLinks.first().waitFor();
