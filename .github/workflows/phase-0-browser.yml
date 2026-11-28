@@ -1626,7 +1626,8 @@ jobs:
                   ['page-not-found',5,6,'Return a 404 Not Found response'],
                   ['page-moved',8,8,'Display /guide at its new address'],
                   ['secure-visit',5,8,'Send the server key share and certificate'],
-                  ['dns-not-found',2,3,'Return NXDOMAIN for missing.example']
+                  ['dns-not-found',2,3,'Return NXDOMAIN for missing.example'],
+                  ['wifi-join',3,8,'Assign a local IP address and give network settings']
                 ];
                 for(const [scenario,step,total,summary] of explorerCases){
                   const params=new URLSearchParams({step:String(step),view:'sequence'});
