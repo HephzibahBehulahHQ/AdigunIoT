@@ -1808,7 +1808,12 @@ jobs:
                     await page.goto('https://adigun.test/#demo/'+route);
                     const game=frame.locator('body.game-view');
                     await game.waitFor();
-                    assert.ok(await game.evaluate(body=>body.scrollHeight<=innerHeight+1&&document.documentElement.scrollHeight<=innerHeight+1&&document.documentElement.scrollWidth<=innerWidth+1),'Small phone entry fits '+route);
+                    await frame.locator('main .card, .signal-game').first().waitFor();
+                    const dimensions=await game.evaluate(body=>({
+                      viewport:[innerWidth,innerHeight],
+                      content:[document.documentElement.scrollWidth,Math.max(body.scrollHeight,document.documentElement.scrollHeight)]
+                    }));
+                    assert.ok(dimensions.viewport[1]>0&&dimensions.content.every((value,index)=>value<=dimensions.viewport[index]+1),'Small phone entry fits '+route+' '+JSON.stringify(dimensions));
                   }
                 }
                 if(name==='phone') await page.setViewportSize({width:390,height:500});
