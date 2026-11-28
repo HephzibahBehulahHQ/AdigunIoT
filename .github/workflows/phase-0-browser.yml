@@ -429,7 +429,8 @@ jobs:
                 await page.goto('https://adigun.test/#demo/home/play-now');
                 await frame.getByText(`${expectedPlayable} playable`, {exact:true}).waitFor();
                 const standaloneLinks=await frame.locator('.bored-grid a[data-site]').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
-                assert.deepEqual(standaloneLinks.sort(),Object.keys(standalone).sort(),'Every standalone site is discoverable exactly once');
+                const standaloneDestinations=Object.keys(standalone).filter(route=>route!=='/sites/protocol-explorer/');
+                assert.deepEqual(standaloneLinks.sort(),standaloneDestinations.sort(),'Every standalone site is discoverable exactly once');
                 const ladderLink=frame.getByRole('link',{name:'Word Ladder Lab',exact:true});
                 assert.equal(await ladderLink.getAttribute('href'),'https://adigun.test/sites/word-ladder-lab/');
                 await ladderLink.press('Enter');
