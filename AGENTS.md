@@ -20,7 +20,7 @@ Work in the selected `C:\Codex\AdigunIoT` folder and the [AdigunIoT repository](
 
 ## One-screen game interface
 
-Keep the play area, score or status, and essential game controls visible together in one viewport during play. Players must be able to start, pause where applicable, replay or reset, and leave the game without scrolling. Use a compact game layout with a bounded play area and a reachable control bar. Put optional help behind a panel that players can close. Keep keyboard focus visible and touch targets usable. Check the full game screen at phone and laptop sizes, including a short phone viewport. A game that requires scrolling to reach play controls cannot ship.
+Every game must run in a single fixed viewport from start to finish. Keep the play area, score or status, and every game-specific button, menu, and controller visible and usable together, including Start, Pause when applicable, Replay or Reset, and Exit. The game page, embedded game frame, and play area must require zero horizontal or vertical scrolling to play or reach any control. Scale the board and reflow the controls for laptop, phone, and short phone viewports. Optional help may open in a dismissible overlay. Keep keyboard focus visible and touch targets usable. Verify start, active play, and end-of-round states on the exact release candidate. Any game that needs scrolling fails the release gate.
 
 ## Ship small verified increments
 
