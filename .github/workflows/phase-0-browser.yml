@@ -151,7 +151,7 @@ jobs:
                 await page.locator('.samples').getByRole('link', { name: /Protocol Explorer/ }).click();
                 await frame.getByRole('heading', { name: 'Packet timeline' }).waitFor();
                 await frame.getByRole('button', { name: 'Next', exact: true }).click();
-                await frame.getByText(/0.000 s/).waitFor();
+                await frame.locator('#event-title').filter({hasText:'0.000 s'}).waitFor({state:'attached'});
                 await frame.getByRole('button', { name: 'Sequence', exact: true }).click();
                 await frame.locator('.sequence .active').waitFor();
                 await withinViewport(frame.locator('html'));
@@ -1585,7 +1585,7 @@ jobs:
                 await page.waitForURL(url=>url.hash==='#demo/protocol');
                 await frame.getByRole('heading',{name:'Adigun Protocol Explorer',exact:true}).waitFor();
                 await page.goto('https://adigun.test/sites/protocol-explorer/?scenario=secure-visit&step=5&view=sequence');
-                await frame.locator('#event-summary').filter({hasText:'Send the server key share and certificate'}).waitFor();
+                await frame.locator('#event-summary').filter({hasText:'Send the server key share and certificate'}).waitFor({state:'attached'});
                 await page.getByRole('button',{name:'Share lesson',exact:true}).click();
                 const sharedLesson=new URL(await page.getByRole('textbox',{name:'Lesson link'}).inputValue());
                 assert.equal(sharedLesson.pathname,'/sites/protocol-explorer/');
@@ -1608,7 +1608,7 @@ jobs:
                 const scenarioPicker=frame.getByRole('combobox',{name:'Scenario'});
                 assert.equal(await scenarioPicker.inputValue(),'DNS answer cached');
                 await frame.getByRole('button',{name:'Next',exact:true}).click();
-                await frame.locator('#event-summary').filter({hasText:'Reuse the address from the local cache'}).waitFor();
+                await frame.locator('#event-summary').filter({hasText:'Reuse the address from the local cache'}).waitFor({state:'attached'});
                 await scenarioPicker.selectOption({label:'Slow reply'});
                 await page.waitForURL(/#demo\/protocol\?scenario=slow-reply$/);
                 await page.reload();
@@ -1619,7 +1619,7 @@ jobs:
                 await scenarioPicker.selectOption({label:'DNS answer cached'});
                 await page.waitForURL(/#demo\/home\/protocol\?scenario=cached-dns$/);
                 await page.goto('https://adigun.test/#demo/protocol?scenario=cached-dns&step=1');
-                await frame.locator('#event-summary').filter({hasText:'Reuse the address from the local cache'}).waitFor();
+                await frame.locator('#event-summary').filter({hasText:'Reuse the address from the local cache'}).waitFor({state:'attached'});
                 await frame.getByRole('button',{name:'Next',exact:true}).click();
                 await page.waitForURL(/scenario=cached-dns&step=2$/);
                 await page.reload();
@@ -1658,7 +1658,7 @@ jobs:
                   const params=new URLSearchParams({step:String(step),view:'sequence'});
                   if(scenario) params.set('scenario',scenario);
                   await page.goto('https://adigun.test/#demo/protocol?'+params);
-                  await frame.locator('#event-summary').filter({hasText:summary}).waitFor();
+                  await frame.locator('#event-summary').filter({hasText:summary}).waitFor({state:'attached'});
                   assert.equal(await frame.locator('#scenario option').count(),explorerCases.length);
                   assert.equal(await frame.locator('#progress').textContent(),'Step '+step+' of '+total+(step===total?' · Complete':''));
                   assert.equal(await frame.locator('#steps [aria-pressed=true]').getAttribute('data-event'),String(step-1));
@@ -1667,6 +1667,18 @@ jobs:
                   const networkView=frame.getByRole('button',{name:'Network',exact:true});
                   if(name==='phone') await networkView.tap(); else await networkView.press('Enter');
                   await frame.locator('#stage .network .active-path').waitFor({state:'attached'});
+                  assert.ok(await page.locator('html').evaluate(root=>root.scrollHeight<=innerHeight+1),'Explorer page stays fixed');
+                  assert.ok(await frame.locator('#stage').evaluate(stage=>{
+                    const rect=stage.getBoundingClientRect();
+                    return rect.height>=45&&rect.top>=0&&rect.bottom<=innerHeight+1&&document.body.scrollHeight<=innerHeight+1;
+                  }),'Explorer stage fits the fixed viewport');
+                  if(name==='phone'){
+                    await frame.getByRole('button',{name:'Inspector',exact:true}).tap();
+                    await frame.locator('#event-summary').filter({hasText:summary}).waitFor();
+                    await frame.getByRole('button',{name:'Steps',exact:true}).tap();
+                    await frame.locator('#steps [aria-pressed=true]').waitFor();
+                    await frame.getByRole('button',{name:'Timeline',exact:true}).tap();
+                  }
                   const firstPacket=frame.locator('#events [data-event="0"]');
                   if(name==='phone') await firstPacket.tap(); else await firstPacket.press('Enter');
                   await frame.locator('#progress').filter({hasText:'Step 1 of '+total}).waitFor();
