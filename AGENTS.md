@@ -36,6 +36,8 @@ Apply this rule to every game and interactive app during use, including embedded
 
 Verify the exact candidate at laptop and phone sizes, including a short phone viewport, through start, active play or use, reset, and end states. Check for zero scrolling, unobstructed canvas input, non-overlapping controls, persistent HUD coverage, usable touch and keyboard controls, and reachable exit. Hold releases that fail these checks.
 
+Finish the retrofit audit before adding new games or interactive apps. Inventory all existing routes and verify each one individually. Keep each route pending until its required checks pass and its live release is verified.
+
 ## Ship small verified increments
 
 Merge and deploy reviewable increments as they pass. One complete page, menu, or feature can qualify. The owner authorizes routine releases to existing authorized targets. Follow branch protections and required reviews. New hosting, custom domains, and access changes require separate authorization.
