@@ -475,19 +475,53 @@ jobs:
                 await page.screenshot({path:name+'-standalone-discovery.png'});
                 await frame.getByRole('link',{name:'Risk Dice',exact:true}).click();
                 await page.waitForURL('**/sites/risk-dice/');
+                const riskSize=page.viewportSize();
+                if(name==='phone')await page.setViewportSize({width:390,height:500});
+                const riskCheck=async()=>{
+                  const metrics=await page.locator('#studio').evaluate(studio=>{
+                    const elements=[...studio.querySelectorAll('.hud button,.pill')];
+                    const boxes=elements.map(el=>el.getBoundingClientRect());
+                    return {
+                      locked:[document.documentElement,document.body,studio].every(el=>getComputedStyle(el).overflow==='hidden'&&el.scrollWidth<=innerWidth&&el.scrollHeight<=innerHeight),
+                      fullBleed:studio.querySelector('.playfield').getBoundingClientRect().width===innerWidth&&studio.querySelector('.playfield').getBoundingClientRect().height===innerHeight,
+                      coverage:boxes.reduce((sum,box)=>sum+box.width*box.height,0)/(innerWidth*innerHeight),
+                      fits:boxes.every(box=>box.top>=0&&box.left>=0&&box.right<=innerWidth&&box.bottom<=innerHeight),
+                      overlaps:boxes.some((box,i)=>boxes.slice(i+1).some(other=>box.left<other.right&&box.right>other.left&&box.top<other.bottom&&box.bottom>other.top)),
+                      clickThrough:!!document.elementFromPoint(innerWidth/2,innerHeight/2).closest('.playfield')
+                    };
+                  });
+                  assert.ok(metrics.locked&&metrics.fullBleed&&metrics.coverage<=0.15&&metrics.fits&&!metrics.overlaps&&metrics.clickThrough,JSON.stringify(metrics));
+                };
+                const riskMenu=page.getByRole('button',{name:'Menu'});
+                const closeRisk=()=>page.getByRole('button',{name:'Close'}).click();
+                await riskCheck();
+                await riskMenu.click();
                 await page.getByText('6 / 36 · 16.7%').waitFor();
-                await page.getByRole('button',{name:/Roll once/}).press('Enter');
-                await page.getByText(/1 total rolls/).waitFor();
-                await page.getByRole('button',{name:/Roll 20/}).click();
-                await page.getByText(/21 total rolls/).waitFor();
+                await closeRisk();
+                await page.getByRole('button',{name:'Roll once'}).press('Enter');
+                assert.equal(await page.locator('#roll-count').innerText(),'1');
+                const fastRoll=page.getByRole('button',{name:'Roll 20'});
+                if(name==='phone')await fastRoll.tap();else await fastRoll.click();
+                assert.equal(await page.locator('#roll-count').innerText(),'21');
+                await page.getByRole('button',{name:'Lower target'}).click();
+                assert.equal(await page.locator('#target-pill').innerText(),'6');
+                await riskCheck();
+                await riskMenu.click();
                 await page.getByLabel('Target sum').selectOption('2');
                 await page.getByText('1 / 36 · 2.8%').waitFor();
                 assert.match(await page.locator('#observed').textContent(),/\/ 21/);
-                await page.getByRole('button',{name:/Reset/}).click();
-                await page.getByText('0 / 0 · Roll to measure').waitFor();
-                const risk = await page.locator('.lab').evaluate(el=>({bottom:el.getBoundingClientRect().bottom+scrollY,height:innerHeight}));
-                assert.ok(risk.bottom<=risk.height,'Risk Dice controls fit: '+JSON.stringify(risk));
-                await withinViewport(page.locator('html'));
+                await closeRisk();
+                assert.equal(await page.getByRole('button',{name:'Lower target'}).isDisabled(),true);
+                await page.getByRole('button',{name:'Raise target'}).click();
+                assert.equal(await page.locator('#target-pill').innerText(),'3');
+                await page.getByRole('button',{name:'Reset'}).click();
+                assert.equal(await page.locator('#roll-count').innerText(),'0');
+                await page.getByRole('button',{name:'Help'}).press('Enter');
+                await page.getByRole('dialog',{name:'How to play'}).waitFor();
+                await page.keyboard.press('Escape');
+                assert.equal(await page.getByRole('dialog').count(),0);
+                await riskCheck();
+                await page.setViewportSize(riskSize);
                 await page.screenshot({path:name+'-risk-dice.png'});
                 await page.goBack();
                 await frame.getByRole('link',{name:'Lantern Grid',exact:true}).click();
