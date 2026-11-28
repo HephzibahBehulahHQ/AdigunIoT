@@ -1643,7 +1643,11 @@ jobs:
                   ['page-moved',8,8,'Display /guide at its new address'],
                   ['secure-visit',5,8,'Send the server key share and certificate'],
                   ['dns-not-found',2,3,'Return NXDOMAIN for missing.example'],
-                  ['wifi-join',3,8,'Assign a local IP address and give network settings']
+                  ['wifi-join',3,8,'Assign a local IP address and give network settings'],
+                  ["tcp-retry",3,6,"Lose the next segment in transit."],
+                  ["websocket-chat",3,4,"Send a chat message frame."],
+                  ["mqtt-telemetry",3,4,"Publish a reading on demo/temperature with QoS 1."],
+                  ["http3-quic",3,5,"Request the page on one HTTP/3 stream."]
                 ];
                 for(const [scenario,step,total,summary] of explorerCases){
                   const params=new URLSearchParams({step:String(step),view:'sequence'});
