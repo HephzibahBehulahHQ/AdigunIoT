@@ -599,22 +599,41 @@ jobs:
                 await page.goBack();
                 await frame.getByRole('link',{name:'Terrain Trek',exact:true}).click();
                 await page.waitForURL('**/sites/terrain-trek/');
+                const trekSize=page.viewportSize();
+                if(name==='phone')await page.setViewportSize({width:390,height:500});
                 const trek=page.getByRole('region',{name:'Terrain Trek map'});
-                await trek.getByText('Map 1 · Energy 0 / 5').waitFor();
-                const grass=trek.getByRole('button',{name:'Grass 1, row 2, column 1',exact:true});
-                if(name==='phone') await grass.tap(); else await grass.press('Enter');
-                await trek.getByText('Map 1 · Energy 1 / 5').waitFor();
-                await trek.getByRole('button',{name:/Undo/}).click();
-                await trek.getByText('Map 1 · Energy 0 / 5').waitFor();
-                for(const label of ['Grass 1, row 2, column 1','Grass 1, row 2, column 2','Grass 1, row 2, column 3','Grass 1, row 2, column 4','Flag 1, row 1, column 4']){
-                  await trek.getByRole('button',{name:label,exact:true}).click();
+                const terrainTiles=trek.locator('.tile');
+                const trekStats=async(level,energy)=>{
+                  assert.equal(await page.locator('#level-value').innerText(),String(level));
+                  assert.equal(await page.locator('#meter').innerText(),energy);
+                };
+                await checkStudioLayout();
+                await trekStats(1,'0 / 5');
+                if(name==='phone')await terrainTiles.nth(4).tap();else await terrainTiles.nth(4).press('Enter');
+                await trekStats(1,'1 / 5');
+                await page.getByRole('button',{name:'Undo'}).click();
+                await trekStats(1,'0 / 5');
+                for(const index of [1,2,3])await terrainTiles.nth(index).click();
+                await page.getByRole('dialog',{name:'Flag reached'}).getByText('Flag reached. Try a cheaper route.').waitFor();
+                await page.keyboard.press('Escape');
+                await page.getByRole('button',{name:'Restart'}).click();
+                for(const [level,target,route] of [[1,5,[4,5,6,7,3]],[2,3,[1,2,3]],[3,6,[1,2,3]]]){
+                  await trekStats(level,'0 / '+target);
+                  for(const index of route)await terrainTiles.nth(index).click();
+                  await page.getByRole('dialog',{name:'Route complete'}).getByText(/Lowest-energy route/).waitFor();
+                  await page.getByRole('button',{name:'Close'}).click();
+                  await checkStudioLayout();
+                  await page.getByRole('button',{name:'Next map'}).click();
                 }
-                await trek.getByText(/Lowest-energy route/).waitFor();
-                await trek.getByRole('button',{name:/Next map/}).click();
-                await trek.getByText('Map 2 · Energy 0 / 3').waitFor();
-                const trekBounds=await trek.boundingBox();
-                assert.ok(trekBounds.y+trekBounds.height<=page.viewportSize().height,'Terrain Trek fits onscreen');
-                await withinViewport(page.locator('html'));
+                await trekStats(1,'0 / 5');
+                await page.getByRole('button',{name:'Help'}).press('Enter');
+                await page.getByRole('dialog',{name:'How to play'}).waitFor();
+                await page.keyboard.press('Escape');
+                assert.equal(await terrainTiles.evaluateAll(tiles=>tiles.every(tile=>{
+                  const box=tile.getBoundingClientRect();
+                  return box.width>=44&&box.height>=44&&tile.contains(document.elementFromPoint(box.x+box.width/2,box.y+box.height/2));
+                })),true,'Every terrain tile remains reachable');
+                await page.setViewportSize(trekSize);
                 await page.screenshot({path:name+'-terrain-trek.png'});
                 await page.goBack();
                 await frame.getByRole('link',{name:'Reaction Timer',exact:true}).click();
