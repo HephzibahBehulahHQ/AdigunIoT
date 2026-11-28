@@ -93,6 +93,40 @@ function openDemo(key,route=key,query='',group='',scenario='',step=0,protocolVie
  view.innerHTML='<div class="demo-top"><div class="demo-links"><a class="chip" id="return-link">← Back to portfolio</a><a class="chip" id="play-return" hidden>↶ Back to results</a></div><span class="flag">Phase 0 · '+demoTitles[key]+'</span></div><iframe class="demo-frame" sandbox="allow-scripts"></iframe>';
  $('#return-link').setAttribute('href',lastPortfolioRoute);
  syncPlayReturn();
+ if(route==='protocol'){
+  const share=document.createElement('button');
+  share.type='button';
+  share.className='chip';
+  share.innerHTML='<span aria-hidden="true">🔗</span> Share lesson';
+  view.querySelector('.demo-links').append(share);
+  const panel=document.createElement('div');
+  panel.hidden=true;
+  panel.style.padding='8px 0';
+  panel.innerHTML='<label for="lesson-link">Lesson link</label> <input id="lesson-link" type="url" readonly style="width:min(65%,500px)"> <span role="status"></span>';
+  view.querySelector('.demo-top').after(panel);
+  share.addEventListener('click',async()=>{
+   const current=new URL(location.href);
+   const params=new URLSearchParams(current.hash.split('?')[1]);
+   let url=current.href;
+   if(current.protocol==='https:'||current.protocol==='http:'){
+    const entry=new URL('../../sites/protocol-explorer/',current);
+    entry.search=params.toString();
+    url=entry.href;
+   }
+   const input=panel.querySelector('input'),status=panel.querySelector('[role="status"]');
+   panel.hidden=false;
+   input.value=url;
+   status.textContent='';
+   try{
+    await navigator.clipboard.writeText(url);
+    status.textContent='Link copied.';
+   }catch{
+    input.focus();
+    input.select();
+    status.textContent='Select and copy the link.';
+   }
+  });
+ }
  const frame=view.querySelector('iframe');
  frame.title=demoTitles[key];
  frame.srcdoc=demoMarkup.replace('__ADIGUN_DEMO_START__',route)
