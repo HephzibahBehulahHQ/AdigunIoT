@@ -406,25 +406,57 @@ jobs:
                 await page.getByRole('link',{name:/Words & Language 100 slots/}).first().click();
                 await page.getByRole('link',{name:/Open preview/}).click();
                 await page.waitForURL('**/sites/word-ladder-lab/');
-                const word = name => page.getByRole('button',{name,exact:true});
-                await word('WARM').click();
-                await page.getByText('Change exactly one letter.').waitFor();
-                await word('MOLD').press('Enter');
-                await page.getByRole('button',{name:/Hint/}).click();
+                const word = async name => {
+                  const button=page.getByRole('button',{name,exact:true});
+                  if(!await button.count())await page.getByRole('button',{name:'More words'}).click();
+                  return button;
+                };
+                const ladderSize=page.viewportSize();
+                if(name==='phone')await page.setViewportSize({width:390,height:500});
+                const checkLadder=async()=>{
+                  const layout=await page.locator('#studio').evaluate(studio=>{
+                    const area=innerWidth*innerHeight;
+                    const zones=[...studio.querySelectorAll('.hud button,.pill')].map(el=>el.getBoundingClientRect());
+                    return {
+                      coverage:zones.reduce((sum,box)=>sum+box.width*box.height,0)/area,
+                      fit:zones.every(box=>box.top>=0&&box.left>=0&&box.right<=innerWidth&&box.bottom<=innerHeight),
+                      collision:zones.some((a,i)=>zones.slice(i+1).some(b=>a.left<b.right&&a.right>b.left&&a.top<b.bottom&&a.bottom>b.top)),
+                      locked:[document.documentElement,document.body,studio].every(el=>getComputedStyle(el).overflow==='hidden'&&el.scrollWidth<=innerWidth&&el.scrollHeight<=innerHeight),
+                      uncovered:document.elementFromPoint(innerWidth/2,innerHeight/2).closest('.playfield')!==null
+                    };
+                  });
+                  assert.ok(layout.coverage<=0.15&&layout.fit&&!layout.collision&&layout.locked&&layout.uncovered,JSON.stringify(layout));
+                };
+                await checkLadder();
+                await (await word('WARM')).click();
+                await page.getByText('Change exactly one letter.',{exact:true}).waitFor();
+                await (await word('MOLD')).press('Enter');
+                await page.getByRole('button',{name:'Hint'}).click();
                 await page.getByText('No unused route from here. Undo a step.').waitFor();
-                await page.getByRole('button',{name:/Undo/}).click();
-                await page.getByRole('button',{name:/Hint/}).click();
+                await page.keyboard.press('Escape');
+                await page.getByRole('button',{name:'Undo'}).click();
+                await page.getByRole('button',{name:'Hint'}).click();
                 await page.getByText('Try CORD.').waitFor();
-                for(const choice of ['CORD','CARD','WARD','WARM']) await word(choice).click();
+                await page.getByRole('button',{name:'Close'}).click();
+                for(const choice of ['CORD','CARD','WARD','WARM']){
+                  await (await word(choice)).click();
+                  if(choice!=='WARM')await checkLadder();
+                }
                 await page.getByText('Ladder complete in 4 moves!').waitFor();
+                await page.getByRole('button',{name:'Close'}).click();
+                await page.getByRole('button',{name:'Menu'}).click();
                 await page.getByLabel('Puzzle',{exact:true}).selectOption('1');
-                for(const choice of ['COT','DOT','DOG']) await word(choice).click();
+                for(const choice of ['COT','DOT','DOG'])await (await word(choice)).click();
                 await page.getByText('Ladder complete in 3 moves!').waitFor();
-                await page.getByRole('button',{name:/Reset/}).click();
-                await page.getByText('0 moves').waitFor();
-                const ladder = await page.locator('.game').evaluate(el=>({bottom:el.getBoundingClientRect().bottom+scrollY,height:innerHeight}));
-                assert.ok(ladder.bottom<=ladder.height,'ladder controls fit: '+JSON.stringify(ladder));
-                await withinViewport(page.locator('html'));
+                await page.getByRole('button',{name:'Close'}).click();
+                await checkLadder();
+                await page.getByRole('button',{name:'Reset'}).click();
+                assert.equal(await page.locator('#moves').innerText(),'0');
+                await page.getByRole('button',{name:'Help'}).click();
+                await page.getByRole('dialog',{name:'How to play'}).waitFor();
+                await page.keyboard.press('Escape');
+                await checkLadder();
+                await page.setViewportSize(ladderSize);
                 await page.screenshot({path:name+'-word-ladder.png'});
                 await page.goto('https://adigun.test/#demo/home/play-now');
                 await frame.getByText(`${expectedPlayable} playable`, {exact:true}).waitFor();
