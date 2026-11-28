@@ -620,6 +620,11 @@ jobs:
                 await frame.getByRole('button',{name:/Clear/}).click();
                 await page.waitForURL(/play-now$/);
                 assert.equal(await frame.locator('#play-results a').count(),expectedPlayable);
+                for(const [title,key] of [['Weather Simulator','13/4'],['Ecosystem Builder','13/5']]){
+                  const link=frame.locator('#play-results').getByRole('link',{name:title,exact:true});
+                  assert.equal(await link.count(),1);
+                  assert.equal(await link.getAttribute('href'),'#concept/'+key);
+                }
                 await withinViewport(frame.locator('html'));
                 await page.goto('https://adigun.test/#demo/home/play-now?q=paper+lantern');
                 await frame.getByRole('link',{name:'Make a Paper Lantern Model',exact:true}).click();
